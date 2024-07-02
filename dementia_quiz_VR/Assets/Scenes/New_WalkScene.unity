@@ -28738,7 +28738,7 @@ Transform:
   m_GameObject: {fileID: 805662249}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 639, y: -285, z: 138}
+  m_LocalPosition: {x: -24.22, y: -14.9, z: -21.5}
   m_LocalScale: {x: 34.03, y: 34.03, z: 34.03}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -32291,7 +32291,7 @@ Transform:
   m_GameObject: {fileID: 902788255}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1525, y: 404.3, z: -1057}
+  m_LocalPosition: {x: -771, y: 121, z: -924}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -51948,12 +51948,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1567831943}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2fadf230d1919748a9aa21d40f74619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TrackingType: 0
+  m_TrackingType: 1
   m_UpdateType: 0
   m_IgnoreTrackingState: 0
   m_PositionInput:

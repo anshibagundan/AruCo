@@ -412,14 +412,15 @@ public class PlayerMotion : MonoBehaviour
     private bool IsGrounded()
     {
         // CharacterControllerが地面に接地している場合はtrueを返す
-        if (Controller.isGrounded) return true;
+        return true;
 
         // レイキャストを使用して地面との接地判定を行う
-        var pos = transform.position;
+        /*var pos = transform.position;
         var ray = new Ray(pos + Vector3.up * 0.1f, Vector3.down);
         var tolerance = 0.3f;
         return Physics.Raycast(ray, tolerance);
-    }
+       */
+        }
 
     private void UpdateController()
     {
