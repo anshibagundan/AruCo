@@ -133,7 +133,9 @@ public class PlayerMotion : MonoBehaviour
             //idが奇数でtrueなら左に，偶数でtrueなら右にします
             Getdirection();
 
-            //1問も解いていない時
+
+
+                //1問も解いていない時
             if (QuizTFDataArray == null)
             {
                 tmpMoveThrottle += Vector3.right * moveScale;
@@ -543,4 +545,40 @@ public class PlayerMotion : MonoBehaviour
         objectToRotate.transform.rotation = endRotation;
         Rotated = true;
     }
+
+    //ここから長さ取得
+    private int quizTFCount = 0;
+
+    private IEnumerator GetQuizTFCoroutine()
+    {
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(geturl))
+        {
+            webRequest.SetRequestHeader("X-Debug-Mode", "true");
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result == UnityWebRequest.Result.ConnectionError ||
+                webRequest.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogError("Error: " + webRequest.error);
+                quizTFCount = 0;
+            }
+            else
+            {
+                string json = webRequest.downloadHandler.text;
+                QuizTF[] quizTFDataArray = JsonUtility.FromJson<QuizTF[]>("{\"Items\":" + json + "}");
+                quizTFCount = quizTFDataArray.Length;
+            }
+        }
+    }
+
+    public void StartGetQuizTF()
+    {
+        StartCoroutine(GetQuizTFCoroutine());
+    }
+
+    public int GetQuizTFCount()
+    {
+        return quizTFCount;
+    }
+
 }
