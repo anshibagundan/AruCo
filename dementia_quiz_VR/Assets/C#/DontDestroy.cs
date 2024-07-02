@@ -7,7 +7,9 @@ public class DontDestroy : MonoBehaviour
 {
     private static DontDestroy instance;
     private Vector3 initialPosition;
+    private Vector3 firstScene2Position;
     private bool hasInitialPosition = false;
+    private bool hasFirstScene2Position = false;
 
     void Awake()
     {
@@ -48,10 +50,21 @@ public class DontDestroy : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        // シーン1に戻ったときに初期位置に戻す
-        if (scene.name == "New_Walk")
+        if (scene.name == "Scene1")
         {
+            // シーン1に戻ったときに初期位置に戻す
             transform.position = initialPosition;
+        }
+        else if (scene.name == "Scene2" && !hasFirstScene2Position)
+        {
+            // 初回のシーン2の位置を記録する
+            firstScene2Position = transform.position;
+            hasFirstScene2Position = true;
+        }
+        else if (scene.name == "Scene2" && hasFirstScene2Position)
+        {
+            // シーン2に戻ったときに最初のシーン2の位置に戻す
+            transform.position = firstScene2Position;
         }
     }
 

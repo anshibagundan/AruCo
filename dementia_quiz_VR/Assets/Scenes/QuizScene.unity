@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.28835124, g: 0.5845889, b: 0.8080487, a: 1}
+  m_IndirectSpecularColor: {r: 0.28737232, g: 0.58153695, b: 0.8079378, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -210,7 +210,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1.409668, y: 0.077861786, z: 1.2041016}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -653,8 +653,6 @@ MonoBehaviour:
   Quizname: {fileID: 1756069871}
   Quizsel_1: {fileID: 537533446}
   Quizsel_2: {fileID: 1508672914}
-  objectToRotate: {fileID: 0}
-  rotationDuration: 1
 --- !u!1 &1359596429
 GameObject:
   m_ObjectHideFlags: 0
@@ -958,8 +956,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 39, y: 259.5}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: 32, y: 264.26294}
+  m_SizeDelta: {x: 256, y: 88.1035}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1508672913
 GameObject:
