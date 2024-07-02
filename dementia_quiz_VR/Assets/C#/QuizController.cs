@@ -13,8 +13,6 @@ public class QuizController : MonoBehaviour
     public TextMeshProUGUI Quizname;
     public TextMeshProUGUI Quizsel_1;
     public TextMeshProUGUI Quizsel_2;
-    public GameObject objectToRotate;
-    public float rotationDuration = 1f; // 回転にかける時間
     private bool isRotating = false; // 回転中かどうかのフラグ
     private const string difficultyGetUrl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/quiz-selects/";
     private const string baseGetUrl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/quizzes/";
@@ -50,7 +48,7 @@ public class QuizController : MonoBehaviour
         {
             isAnswered = true;
             StartCoroutine(PostData("R"));
-            StartCoroutine(RotateCoroutine("R"));
+            UnityEngine.SceneManagement.SceneManager.LoadScene("New_WalkScene");
         }
 
         // 左コントローラーのボタン入力を検出
@@ -58,7 +56,7 @@ public class QuizController : MonoBehaviour
         {
             isAnswered = true;
             StartCoroutine(PostData("L"));
-            StartCoroutine(RotateCoroutine("L"));
+            UnityEngine.SceneManagement.SceneManager.LoadScene("New_WalkScene");
         }
         if (canTransition)
         {
@@ -315,69 +313,7 @@ public class QuizController : MonoBehaviour
             Debug.LogError("no quiz found");
         }
     }
-    //回転用
-    IEnumerator RotateCoroutine(String LorR)
-    {
-        isRotating = true;
-        Quaternion startRotation = objectToRotate.transform.rotation;
 
-
-        if (AskedQuestionList == null ||AskedQuestionList.Length == 1 )
-        {
-            if (LorR == "R" )
-            {
-                endRotation = startRotation * Quaternion.Euler(0, 90, 0);
-            }
-            else if(LorR == "L")
-            {
-                endRotation = startRotation * Quaternion.Euler(0, -90, 0);
-            }
-            else
-            {
-                endRotation = startRotation * Quaternion.Euler(0, 0, 0);
-            }
-
-        }else if (AskedQuestionList.Length == 2)
-        {
-            if (LorR == "R" )
-            {
-                endRotation = startRotation * Quaternion.Euler(0, 1, 0);
-            }
-            else if(LorR == "L")
-            {
-                endRotation = startRotation * Quaternion.Euler(0, -90, 0);
-            }
-            else
-            {
-                endRotation = startRotation * Quaternion.Euler(0, 0, 0);
-            }
-        }
-
-
-
-        float elapsedTime = 0;
-
-        while (elapsedTime < rotationDuration)
-        {
-            objectToRotate.transform.rotation = Quaternion.Slerp(startRotation, endRotation, elapsedTime / rotationDuration);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        objectToRotate.transform.rotation = endRotation;
-        isRotating = false;
-        isAnswered = false;
-
-        // 回転後にシーンを読み込む
-        if (!isfinalQuiz)
-        {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("New_WalkScene");
-        }
-        else
-        {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("New_WalkScene");
-        }
-    }
     //スキップボタンが出たら，falseにする
     private void OnMessageReceived(object sender, MessageEventArgs e)
     {

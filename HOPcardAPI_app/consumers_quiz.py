@@ -3,12 +3,12 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 
 class HOPConsumer_quiz(AsyncWebsocketConsumer):
     async def connect(self):
-        await self.channel_layer.group_add("HOP_group", self.channel_name)
+        await self.channel_layer.group_add("Quiz_group", self.channel_name)
         await self.accept()
         print(f"[DEBUG] WebSocket connection accepted: {self.channel_name}")
 
     async def disconnect(self, close_code):
-        await self.channel_layer.group_discard("HOP_group", self.channel_name)
+        await self.channel_layer.group_discard("Quiz_group", self.channel_name)
         print(f"[DEBUG] WebSocket connection closed: {self.channel_name} with code {close_code}")
 
     async def receive(self, text_data):
