@@ -516,14 +516,17 @@ public class PlayerMotion : MonoBehaviour
 
         if (LorR == "R")
         {
+            Debug.Log("RightRotating...");
             endRotation = startRotation * Quaternion.Euler(0, 90, 0);
         }
         else if (LorR == "L")
         {
+            Debug.Log("LeftRotating...");
             endRotation = startRotation * Quaternion.Euler(0, -90, 0);
         }
         else
         {
+            Debug.Log("UnRotating...");
             endRotation = startRotation * Quaternion.Euler(0, 0, 0);
         }
 
