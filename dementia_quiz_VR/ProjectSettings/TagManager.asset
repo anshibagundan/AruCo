@@ -7,6 +7,9 @@ TagManager:
   - QuizCollider
   - DogCollider
   - Dog
+  - QuizCollider_1st
+  - QuizCollider_2nd
+  - QuizCollider_3rd
   layers:
   - Default
   - TransparentFX

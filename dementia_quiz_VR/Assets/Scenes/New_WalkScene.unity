@@ -14066,7 +14066,7 @@ GameObject:
   - component: {fileID: 407560917}
   m_Layer: 0
   m_Name: ThirdCollider_3
-  m_TagString: QuizCollider
+  m_TagString: QuizCollider_3rd
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16193,7 +16193,7 @@ GameObject:
   - component: {fileID: 467649972}
   m_Layer: 0
   m_Name: ThirdCollider_4
-  m_TagString: QuizCollider
+  m_TagString: QuizCollider_3rd
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -17204,7 +17204,7 @@ GameObject:
   - component: {fileID: 491175087}
   m_Layer: 0
   m_Name: ThirdCollider_2
-  m_TagString: QuizCollider
+  m_TagString: QuizCollider_3rd
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -34746,7 +34746,7 @@ GameObject:
   - component: {fileID: 995807066}
   m_Layer: 0
   m_Name: SecondCollider_2
-  m_TagString: QuizCollider
+  m_TagString: QuizCollider_2nd
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -38413,7 +38413,7 @@ GameObject:
   - component: {fileID: 1109633510}
   m_Layer: 0
   m_Name: FirstCollider
-  m_TagString: QuizCollider
+  m_TagString: QuizCollider_1st
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52852,7 +52852,7 @@ GameObject:
   - component: {fileID: 1582136191}
   m_Layer: 0
   m_Name: ThirdCollider_1
-  m_TagString: QuizCollider
+  m_TagString: QuizCollider_3rd
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -63670,7 +63670,7 @@ GameObject:
   - component: {fileID: 1950996133}
   m_Layer: 0
   m_Name: SecondCollider_1
-  m_TagString: QuizCollider
+  m_TagString: QuizCollider_2nd
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
