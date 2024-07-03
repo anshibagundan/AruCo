@@ -67,3 +67,8 @@ class ActTFViewSet(viewsets.ModelViewSet):
 class PlayerViewSet(viewsets.ModelViewSet):
     queryset = Player.objects.all()
     serializer_class = PlayerSerializer
+
+    @action(detail=False, methods=['delete'])
+    def destroy_all(self, request):
+        Player.objects.all().delete()
+        return Response(status=204)
