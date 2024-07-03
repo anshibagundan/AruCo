@@ -25,3 +25,12 @@ class Quiz_TF(models.Model):
 class Act_TF(models.Model):
     action = models.ForeignKey(Action, on_delete=models.CASCADE)
     cor = models.BooleanField()
+
+class Player(models.Model):
+    pos_x = models.FloatField()
+    pos_y = models.FloatField()
+    pos_z = models.FloatField()
+    rot_x = models.FloatField()
+    rot_y = models.FloatField()
+    rot_z = models.FloatField()
+    rl = models.CharField(max_length=100)
