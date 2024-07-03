@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.urls import include, path
 from rest_framework import routers
-from HOPcardAPI_app.views import QuizViewSet, ActionViewSet, QuizSelectViewSet, ActSelectViewSet, QuizTFViewSet, ActTFViewSet
+from HOPcardAPI_app.views import QuizViewSet, ActionViewSet, QuizSelectViewSet, ActSelectViewSet, QuizTFViewSet, ActTFViewSet, PlayerViewSet
 
 router = routers.DefaultRouter()
 router.register(r'quizzes', QuizViewSet)
@@ -25,6 +25,7 @@ router.register(r'quiz-selects', QuizSelectViewSet)
 router.register(r'act-selects', ActSelectViewSet)
 router.register(r'quiz-tfs', QuizTFViewSet)
 router.register(r'act-tfs', ActTFViewSet)
+router.register(r'players', PlayerViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
