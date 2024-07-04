@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-  
-</selector>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <!-- 背景色を透明に設定 -->
+            <solid android:color="#ffffff"/>
+            <!-- 枠線の設定 -->
+            <stroke
+                android:width="2sp"
+                android:color="#000000"/> <!-- ここで色を指定 -->
+        </shape>
+    </item>
+</layer-list>
