@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".game"
-    android:background="#E6F9FE">
+    android:background="#ffe6cc">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -76,7 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="250sp"
-            android:backgroundTint="#990000"
+            android:backgroundTint="#0074A1"
             android:onClick="game_result"
             android:text="終了"
             android:textSize="40sp" />

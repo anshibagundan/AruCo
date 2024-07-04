@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#ffedcc"
-            android:visibility="gone">
+            android:visibility="visible">
 
 
             <ImageView
@@ -105,7 +105,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#ffe6dd"
-        android:visibility="visible">
+        android:visibility="gone">
             <ImageView
                 android:layout_width="300sp"
                 android:layout_height="100sp"
