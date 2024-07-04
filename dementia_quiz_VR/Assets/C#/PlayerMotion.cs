@@ -26,7 +26,7 @@ public class PlayerMotion : MonoBehaviour
     private float FallSpeed = 0.0f;
     private float Acceleration = 0.1f;
     private float Damping = 0.3f;
-    private float GravityModifier = 0.379f;
+    private float GravityModifier = 0f;
 
     // コントローラーの速度と加速度を保存する変数
     private Vector3 touchVelocityL;
@@ -113,11 +113,11 @@ public class PlayerMotion : MonoBehaviour
         ortEuler.z = ortEuler.x = 0f;
         ort = Quaternion.Euler(ortEuler);
 
-        // 移動効果を計算し、MoveThrottleに加算
-        MoveThrottle += CalculateMoveEffect(moveInfluence, ort, handShakeVel, handShakeAcc);
+        /*// 移動効果を計算し、MoveThrottleに加算
+        MoveThrottle += CalculateMoveEffect(moveInfluence, ort, handShakeVel, handShakeAcc);*/
     }
 
-    private Vector3 CalculateMoveEffect(float moveInfluence, Quaternion ort, Vector3 handShakeVel, Vector3 handShakeAcc)
+    /*private Vector3 CalculateMoveEffect(float moveInfluence, Quaternion ort, Vector3 handShakeVel, Vector3 handShakeAcc)
     {
         Vector3 tmpMoveThrottle = Vector3.zero;
 
@@ -133,7 +133,9 @@ public class PlayerMotion : MonoBehaviour
             //idが奇数でtrueなら左に，偶数でtrueなら右にします
             Getdirection();
 
-            //1問も解いていない時
+
+
+                //1問も解いていない時
             if (QuizTFDataArray == null)
             {
                 tmpMoveThrottle += Vector3.right * moveScale;
@@ -381,7 +383,7 @@ public class PlayerMotion : MonoBehaviour
         }
 
         return tmpMoveThrottle;
-    }
+    }*/
 
     IEnumerator SetMotionInertia()
     {
@@ -412,14 +414,15 @@ public class PlayerMotion : MonoBehaviour
     private bool IsGrounded()
     {
         // CharacterControllerが地面に接地している場合はtrueを返す
-        if (Controller.isGrounded) return true;
+        return true;
 
         // レイキャストを使用して地面との接地判定を行う
-        var pos = transform.position;
+        /*var pos = transform.position;
         var ray = new Ray(pos + Vector3.up * 0.1f, Vector3.down);
         var tolerance = 0.3f;
         return Physics.Raycast(ray, tolerance);
-    }
+       */
+        }
 
     private void UpdateController()
     {
@@ -508,21 +511,24 @@ public class PlayerMotion : MonoBehaviour
             }
         }
     }
-    //回転用
+    /*//回転用
     IEnumerator RotateCoroutine(String LorR)
     {
         Quaternion startRotation = objectToRotate.transform.rotation;
 
         if (LorR == "R")
         {
+            Debug.Log("RightRotating...");
             endRotation = startRotation * Quaternion.Euler(0, 90, 0);
         }
         else if (LorR == "L")
         {
+            Debug.Log("LeftRotating...");
             endRotation = startRotation * Quaternion.Euler(0, -90, 0);
         }
         else
         {
+            Debug.Log("UnRotating...");
             endRotation = startRotation * Quaternion.Euler(0, 0, 0);
         }
 
@@ -542,4 +548,40 @@ public class PlayerMotion : MonoBehaviour
         objectToRotate.transform.rotation = endRotation;
         Rotated = true;
     }
+
+    //ここから長さ取得
+    private int quizTFCount = 0;
+
+    private IEnumerator GetQuizTFCoroutine()
+    {
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(geturl))
+        {
+            webRequest.SetRequestHeader("X-Debug-Mode", "true");
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result == UnityWebRequest.Result.ConnectionError ||
+                webRequest.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogError("Error: " + webRequest.error);
+                quizTFCount = 0;
+            }
+            else
+            {
+                string json = webRequest.downloadHandler.text;
+                QuizTF[] quizTFDataArray = JsonUtility.FromJson<QuizTF[]>("{\"Items\":" + json + "}");
+                quizTFCount = quizTFDataArray.Length;
+            }
+        }
+    
+
+    public void StartGetQuizTF()
+    {
+        StartCoroutine(GetQuizTFCoroutine());
+    }
+
+    public int GetQuizTFCount()
+    {
+        return quizTFCount;
+    }*/
+
 }

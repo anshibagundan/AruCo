@@ -220,9 +220,6 @@ public class TriggerSpawn : MonoBehaviour
         spawnDogScript.targetPosition = targetPosition4;
         // �����o��������
         spawnDogScript.SpawnDogs();
-
-
-
     }
 
 
