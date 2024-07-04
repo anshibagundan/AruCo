@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.35379493, g: 0.72408915, b: 0.9529201, a: 1}
+  m_IndirectSpecularColor: {r: 0.3521114, g: 0.724135, b: 0.9581087, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -32254,7 +32254,7 @@ GameObject:
   m_Component:
   - component: {fileID: 902788257}
   - component: {fileID: 902788256}
-  - component: {fileID: 902788258}
+  - component: {fileID: 902788262}
   - component: {fileID: 902788260}
   - component: {fileID: 902788261}
   m_Layer: 0
@@ -32299,18 +32299,6 @@ Transform:
   - {fileID: 869345448}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &902788258
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 902788255}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8818c33e9f42610478f803fa5049251c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &902788260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32325,8 +32313,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LeftHandAnchorTransform: {fileID: 324457215}
   RightHandAnchorTransform: {fileID: 869345448}
-  objectToRotate: {fileID: 1567831943}
-  rotationDuration: 1
   moveScale: 1
 --- !u!143 &902788261
 CharacterController:
@@ -32354,6 +32340,18 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: -25, y: 50, z: -21}
+--- !u!114 &902788262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 902788255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 994f4065c305df848b9b4b819147a5bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &903035313
 PrefabInstance:
   m_ObjectHideFlags: 0

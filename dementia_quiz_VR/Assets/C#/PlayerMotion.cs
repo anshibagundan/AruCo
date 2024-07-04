@@ -182,13 +182,13 @@ public class PlayerMotion : MonoBehaviour
         // 移動方向の計算
         moveDirection += MoveThrottle * SimulationRate * Time.deltaTime;
 
-        // 重力の計算
+        /*// 重力の計算
         if (Controller.isGrounded && FallSpeed <= 0)
             FallSpeed = Physics.gravity.y * (GravityModifier * 0.002f);
         else
             FallSpeed += Physics.gravity.y * (GravityModifier * 0.002f) * SimulationRate * Time.deltaTime;
 
-        moveDirection.y += FallSpeed * SimulationRate * Time.deltaTime;
+        moveDirection.y += FallSpeed * SimulationRate * Time.deltaTime;*/
 
         // 段差を乗り越える処理
         if (Controller.isGrounded && MoveThrottle.y <= transform.lossyScale.y * 0.001f)

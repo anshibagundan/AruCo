@@ -30,13 +30,13 @@ public class ChangeQuizScene : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("OnTriggerEnter called");
-        Debug.Log(IsChanged_1st);
-        Debug.Log(IsChanged_2nd);
-        Debug.Log(IsChanged_3rd);
         
         if (other.gameObject.CompareTag("QuizCollider_1st") && IsChanged_1st == false)
         {
-            Debug.Log("1stQuizCollider detected"); //
+            Debug.Log(IsChanged_1st);
+            Debug.Log(IsChanged_2nd);
+            Debug.Log(IsChanged_3rd);
+            Debug.Log("1stQuizCollider detected");
             deletePlayer();
             postPlayer();
             SceneManager.LoadScene("QuizScene");
@@ -44,7 +44,10 @@ public class ChangeQuizScene : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("QuizCollider_2nd") && IsChanged_2nd == false)
         {
-            Debug.Log("2ndQuizCollider detected"); //
+            Debug.Log(IsChanged_1st);
+            Debug.Log(IsChanged_2nd);
+            Debug.Log(IsChanged_3rd);
+            Debug.Log("2ndQuizCollider detected");
             deletePlayer();
             postPlayer();
             SceneManager.LoadScene("QuizScene");
@@ -52,7 +55,10 @@ public class ChangeQuizScene : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("QuizCollider_3rd") && IsChanged_3rd == false)
         {
-            Debug.Log("3rdQuizCollider detected"); //
+            Debug.Log(IsChanged_1st);
+            Debug.Log(IsChanged_2nd);
+            Debug.Log(IsChanged_3rd);
+            Debug.Log("3rdQuizCollider detected");
             deletePlayer();
             postPlayer();
             SceneManager.LoadScene("QuizScene");
@@ -63,12 +69,12 @@ public class ChangeQuizScene : MonoBehaviour
     public IEnumerator postPlayer()
     {
         WWWForm form = new WWWForm();
-        form.AddField("pos_x", "position.x");
-        form.AddField("pos_y", "position.y");
-        form.AddField("pos_z", "position.z");
-        form.AddField("rot_x", "eulerRotation.x");
-        form.AddField("rot_y", "eulerRotation.y");
-        form.AddField("rot_z", "eulerRotation.z");
+        form.AddField("pos_x", "transform.position.x");
+        form.AddField("pos_y", "transform.position.y");
+        form.AddField("pos_z", "transform.position.z");
+        form.AddField("rot_x", "transform.rotation.x");
+        form.AddField("rot_y", "transform.rotation.y");
+        form.AddField("rot_z", "transform.rotation.z");
 
         using (UnityWebRequest webRequest = UnityWebRequest.Post(geturl, form))
         {

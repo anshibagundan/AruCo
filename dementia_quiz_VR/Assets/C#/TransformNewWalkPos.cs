@@ -44,13 +44,8 @@ public class TransformNewWalkPos : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (isFirstLoad)
-        {
-            // 初回ロード時は座標を送信または更新しない
-            isFirstLoad = false;
-            return;
-        }
 
+        Debug.Log("NewWalkScene Reloded");
         //getPlayerのコルーティンを回し、DBから座標取得
         StartCoroutine(getPlayer());
 
@@ -66,24 +61,12 @@ public class TransformNewWalkPos : MonoBehaviour
         savedRotation.y = playerData.RotY;
         savedRotation.z = playerData.RotZ;
 
-        initializedPosition.x = 1220;
-        initializedPosition.y = 90;
-        initializedPosition.z = 0;
-
-        if (scene.name == "New_Walk")
-        {
-            // シーン1に戻ったときにDBに保存していた位置に戻す
-            transform.position = savedPosition;
-            transform.rotation = savedRotation;
-            rotatePlayer();
-            Debug.Log("PositionLoaded");
-        }
-        else if (scene.name == "Quiz" && !hasFirstScene2Position)
-        {
-            // シーン2読み込み時、初期位置へ
-            transform.position = initializedPosition;
-            Debug.Log("PositionInitialized");
-        }
+        // シーン1に戻ったときにDBに保存していた位置に戻す
+        transform.position = savedPosition;
+        transform.rotation = savedRotation;
+        rotatePlayer();
+        Debug.Log("PositionLoaded");
+        
     }
 
     private void rotatePlayer()
