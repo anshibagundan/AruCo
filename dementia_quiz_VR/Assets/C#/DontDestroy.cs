@@ -20,7 +20,8 @@ public class DontDestroy : MonoBehaviour
     private String Geturl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/quiz-tfs/";
 
     Player playerData;
-    Vector3 savedPosition;
+    Vector3 savedPosition;//DBから取得した座標をストックする
+    Quaternion savedRotation;//DBから取得した回転をストックする
 
     public Player getPlayerArray()
     {
@@ -54,11 +55,24 @@ public class DontDestroy : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        //Getのコルーティンを回し、DBから座標取得
         StartCoroutine(GetQuizTFCoroutine());
+        
+        //DBから取得した情報を座標と回転に分配して代入
+        savedPosition.x = playerData.PosX;
+        savedPosition.y = playerData.PosY;    
+        savedPosition.z = playerData.PosZ;
+
+        savedRotation.x = playerData.RotX;
+        savedRotation.y = playerData.RotY;
+        savedRotation.z = playerData.RotZ;
+
+
         if (scene.name == "New_Walk")
         {
             // シーン1に戻ったときにDBに保存していた位置に戻す
             transform.position = savedPosition;
+            transform.rotation = savedRotation;
             rotatePlayer();
         }
         else if (scene.name == "Quiz" && !hasFirstScene2Position)
