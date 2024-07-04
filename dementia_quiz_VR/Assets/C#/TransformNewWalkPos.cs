@@ -52,7 +52,9 @@ public class TransformNewWalkPos : MonoBehaviour
         //GetTFのコルーティンを回し、DBから問題回答数数取得
         StartCoroutine(GetQuizTFCoroutine());
 
-        //DBから取得した情報を座標と回転に分配して代入
+        //DBとのやり取りが確認できないため一時的にコメントアウト
+
+        /*//DBから取得した情報を座標と回転に分配して代入
         savedPosition.x = playerData.PosX;
         savedPosition.y = playerData.PosY;
         savedPosition.z = playerData.PosZ;
@@ -63,7 +65,7 @@ public class TransformNewWalkPos : MonoBehaviour
 
         // シーン1に戻ったときにDBに保存していた位置に戻す
         transform.position = savedPosition;
-        transform.rotation = savedRotation;
+        transform.rotation = savedRotation;*/
         rotatePlayer();
         Debug.Log("PositionLoaded");
         
@@ -79,7 +81,9 @@ public class TransformNewWalkPos : MonoBehaviour
         // 回転する角度を設定
         float targetAngle = 0f;
 
-        if (playerData.LR == "L")
+        //同じくDBとのやり取りが確認できないため、動作確認用にif(True)にしています
+
+        if (/*playerData.LR == "L"*/true)
         {
             targetAngle = 90f;
         }
@@ -101,7 +105,7 @@ public class TransformNewWalkPos : MonoBehaviour
             transform.eulerAngles = new Vector3(transform.eulerAngles.x, currentAngle, transform.eulerAngles.z);
             yield return null;
         }
-
+        Debug.Log("rotationing...");
         // 最後に正確な角度を設定
         transform.eulerAngles = new Vector3(transform.eulerAngles.x, endAngle, transform.eulerAngles.z);
     }

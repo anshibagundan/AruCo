@@ -182,13 +182,7 @@ public class PlayerMotion : MonoBehaviour
         // 移動方向の計算
         moveDirection += MoveThrottle * SimulationRate * Time.deltaTime;
 
-        /*// 重力の計算
-        if (Controller.isGrounded && FallSpeed <= 0)
-            FallSpeed = Physics.gravity.y * (GravityModifier * 0.002f);
-        else
-            FallSpeed += Physics.gravity.y * (GravityModifier * 0.002f) * SimulationRate * Time.deltaTime;
-
-        moveDirection.y += FallSpeed * SimulationRate * Time.deltaTime;*/
+        //重力計算は削除しました
 
         // 段差を乗り越える処理
         if (Controller.isGrounded && MoveThrottle.y <= transform.lossyScale.y * 0.001f)
@@ -210,86 +204,8 @@ public class PlayerMotion : MonoBehaviour
         if (predictedXZ != actualXZ)
             MoveThrottle += (actualXZ - predictedXZ) / (SimulationRate * Time.deltaTime);
     }
-    /*private IEnumerator Getdirection()
-    {
-        using (UnityWebRequest webRequest = UnityWebRequest.Get(geturl))
-        {
-            webRequest.SetRequestHeader("X-Debug-Mode", "true");
-            yield return webRequest.SendWebRequest();
+    //Getdirection()はTransformNewWalkに記述したため削除しました。
 
-            if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.LogError("Error: " + webRequest.error);
-            }
-            else
-            {
-                string json = webRequest.downloadHandler.text;
-
-                QuizTFDataArray = JsonHelper.FromJson<QuizTF>(json);
-
-                if (QuizTFDataArray != null && QuizTFDataArray.Length > 0)
-                {
-                    QuizTFData1 = QuizTFDataArray[0].getCor();
-                    QuizIdData1 = QuizTFDataArray[0].getId();
-
-                    if (QuizTFDataArray.Length > 1)
-                    {
-                        QuizTFData2 = QuizTFDataArray[1].getCor();
-                        QuizIdData2 = QuizTFDataArray[2].getId();
-                    }
-
-                    //3問目いらないならこれいらんくない？
-                    if (QuizTFDataArray.Length > 2)
-                    {
-                        QuizTFData3 = QuizTFDataArray[2].getCor();
-                        QuizIdData3 = QuizTFDataArray[3].getId();
-                    }
-
-                }
-                else
-                {
-                    Debug.LogWarning("No quizdiff found.");
-                }
-            }
-        }
-    }*/
-    //回転用
-    /*IEnumerator RotateCoroutine(String LorR)
-    {
-        Quaternion startRotation = objectToRotate.transform.rotation;
-
-        if (LorR == "R")
-        {
-            Debug.Log("RightRotating...");
-            endRotation = startRotation * Quaternion.Euler(0, 90, 0);
-        }
-        else if (LorR == "L")
-        {
-            Debug.Log("LeftRotating...");
-            endRotation = startRotation * Quaternion.Euler(0, -90, 0);
-        }
-        else
-        {
-            Debug.Log("UnRotating...");
-            endRotation = startRotation * Quaternion.Euler(0, 0, 0);
-        }
-
-
-
-
-        float elapsedTime = 0;
-
-        while (elapsedTime < rotationDuration)
-        {
-            objectToRotate.transform.rotation =
-                Quaternion.Slerp(startRotation, endRotation, elapsedTime / rotationDuration);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        objectToRotate.transform.rotation = endRotation;
-        Rotated = true;
-    }*/
 
     //ここから長さ取得
     private int quizTFCount = 0;

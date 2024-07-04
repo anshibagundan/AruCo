@@ -267,6 +267,13 @@ public class QuizController : MonoBehaviour
         }
     }
 
+    // コルーチンでプレイヤーのデータを送信し、シーンを遷移する
+    private IEnumerator PostAndLoadScene(string direction)
+    {
+        yield return StartCoroutine(postPlayer(direction));
+        SceneManager.LoadScene("New_WalkScene");
+    }
+
     // データ送信
     private IEnumerator postPlayer(string direction)
     {
@@ -289,12 +296,6 @@ public class QuizController : MonoBehaviour
         }
     }
 
-    // コルーチンでプレイヤーのデータを送信し、シーンを遷移する
-    private IEnumerator PostAndLoadScene(string direction)
-    {
-        yield return StartCoroutine(postPlayer(direction));
-        SceneManager.LoadScene("New_WalkScene");
-    }
 
     // スキップボタンが出たら、falseにする
     private void OnMessageReceived(object sender, MessageEventArgs e)
