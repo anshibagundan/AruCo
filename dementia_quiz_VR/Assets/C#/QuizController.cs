@@ -32,6 +32,10 @@ public class QuizController : MonoBehaviour
     private WebSocket ws;
     private bool canTransition = false;
 
+    //PlayerPosiotionのurl
+    private String Geturl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/players/";
+    private String deleteurl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/players/destroy_all";
+    Player playerData;
 
     public void Start()
     {
@@ -47,7 +51,7 @@ public class QuizController : MonoBehaviour
         if (CheckRightControllerButtons() && !isAnswered)
         {
             isAnswered = true;
-            StartCoroutine(PostData("R"));
+            StartCoroutine(postPlayer("R"));
             UnityEngine.SceneManagement.SceneManager.LoadScene("New_WalkScene");
         }
 
@@ -55,7 +59,7 @@ public class QuizController : MonoBehaviour
         if (CheckLeftControllerButtons() && !isAnswered)
         {
             isAnswered = true;
-            StartCoroutine(PostData("L"));
+            StartCoroutine(postPlayer("L"));
             UnityEngine.SceneManagement.SceneManager.LoadScene("New_WalkScene");
         }
         if (canTransition)
@@ -259,60 +263,83 @@ public class QuizController : MonoBehaviour
             }
         }
     }
-
-    //クイズの正解不正解を送る
-    private IEnumerator PostData(String LorR)
+    //データ送信
+    public IEnumerator postPlayer(String LR)
     {
-        if (!hasnotQuiz)
-        {
-            //quizのidが奇数なら左が正解に，偶数なら右が正解にする
-            WWWForm form = new WWWForm();
+        WWWForm form = new WWWForm();
+        form.AddField("LR", "LR");
 
-            if (quizDataId % 2 == 0)
+        using (UnityWebRequest webRequest = UnityWebRequest.Post(geturl, form))
+        {
+            webRequest.SetRequestHeader("X-Debug-Mode", "true");
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
             {
-                if (LorR == "R")
-                {
-                    form.AddField("cor", "true");
-                    form.AddField("quiz", quizDataId);
-                }
-                else if (LorR == "L")
-                {
-                    form.AddField("cor", "false");
-                    form.AddField("quiz", quizDataId);
-                }
+                Debug.LogError("Error: " + webRequest.error);
             }
             else
             {
-                if (LorR == "R")
-                {
-                    form.AddField("cor", "false");
-                    form.AddField("quiz", quizDataId);
-                }
-                else if (LorR == "L")
-                {
-                    form.AddField("cor", "true");
-                    form.AddField("quiz", quizDataId);
-                }
+                Debug.LogWarning("No Askedquiz found.");
             }
-
-            //ここで正解不正解のデータを送る
-            using (UnityWebRequest webRequest = UnityWebRequest.Post(posturl, form))
-            {
-                webRequest.SetRequestHeader("X-Debug-Mode", "true");
-                yield return webRequest.SendWebRequest();
-
-                if (webRequest.result == UnityWebRequest.Result.ConnectionError ||
-                    webRequest.result == UnityWebRequest.Result.ProtocolError)
-                {
-                    Debug.LogError("Error: " + webRequest.error);
-                }
-            }
-        }
-        else
-        {
-            Debug.LogError("no quiz found");
         }
     }
+
+
+
+    /* //クイズの正解不正解を送る
+     private IEnumerator PostData(String LorR)
+     {
+         if (!hasnotQuiz)
+         {
+             //quizのidが奇数なら左が正解に，偶数なら右が正解にする
+             WWWForm form = new WWWForm();
+
+             if (quizDataId % 2 == 0)
+             {
+                 if (LorR == "R")
+                 {
+                     form.AddField("cor", "true");
+                     form.AddField("quiz", quizDataId);
+                 }
+                 else if (LorR == "L")
+                 {
+                     form.AddField("cor", "false");
+                     form.AddField("quiz", quizDataId);
+                 }
+             }
+             else
+             {
+                 if (LorR == "R")
+                 {
+                     form.AddField("cor", "false");
+                     form.AddField("quiz", quizDataId);
+                 }
+                 else if (LorR == "L")
+                 {
+                     form.AddField("cor", "true");
+                     form.AddField("quiz", quizDataId);
+                 }
+             }
+
+             //ここで正解不正解のデータを送る
+             using (UnityWebRequest webRequest = UnityWebRequest.Post(posturl, form))
+             {
+                 webRequest.SetRequestHeader("X-Debug-Mode", "true");
+                 yield return webRequest.SendWebRequest();
+
+                 if (webRequest.result == UnityWebRequest.Result.ConnectionError ||
+                     webRequest.result == UnityWebRequest.Result.ProtocolError)
+                 {
+                     Debug.LogError("Error: " + webRequest.error);
+                 }
+             }
+         }
+         else
+         {
+             Debug.LogError("no quiz found");
+         }
+     }*/
 
     //スキップボタンが出たら，falseにする
     private void OnMessageReceived(object sender, MessageEventArgs e)
