@@ -3,93 +3,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
-public class ChangeQtoW : MonoBehaviour
+public class TransformQuizPos : MonoBehaviour
 {
-    private String geturl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/players/";
-    private String deleteurl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/players/destroy_all";
-    Player playerData;
-    // Start is called before the first frame update
-    public Player getPlayerArray()
+    Vector3 initializedPosition;
+     
+    void OnEnable()
     {
-        StartCoroutine(getPlayer());
-        return playerData;
-    }
-    private IEnumerator getPlayer() {
-        using (UnityWebRequest webRequest = UnityWebRequest.Get(geturl))
-        {
-            webRequest.SetRequestHeader("X-Debug-Mode", "true");
-            yield return webRequest.SendWebRequest();
-
-            if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.LogError("Error: " + webRequest.error);
-            }
-            else
-            {
-                string json = webRequest.downloadHandler.text;
-
-                Player[] PlayerDataArray = JsonHelper.FromJson<Player>(json);
-
-                if (PlayerDataArray != null && PlayerDataArray.Length > 0)
-                {
-                    playerData = PlayerDataArray[0];
-         
-                }
-                else
-                {
-                    Debug.LogWarning("No Askedquiz found.");
-                }
-            }
-
-        }
+        // シーンのロード時に呼ばれるイベントに登録
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    public IEnumerator postPlayer()
+    void OnDisable()
     {
-        WWWForm form = new WWWForm();
-        form.AddField("pos_x","ここに現在地を入れる");
-        using (UnityWebRequest webRequest = UnityWebRequest.Post(geturl,form))
-        {
-            webRequest.SetRequestHeader("X-Debug-Mode", "true");
-            yield return webRequest.SendWebRequest();
-
-            if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.LogError("Error: " + webRequest.error);
-            }
-            else
-            {
-                Debug.LogWarning("No Askedquiz found.");
-            }
-        }
+        // シーンのロード時に呼ばれるイベントから解除
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    public IEnumerator deletePlayer()
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        using (UnityWebRequest webRequest = UnityWebRequest.Delete(deleteurl))
-        {
-            webRequest.SetRequestHeader("X-Debug-Mode", "true");
-            yield return webRequest.SendWebRequest();
+        initializedPosition.x = 1220;
+        initializedPosition.y = 90;
+        initializedPosition.z = 0;
 
-            if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.LogError("Error: " + webRequest.error);
-            }
-            else
-            {
-                string json = webRequest.downloadHandler.text;
 
-                Player[] PlayerDataArray = JsonHelper.FromJson<Player>(json);
-
-                if (PlayerDataArray != null && PlayerDataArray.Length > 0){}
-                else
-                {
-                    Debug.LogWarning("No Askedquiz found.");
-                }
-            }
-
-        }
+        // クイズシーン読み込み時、初期位置へ
+        transform.position = initializedPosition;
+        Debug.Log("PositionInitialized");
 
     }
 }
+
+  
