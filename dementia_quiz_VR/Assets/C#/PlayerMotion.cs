@@ -28,7 +28,7 @@ public class PlayerMotion : MonoBehaviour
     private float Damping = 0.3f;
     private float GravityModifier = 0f;
 
-    // コントローラーの速度と加速度を保存する変数
+    // コントローラーの速度と加速度を保存する変数/
     private Vector3 touchVelocityL;
     private Vector3 touchVelocityR;
     private Vector3 touchAccelerationL;
@@ -62,11 +62,11 @@ public class PlayerMotion : MonoBehaviour
         UpdateController();
 
         // デバッグ用のログ出力
-        Debug.Log("L-touch velocity: " + touchVelocityL);
+        /*Debug.Log("L-touch velocity: " + touchVelocityL);
         Debug.Log("R-touch velocity: " + touchVelocityR);
         Debug.Log("L-touch acceleration: " + touchAccelerationL);
         Debug.Log("R-touch acceleration: " + touchAccelerationR);
-        Debug.Log("MoveThrottle: " + MoveThrottle);
+        Debug.Log("MoveThrottle: " + MoveThrottle);*/
     }
 
     private void HandShakeController()
@@ -113,11 +113,11 @@ public class PlayerMotion : MonoBehaviour
         ortEuler.z = ortEuler.x = 0f;
         ort = Quaternion.Euler(ortEuler);
 
-        /*// 移動効果を計算し、MoveThrottleに加算
-        MoveThrottle += CalculateMoveEffect(moveInfluence, ort, handShakeVel, handShakeAcc);*/
+        // 移動効果を計算し、MoveThrottleに加算
+        MoveThrottle += CalculateMoveEffect(moveInfluence, ort, handShakeVel, handShakeAcc);
     }
 
-    /*private Vector3 CalculateMoveEffect(float moveInfluence, Quaternion ort, Vector3 handShakeVel, Vector3 handShakeAcc)
+    private Vector3 CalculateMoveEffect(float moveInfluence, Quaternion ort, Vector3 handShakeVel, Vector3 handShakeAcc)
     {
         Vector3 tmpMoveThrottle = Vector3.zero;
 
@@ -383,7 +383,7 @@ public class PlayerMotion : MonoBehaviour
         }
 
         return tmpMoveThrottle;
-    }*/
+    }
 
     IEnumerator SetMotionInertia()
     {
@@ -511,7 +511,7 @@ public class PlayerMotion : MonoBehaviour
             }
         }
     }
-    /*//回転用
+    //回転用
     IEnumerator RotateCoroutine(String LorR)
     {
         Quaternion startRotation = objectToRotate.transform.rotation;
@@ -572,6 +572,7 @@ public class PlayerMotion : MonoBehaviour
                 quizTFCount = quizTFDataArray.Length;
             }
         }
+    }
     
 
     public void StartGetQuizTF()
@@ -582,6 +583,6 @@ public class PlayerMotion : MonoBehaviour
     public int GetQuizTFCount()
     {
         return quizTFCount;
-    }*/
+    }
 
 }

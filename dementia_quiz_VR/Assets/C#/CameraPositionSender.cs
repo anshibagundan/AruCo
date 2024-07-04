@@ -12,7 +12,7 @@ public class CameraPositionSender : MonoBehaviour
         // WebSocketの初期化と接続
         ws = new WebSocket(websocketUrl);
         ws.OnOpen += (sender, e) => Debug.Log("WebSocket Open");
-        ws.OnMessage += (sender, e) => Debug.Log("WebSocket Message: " + e.Data);
+        ws.OnMessage += (sender, e) => /*Debug.Log("WebSocket Message: " + e.Data);*/
         ws.OnError += (sender, e) => Debug.Log("WebSocket Error: " + e.Message);
         ws.OnClose += (sender, e) => Debug.Log("WebSocket Close");
         ws.OnClose += (sender, e) => Debug.LogWarning($"WebSocket Close: {e.Code}, {e.Reason}");
@@ -35,7 +35,7 @@ public class CameraPositionSender : MonoBehaviour
                 // 座標をJSON形式に変換
                 string json = JsonUtility.ToJson(new HOPPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z));
 
-                Debug.Log("Sending data: " + json);
+                /*Debug.Log("Sending data: " + json);*/
 
                 // WebSocketで送信
                 ws.Send(json);

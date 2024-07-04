@@ -21,6 +21,7 @@ public class ChangeQuizScene : MonoBehaviour
         // GameObjectの位置と回転を初期化
         position = transform.position;
         eulerRotation = transform.eulerAngles;
+              
     }
 
     // Start is called before the first frame update
@@ -28,7 +29,11 @@ public class ChangeQuizScene : MonoBehaviour
     //Quizコライダー処理
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("OnTriggerEnter called"); // ?f?o?b?O???O???
+        Debug.Log("OnTriggerEnter called");
+        Debug.Log(IsChanged_1st);
+        Debug.Log(IsChanged_2nd);
+        Debug.Log(IsChanged_3rd);
+        
         if (other.gameObject.CompareTag("QuizCollider_1st") && IsChanged_1st == false)
         {
             Debug.Log("1stQuizCollider detected"); //

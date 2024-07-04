@@ -12,6 +12,7 @@ public class DontDestroy : MonoBehaviour
     private Vector3 firstScene2Position;
     private bool hasInitialPosition = false;
     private bool hasFirstScene2Position = false;
+    private bool isFirstLoad = true; // 初回読み込みを判定するフラグ
     //PlayerPositionのurl
     private String geturl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/players/";
     private String deleteurl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/players/destroy_all";
@@ -22,6 +23,7 @@ public class DontDestroy : MonoBehaviour
     Player playerData;
     Vector3 savedPosition;//DBから取得した座標をストックする
     Quaternion savedRotation;//DBから取得した回転をストックする
+    Vector3 initializedPosition;
 
     public Player getPlayerArray()
     {
@@ -41,7 +43,8 @@ public class DontDestroy : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }    void OnEnable()
+    }
+    void OnEnable()
     {
         // シーンのロード時に呼ばれるイベントに登録
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -55,18 +58,31 @@ public class DontDestroy : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        //Getのコルーティンを回し、DBから座標取得
+        if (isFirstLoad)
+        {
+            // 初回ロード時は座標を送信または更新しない
+            isFirstLoad = false;
+            return;
+        }
+
+        //getPlayerのコルーティンを回し、DBから座標取得
+        StartCoroutine(getPlayer());
+
+        //GetTFのコルーティンを回し、DBから座標取得
         StartCoroutine(GetQuizTFCoroutine());
-        
+
         //DBから取得した情報を座標と回転に分配して代入
         savedPosition.x = playerData.PosX;
-        savedPosition.y = playerData.PosY;    
+        savedPosition.y = playerData.PosY;
         savedPosition.z = playerData.PosZ;
 
         savedRotation.x = playerData.RotX;
         savedRotation.y = playerData.RotY;
         savedRotation.z = playerData.RotZ;
 
+        initializedPosition.x = 1220;
+        initializedPosition.y = 90;  
+        initializedPosition.z = 0;
 
         if (scene.name == "New_Walk")
         {
@@ -74,17 +90,13 @@ public class DontDestroy : MonoBehaviour
             transform.position = savedPosition;
             transform.rotation = savedRotation;
             rotatePlayer();
+            Debug.Log("PositionLoaded");
         }
         else if (scene.name == "Quiz" && !hasFirstScene2Position)
         {
-            // 初回のシーン2の位置を記録する
-            firstScene2Position = transform.position;
-            hasFirstScene2Position = true;
-        }
-        else if (scene.name == "Quiz" && hasFirstScene2Position)
-        {
-            // シーン2に戻ったときに最初のシーン2の位置に戻す
-            transform.position = firstScene2Position;
+            // シーン2読み込み時、初期位置へ
+            transform.position = initializedPosition;
+            Debug.Log("PositionInitialized");
         }
     }
 
