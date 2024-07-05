@@ -7,24 +7,16 @@ using UnityEngine.SceneManagement;
 
 public class TransformNewWalkPos : MonoBehaviour
 {
-    private Vector3 initialPosition;
-    private Vector3 firstScene2Position;
-    private bool hasInitialPosition = false;
-    private bool hasFirstScene2Position = false;
-    private bool isFirstLoad = true; // 初回読み込みを判定するフラグ
     //PlayerPositionのurl
     private String geturl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/players/";
-    private String deleteurl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/players/destroy_all";
-
     //quizTFのurl
     private String Geturl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/quiz-tfs/";
-
     Player playerData;
+
     Vector3 savedPosition;//DBから取得した座標をストックする
     Quaternion savedRotation;//DBから取得した回転をストックする
-    Vector3 initializedPosition;
 
-    public Player getPlayerArray()
+      public Player getPlayerArray()
     {
         StartCoroutine(getPlayer());
         return playerData;
@@ -54,7 +46,7 @@ public class TransformNewWalkPos : MonoBehaviour
 
         //DBとのやり取りが確認できないため一時的にコメントアウト
 
-        /*//DBから取得した情報を座標と回転に分配して代入
+        //DBから取得した情報を座標と回転に分配して代入
         savedPosition.x = playerData.PosX;
         savedPosition.y = playerData.PosY;
         savedPosition.z = playerData.PosZ;
@@ -65,7 +57,7 @@ public class TransformNewWalkPos : MonoBehaviour
 
         // シーン1に戻ったときにDBに保存していた位置に戻す
         transform.position = savedPosition;
-        transform.rotation = savedRotation;*/
+        transform.rotation = savedRotation;
         rotatePlayer();
         Debug.Log("PositionLoaded");
         
@@ -81,9 +73,8 @@ public class TransformNewWalkPos : MonoBehaviour
         // 回転する角度を設定
         float targetAngle = 0f;
 
-        //同じくDBとのやり取りが確認できないため、動作確認用にif(True)にしています
 
-        if (/*playerData.LR == "L"*/true)
+        if (playerData.LR == "L")
         {
             targetAngle = 90f;
         }

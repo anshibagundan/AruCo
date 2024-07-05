@@ -278,7 +278,7 @@ public class QuizController : MonoBehaviour
     private IEnumerator postPlayer(string direction)
     {
         WWWForm form = new WWWForm();
-        form.AddField("LR", direction);
+        form.AddField("rl", direction);
 
         using (UnityWebRequest webRequest = UnityWebRequest.Post(postUrl, form))
         {
