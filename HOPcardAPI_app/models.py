@@ -33,4 +33,6 @@ class Player(models.Model):
     rot_x = models.FloatField()
     rot_y = models.FloatField()
     rot_z = models.FloatField()
+
+class LR(models.Model):
     rl = models.CharField(max_length=100)
