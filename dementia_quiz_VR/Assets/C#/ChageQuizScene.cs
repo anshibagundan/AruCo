@@ -10,7 +10,7 @@ public class ChangeQuizScene : MonoBehaviour
     private bool IsChanged_1st = false;
     private bool IsChanged_2nd = false;
     private bool IsChanged_3rd = false;
-    private String geturl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/players/";
+    private String posturl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/players/";
     Player playerData;
     private Vector3 position;
     private Vector3 eulerRotation;
@@ -22,8 +22,6 @@ public class ChangeQuizScene : MonoBehaviour
         eulerRotation = transform.eulerAngles;
               
     }
-
-    // Start is called before the first frame update
     
     //Quizコライダー処理
     private void OnTriggerEnter(Collider other)
@@ -65,25 +63,26 @@ public class ChangeQuizScene : MonoBehaviour
     public IEnumerator postPlayer()
     {
         WWWForm form = new WWWForm();
-        form.AddField("pos_x", "transform.position.x");
-        form.AddField("pos_y", "transform.position.y");
-        form.AddField("pos_z", "transform.position.z");
-        form.AddField("rot_x", "transform.rotation.x");
-        form.AddField("rot_y", "transform.rotation.y");
-        form.AddField("rot_z", "transform.rotation.z");
+        form.AddField("pos_x", transform.position.x.ToString());
+        form.AddField("pos_y", transform.position.y.ToString());
+        form.AddField("pos_z", transform.position.z.ToString());
+        form.AddField("rot_x", transform.rotation.eulerAngles.x.ToString());
+        form.AddField("rot_y", transform.rotation.eulerAngles.y.ToString());
+        form.AddField("rot_z", transform.rotation.eulerAngles.z.ToString());
 
-        using (UnityWebRequest webRequest = UnityWebRequest.Post(geturl, form))
+        using (UnityWebRequest webRequest = UnityWebRequest.Post(posturl, form))
         {
             webRequest.SetRequestHeader("X-Debug-Mode", "true");
+            webRequest.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
             yield return webRequest.SendWebRequest();
 
-            if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
+            if (webRequest.result == UnityWebRequest.Result.Success)
             {
-                Debug.LogError("Error: " + webRequest.error);
+                Debug.Log("POST successful. Response: " + webRequest.downloadHandler.text);
             }
             else
             {
-                Debug.LogWarning("No Askedquiz found.");
+                Debug.LogError("Error: " + webRequest.error);
             }
         }
     }
