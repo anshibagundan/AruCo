@@ -19,8 +19,8 @@ public class TransformNewWalkPos : MonoBehaviour
     Player playerData;
     PlayerLR playerLR;
 
-    Vector3 savedPosition;//DBから取得した座標をストックする
-    Quaternion savedRotation;//DBから取得した回転をストックする
+    public Vector3 savedPosition;//DBから取得した座標をストックする
+    public Quaternion savedRotation;//DBから取得した回転をストックする
 
     public Player getPlayerArray()
     {
@@ -211,10 +211,6 @@ public class TransformNewWalkPos : MonoBehaviour
             if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.LogError("Error: " + webRequest.error);
-            }
-            else
-            {
-                Debug.LogWarning("No Askedquiz found.");
             }
         }
     }

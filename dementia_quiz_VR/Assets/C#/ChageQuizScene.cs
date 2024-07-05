@@ -7,10 +7,10 @@ using UnityEngine.UIElements;
 
 public class ChangeQuizScene : MonoBehaviour
 {
-    private bool IsChanged_1st = false;
-    private bool IsChanged_2nd = false;
-    private bool IsChanged_3rd = false;
+    //PlayerPosのPostUrl
     private String posturl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/players/";
+    //quizTFのGeturl
+    private const String Geturl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/quiz-tfs/";
     Player playerData;
     private Vector3 position;
     private Vector3 eulerRotation;
@@ -26,37 +26,35 @@ public class ChangeQuizScene : MonoBehaviour
     //Quizコライダー処理
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("OnTriggerEnter called");
-        
-        if (other.gameObject.CompareTag("QuizCollider_1st") && IsChanged_1st == false)
+        StartCoroutine(GetQuizTFCoroutine());        
+        if (other.gameObject.CompareTag("QuizCollider_1st") && quizTFCount == 0)
         {
-            Debug.Log(IsChanged_1st);
-            Debug.Log(IsChanged_2nd);
-            Debug.Log(IsChanged_3rd);
+            Debug.Log("OnTriggerEnter called");
+            Debug.Log(quizTFCount);
             Debug.Log("1stQuizCollider detected");
             StartCoroutine(postPlayer());
             SceneManager.LoadScene("QuizScene");
-            IsChanged_1st = true;
         }
-        else if (other.gameObject.CompareTag("QuizCollider_2nd") && IsChanged_2nd == false)
+        else if (other.gameObject.CompareTag("QuizCollider_2nd") && quizTFCount == 1)
         {
-            Debug.Log(IsChanged_1st);
-            Debug.Log(IsChanged_2nd);
-            Debug.Log(IsChanged_3rd);
+            Debug.Log("OnTriggerEnter called");
+            Debug.Log(quizTFCount);
             Debug.Log("2ndQuizCollider detected");
             StartCoroutine(postPlayer());
             SceneManager.LoadScene("QuizScene");
-            IsChanged_2nd = true;
         }
-        else if (other.gameObject.CompareTag("QuizCollider_3rd") && IsChanged_3rd == false)
+        else if (other.gameObject.CompareTag("QuizCollider_3rd") && quizTFCount == 2)
         {
-            Debug.Log(IsChanged_1st);
-            Debug.Log(IsChanged_2nd);
-            Debug.Log(IsChanged_3rd);
+            Debug.Log("OnTriggerEnter called");
+            Debug.Log(quizTFCount);
             Debug.Log("3rdQuizCollider detected");
             StartCoroutine(postPlayer());
             SceneManager.LoadScene("QuizScene");
-            IsChanged_3rd = true;
+        }
+        else
+        {
+            Debug.Log(quizTFCount);
+            Debug.Log("You missed something");
         }
     }
     //データ送信
@@ -83,6 +81,45 @@ public class ChangeQuizScene : MonoBehaviour
             else
             {
                 Debug.LogError("Error: " + webRequest.error);
+            }
+        }
+    }
+    //ここから長さ取得
+    private int quizTFCount = 0;
+
+    [System.Serializable]
+    public class QuizTFWrapper
+    {
+        public QuizTF[] Items;
+    }
+
+    private IEnumerator GetQuizTFCoroutine()
+    {
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(Geturl))
+        {
+            webRequest.SetRequestHeader("X-Debug-Mode", "true");
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result == UnityWebRequest.Result.ConnectionError ||
+                webRequest.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogError("Error: " + webRequest.error);
+                quizTFCount = 0;
+            }
+            else
+            {
+                string json = webRequest.downloadHandler.text;
+                QuizTFWrapper wrapper = JsonUtility.FromJson<QuizTFWrapper>("{\"Items\":" + json + "}");
+
+                if (wrapper != null && wrapper.Items != null)
+                {
+                    quizTFCount = wrapper.Items.Length;
+                }
+                else
+                {
+                    Debug.LogError("Failed to parse JSON or Items array is null");
+                    quizTFCount = 0;
+                }
             }
         }
     }
