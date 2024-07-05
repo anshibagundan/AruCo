@@ -11,7 +11,6 @@ public class ChangeQuizScene : MonoBehaviour
     private bool IsChanged_2nd = false;
     private bool IsChanged_3rd = false;
     private String geturl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/players/";
-    private String deleteurl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/players/destroy_all";
     Player playerData;
     private Vector3 position;
     private Vector3 eulerRotation;
@@ -37,8 +36,7 @@ public class ChangeQuizScene : MonoBehaviour
             Debug.Log(IsChanged_2nd);
             Debug.Log(IsChanged_3rd);
             Debug.Log("1stQuizCollider detected");
-            deletePlayer();
-            postPlayer();
+            StartCoroutine(postPlayer());
             SceneManager.LoadScene("QuizScene");
             IsChanged_1st = true;
         }
@@ -48,8 +46,7 @@ public class ChangeQuizScene : MonoBehaviour
             Debug.Log(IsChanged_2nd);
             Debug.Log(IsChanged_3rd);
             Debug.Log("2ndQuizCollider detected");
-            deletePlayer();
-            postPlayer();
+            StartCoroutine(postPlayer());
             SceneManager.LoadScene("QuizScene");
             IsChanged_2nd = true;
         }
@@ -59,8 +56,7 @@ public class ChangeQuizScene : MonoBehaviour
             Debug.Log(IsChanged_2nd);
             Debug.Log(IsChanged_3rd);
             Debug.Log("3rdQuizCollider detected");
-            deletePlayer();
-            postPlayer();
+            StartCoroutine(postPlayer());
             SceneManager.LoadScene("QuizScene");
             IsChanged_3rd = true;
         }
@@ -91,32 +87,4 @@ public class ChangeQuizScene : MonoBehaviour
             }
         }
     }
-    //AllDelete
-    public IEnumerator deletePlayer()
-    {
-        using (UnityWebRequest webRequest = UnityWebRequest.Delete(deleteurl))
-        {
-            webRequest.SetRequestHeader("X-Debug-Mode", "true");
-            yield return webRequest.SendWebRequest();
-
-            if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.LogError("Error: " + webRequest.error);
-            }
-            else
-            {
-                string json = webRequest.downloadHandler.text;
-
-                Player[] PlayerDataArray = JsonHelper.FromJson<Player>(json);
-
-                if (PlayerDataArray != null && PlayerDataArray.Length > 0) { }
-                else
-                {
-                    Debug.LogWarning("No Askedquiz found.");
-                }
-            }
-
-        }
-
-    }
-  }
+}

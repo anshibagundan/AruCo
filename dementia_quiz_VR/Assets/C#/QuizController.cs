@@ -30,11 +30,10 @@ public class QuizController : MonoBehaviour
     private WebSocket ws;
     private bool canTransition = false;
 
-    // PlayerPositionのURL
-    private const string Geturl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/players/";
-    private const string deleteurl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/players/destroy_all";
-    Player playerData;
+    // PlayerLRのURL
+    private const string Geturl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/lrs/";
 
+    
     public void Start()
     {
         StartCoroutine(GetData());
@@ -280,7 +279,7 @@ public class QuizController : MonoBehaviour
         WWWForm form = new WWWForm();
         form.AddField("rl", direction);
 
-        using (UnityWebRequest webRequest = UnityWebRequest.Post(postUrl, form))
+        using (UnityWebRequest webRequest = UnityWebRequest.Post(Geturl, form))
         {
             webRequest.SetRequestHeader("X-Debug-Mode", "true");
             yield return webRequest.SendWebRequest();
@@ -295,8 +294,7 @@ public class QuizController : MonoBehaviour
             }
         }
     }
-
-
+    
     // スキップボタンが出たら、falseにする
     private void OnMessageReceived(object sender, MessageEventArgs e)
     {
