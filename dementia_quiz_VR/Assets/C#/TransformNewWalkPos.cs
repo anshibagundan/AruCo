@@ -21,6 +21,7 @@ public class TransformNewWalkPos : MonoBehaviour
 
     public Vector3 savedPosition;//DBから取得した座標をストックする
     public Quaternion savedRotation;//DBから取得した回転をストックする
+    
 
     public Player getPlayerArray()
     {
@@ -72,13 +73,31 @@ public class TransformNewWalkPos : MonoBehaviour
 
             Debug.Log(savedPosition);
 
-            // シーン1に戻ったときにDBに保存していた位置に戻る
-            transform.position = savedPosition;
+            // 回転する角度を設定
+            float addRotationY = 0f;
+
+            if (playerLR.getLR() == "L")
+            {
+                addRotationY = 90f;
+            }
+            else if (playerLR.getLR() == "R" && quizTFCount < 3)
+            {
+                addRotationY = -90f;
+            }
+
+            // savedRotationに追加の回転を適用
+            savedRotation.y += addRotationY;
+
+            // シーン1に戻ったときにDBに保存していた位置と回転に戻る
+            
             transform.rotation = savedRotation;
-            rotatePlayer();
+            transform.position = savedPosition;
+            transform.position = savedPosition;
+            transform.position = savedPosition;
+
             Debug.Log("PositionLoaded");
 
-            StartCoroutine(deletePlayerPos());
+            
             StartCoroutine(deletePlayerLR());
         }
         else
@@ -89,40 +108,7 @@ public class TransformNewWalkPos : MonoBehaviour
 
     private void rotatePlayer()
     {
-        StartCoroutine(RotatePlayerCoroutine());
-    }
-
-    private IEnumerator RotatePlayerCoroutine()
-    {
-        // 回転する角度を設定
-        float targetAngle = 0f;
-
-
-        if (playerLR.getLR() == "L")
-        {
-            targetAngle = 90f;
-        }
-        else if (playerLR.getLR() == "R" && quizTFCount < 3)
-        {
-            targetAngle = -90f;
-        }
-
-        // 現在の角度
-        float startAngle = transform.eulerAngles.y;
-        float endAngle = startAngle + targetAngle;
-        float elapsedTime = 0f;
-        float duration = 2f;
-
-        while (elapsedTime < duration)
-        {
-            elapsedTime += Time.deltaTime;
-            float currentAngle = Mathf.Lerp(startAngle, endAngle, elapsedTime / duration);
-            transform.eulerAngles = new Vector3(transform.eulerAngles.x, currentAngle, transform.eulerAngles.z);
-            yield return null;
-        }
-        Debug.Log("rotationing...");
-        // 最後に正確な角度を設定
-        transform.eulerAngles = new Vector3(transform.eulerAngles.x, endAngle, transform.eulerAngles.z);
+        // このメソッドは不要になりますが、他の場所から呼ばれる可能性があるため残します
     }
 
     //DBからpositionを取得

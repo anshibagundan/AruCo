@@ -179,8 +179,8 @@ public class TriggerSpawn : MonoBehaviour
     private void SpawnSpace3(int num)
     {
         //1�ӏ���
-        Vector3 baseSpawnPosition = new Vector3(-2f, 63f, 487f);
-        Vector3 targetPosition = new Vector3(-2f, 63f, 290.899994f);
+        Vector3 baseSpawnPosition = new Vector3(-2f, -90f, 487f);
+        Vector3 targetPosition = new Vector3(-2f, -90f, 290.899994f);
         Quaternion rotation1 = Quaternion.Euler(0, 180, 0);
         float moveSpeed = 50;
 
@@ -195,8 +195,8 @@ public class TriggerSpawn : MonoBehaviour
         spawnDogScript.SpawnDogs();
 
         //2�ӏ���
-        Vector3 baseSpawnPosition2 = new Vector3(1407f, 63f, 494.299988f);
-        Vector3 targetPosition2 = new Vector3(1407f, 63f, 282.700012f);
+        Vector3 baseSpawnPosition2 = new Vector3(1407f, -90f, 494.299988f);
+        Vector3 targetPosition2 = new Vector3(1407f, -90f, 282.700012f);
 
         spawnDogScript.baseSpawnPosition = baseSpawnPosition2;
         spawnDogScript.targetPosition = targetPosition2;
