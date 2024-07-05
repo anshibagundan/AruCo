@@ -48,6 +48,7 @@ public class QuizController : MonoBehaviour
         if (CheckRightControllerButtons() && !isAnswered)
         {
             isAnswered = true;
+            StartCoroutine(PostData("R"));
             StartCoroutine(PostAndLoadScene("R"));
         }
 
@@ -55,6 +56,7 @@ public class QuizController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Return) && !isAnswered)
         {
             isAnswered = true;
+            StartCoroutine(PostData("R"));
             StartCoroutine(PostAndLoadScene("R"));
         }
 
@@ -62,6 +64,7 @@ public class QuizController : MonoBehaviour
         if (CheckLeftControllerButtons() && !isAnswered)
         {
             isAnswered = true;
+            StartCoroutine(PostData("L"));
             StartCoroutine(PostAndLoadScene("L"));
         }
 
@@ -69,6 +72,7 @@ public class QuizController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && !isAnswered)
         {
             isAnswered = true;
+            StartCoroutine(PostData("L"));
             StartCoroutine(PostAndLoadScene("L"));
         }
 
@@ -311,6 +315,7 @@ public class QuizController : MonoBehaviour
             {
                 webRequest.SetRequestHeader("X-Debug-Mode", "true");
                 yield return webRequest.SendWebRequest();
+                Debug.Log("Post successful2");
 
                 if (webRequest.result == UnityWebRequest.Result.ConnectionError ||
                     webRequest.result == UnityWebRequest.Result.ProtocolError)
