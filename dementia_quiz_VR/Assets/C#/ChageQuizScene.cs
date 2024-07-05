@@ -19,6 +19,7 @@ public class ChangeQuizScene : MonoBehaviour
     void Start()
     {
         // GameObject�̈ʒu�Ɖ�]��������
+        StartCoroutine(deletePlayerPos());
         position = transform.position;
         eulerRotation = transform.eulerAngles;
               
@@ -33,7 +34,7 @@ public class ChangeQuizScene : MonoBehaviour
             Debug.Log("OnTriggerEnter called");
             Debug.Log(quizTFCount);
             Debug.Log("1stQuizCollider detected");
-            StartCoroutine(deletePlayerPos());
+
             StartCoroutine(postPlayer());
             SceneManager.LoadScene("QuizScene");
         }
@@ -42,7 +43,6 @@ public class ChangeQuizScene : MonoBehaviour
             Debug.Log("OnTriggerEnter called");
             Debug.Log(quizTFCount);
             Debug.Log("2ndQuizCollider detected");
-            StartCoroutine(deletePlayerPos());
             StartCoroutine(postPlayer());
             SceneManager.LoadScene("QuizScene");
         }
@@ -51,7 +51,6 @@ public class ChangeQuizScene : MonoBehaviour
             Debug.Log("OnTriggerEnter called");
             Debug.Log(quizTFCount);
             Debug.Log("3rdQuizCollider detected");
-            StartCoroutine(deletePlayerPos());
             StartCoroutine(postPlayer());
             SceneManager.LoadScene("QuizScene");
         }
