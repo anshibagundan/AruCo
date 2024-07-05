@@ -7,20 +7,20 @@ using UnityEngine.SceneManagement;
 
 public class TransformNewWalkPos : MonoBehaviour
 {
-    //PlayerPosition‚Ìurl
+    //PlayerPositionï¿½ï¿½url
     private const String geturl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/players/";
     private const String deleteurl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/players/destroy_all/";
-    //quizTF‚Ìurl
+    //quizTFï¿½ï¿½url
     private const String Geturl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/quiz-tfs/";
-    // PlayerLR‚ÌURL
+    // PlayerLRï¿½ï¿½URL
     private const string getUrl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/lrs/";
     private const string deleteUrl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/lrs/destroy_all/";
 
     Player playerData;
     PlayerLR playerLR;
 
-    public Vector3 savedPosition;//DB‚©‚çæ“¾‚µ‚½À•W‚ğƒXƒgƒbƒN‚·‚é
-    public Quaternion savedRotation;//DB‚©‚çæ“¾‚µ‚½‰ñ“]‚ğƒXƒgƒbƒN‚·‚é
+    public Vector3 savedPosition;//DBï¿½ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Wï¿½ï¿½ï¿½Xï¿½gï¿½bï¿½Nï¿½ï¿½ï¿½ï¿½
+    public Quaternion savedRotation;//DBï¿½ï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]ï¿½ï¿½ï¿½Xï¿½gï¿½bï¿½Nï¿½ï¿½ï¿½ï¿½
     
 
     public Player getPlayerArray()
@@ -36,13 +36,13 @@ public class TransformNewWalkPos : MonoBehaviour
 
     void OnEnable()
     {
-        // ƒV[ƒ“‚Ìƒ[ƒh‚ÉŒÄ‚Î‚ê‚éƒCƒxƒ“ƒg‚É“o˜^
+        // ï¿½Vï¿½[ï¿½ï¿½ï¿½Ìƒï¿½ï¿½[ï¿½hï¿½ï¿½ï¿½ÉŒÄ‚Î‚ï¿½ï¿½Cï¿½xï¿½ï¿½ï¿½gï¿½É“oï¿½^
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     void OnDisable()
     {
-        // ƒV[ƒ“‚Ìƒ[ƒh‚ÉŒÄ‚Î‚ê‚éƒCƒxƒ“ƒg‚©‚ç‰ğœ
+        // ï¿½Vï¿½[ï¿½ï¿½ï¿½Ìƒï¿½ï¿½[ï¿½hï¿½ï¿½ï¿½ÉŒÄ‚Î‚ï¿½ï¿½Cï¿½xï¿½ï¿½ï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
@@ -50,7 +50,7 @@ public class TransformNewWalkPos : MonoBehaviour
     {
         Debug.Log("NewWalkScene Reloaded");
 
-        // ‚·‚×‚Ä‚ÌƒRƒ‹[ƒ`ƒ“‚ªŠ®—¹‚·‚é‚Ü‚Å‘Ò‹@
+        // ï¿½ï¿½ï¿½×‚Ä‚ÌƒRï¿½ï¿½ï¿½[ï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü‚Å‘Ò‹@
         StartCoroutine(InitializeDataCoroutine());
     }
 
@@ -60,7 +60,7 @@ public class TransformNewWalkPos : MonoBehaviour
         yield return StartCoroutine(GetQuizTFCoroutine());
         yield return StartCoroutine(getLR());
 
-        // ƒf[ƒ^‚ªæ“¾‚Å‚«‚½‚±‚Æ‚ğŠm”F
+        // ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã§ããŸã“ã¨ã‚’ç¢ºèª
         if (playerData != null)
         {
             savedPosition.x = playerData.getPosX();
@@ -71,33 +71,26 @@ public class TransformNewWalkPos : MonoBehaviour
             savedRotation.y = playerData.getRotY();
             savedRotation.z = playerData.getRotZ();
 
-            Debug.Log(savedPosition);
+            Debug.Log("Saved Position: " + savedPosition);
 
-            // ‰ñ“]‚·‚éŠp“x‚ğİ’è
+            // å›è»¢ã™ã‚‹è§’åº¦ã‚’è¨­å®š
             float addRotationY = 0f;
 
             if (playerLR.getLR() == "L")
             {
-                addRotationY = 90f;
+                addRotationY = -90f;
             }
             else if (playerLR.getLR() == "R" && quizTFCount < 3)
             {
-                addRotationY = -90f;
+                addRotationY = 90f;
             }
 
-            // savedRotation‚É’Ç‰Á‚Ì‰ñ“]‚ğ“K—p
+            // savedRotationã«è¿½åŠ ã®å›è»¢ã‚’é©ç”¨
             savedRotation.y += addRotationY;
 
-            // ƒV[ƒ“1‚É–ß‚Á‚½‚Æ‚«‚ÉDB‚É•Û‘¶‚µ‚Ä‚¢‚½ˆÊ’u‚Æ‰ñ“]‚É–ß‚é
-            
-            transform.rotation = savedRotation;
-            transform.position = savedPosition;
-            transform.position = savedPosition;
-            transform.position = savedPosition;
+            // ã‚³ãƒ«ãƒ¼ãƒãƒ³çµ‚äº†å¾Œã«ä½ç½®ã‚’æ›´æ–°ã™ã‚‹ãŸã‚ã«ã€ãƒ¡ã‚¤ãƒ³ã‚¹ãƒ¬ãƒƒãƒ‰ã§å®Ÿè¡Œ
+            StartCoroutine(UpdateTransformNextFrame());
 
-            Debug.Log("PositionLoaded");
-
-            
             StartCoroutine(deletePlayerLR());
         }
         else
@@ -106,12 +99,23 @@ public class TransformNewWalkPos : MonoBehaviour
         }
     }
 
-    private void rotatePlayer()
+    IEnumerator UpdateTransformNextFrame()
     {
-        // ‚±‚Ìƒƒ\ƒbƒh‚Í•s—v‚É‚È‚è‚Ü‚·‚ªA‘¼‚ÌêŠ‚©‚çŒÄ‚Î‚ê‚é‰Â”\«‚ª‚ ‚é‚½‚ßc‚µ‚Ü‚·
+        yield return null;
+
+        transform.rotation = savedRotation;
+        transform.position = savedPosition;
+
+        Debug.Log("ä»Šã®ãƒã‚¸ã‚·ãƒ§ãƒ³ " + transform.position);
+        Debug.Log("ä»Šã®å›è»¢ " + transform.rotation.eulerAngles);
     }
 
-    //DB‚©‚çposition‚ğæ“¾
+    private void rotatePlayer()
+    {
+        // ï¿½ï¿½ï¿½Ìƒï¿½ï¿½\ï¿½bï¿½hï¿½Í•sï¿½vï¿½É‚È‚ï¿½Ü‚ï¿½ï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½ÌêŠï¿½ï¿½ï¿½ï¿½Ä‚Î‚ï¿½ï¿½Â”\ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½é‚½ï¿½ßcï¿½ï¿½ï¿½Ü‚ï¿½
+    }
+
+    //DBï¿½ï¿½ï¿½ï¿½positionï¿½ï¿½ï¿½æ“¾
     private IEnumerator getPlayer()
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Get(geturl))
@@ -141,7 +145,7 @@ public class TransformNewWalkPos : MonoBehaviour
         }
     }
 
-    //LRæ“¾
+    //LRï¿½æ“¾
     private IEnumerator getLR()
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Get(getUrl))
@@ -201,7 +205,7 @@ public class TransformNewWalkPos : MonoBehaviour
         }
     }
 
-    //‚±‚±‚©‚ç’·‚³æ“¾
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ç’·ï¿½ï¿½ï¿½æ“¾
     private int quizTFCount = 0;
 
     [System.Serializable]
@@ -231,6 +235,7 @@ public class TransformNewWalkPos : MonoBehaviour
                 if (wrapper != null && wrapper.Items != null)
                 {
                     quizTFCount = wrapper.Items.Length;
+                    Debug.Log("quizTFCount: " + quizTFCount);
                 }
                 else
                 {
