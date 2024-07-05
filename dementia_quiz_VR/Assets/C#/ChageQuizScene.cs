@@ -15,6 +15,8 @@ public class ChangeQuizScene : MonoBehaviour
     Player playerData;
     private Vector3 position;
     private Vector3 eulerRotation;
+    //�������璷���擾
+    private int quizTFCount = 0;
 
     void Start()
     {
@@ -22,19 +24,22 @@ public class ChangeQuizScene : MonoBehaviour
         
         position = transform.position;
         eulerRotation = transform.eulerAngles;
+        StartCoroutine(GetQuizTFCoroutine());
+
               
     }
     
     //Quiz�R���C�_�[����
     private void OnTriggerEnter(Collider other)
     {
-        StartCoroutine(GetQuizTFCoroutine());        
+
+        Debug.Log("quizTFCount(QuizScene初め): " + quizTFCount);
         if (other.gameObject.CompareTag("QuizCollider_1st") && quizTFCount == 0)
         {
             Debug.Log("OnTriggerEnter called");
             Debug.Log(quizTFCount);
             Debug.Log("1stQuizCollider detected");
-            deletePlayerPos();
+            StartCoroutine(deletePlayer());
             StartCoroutine(postPlayer());
             SceneManager.LoadScene("QuizScene");
         }
@@ -43,7 +48,7 @@ public class ChangeQuizScene : MonoBehaviour
             Debug.Log("OnTriggerEnter called");
             Debug.Log(quizTFCount);
             Debug.Log("2ndQuizCollider detected");
-            deletePlayerPos();
+            StartCoroutine(deletePlayer());
             StartCoroutine(postPlayer());
             SceneManager.LoadScene("QuizScene");
         }
@@ -52,7 +57,7 @@ public class ChangeQuizScene : MonoBehaviour
             Debug.Log("OnTriggerEnter called");
             Debug.Log(quizTFCount);
             Debug.Log("3rdQuizCollider detected");
-            deletePlayerPos();
+            StartCoroutine(deletePlayer());
             StartCoroutine(postPlayer());
             SceneManager.LoadScene("QuizScene");
         }
@@ -93,8 +98,7 @@ public class ChangeQuizScene : MonoBehaviour
             }
         }
     }
-    //�������璷���擾
-    private int quizTFCount = 0;
+
 
     [System.Serializable]
     public class QuizTFWrapper
@@ -123,6 +127,7 @@ public class ChangeQuizScene : MonoBehaviour
                 if (wrapper != null && wrapper.Items != null)
                 {
                     quizTFCount = wrapper.Items.Length;
+                    Debug.Log("quizTFCount(QuizScene): " + quizTFCount);
                 }
                 else
                 {
@@ -134,7 +139,7 @@ public class ChangeQuizScene : MonoBehaviour
     }
 
     //AllDelete Pos
-    public IEnumerator deletePlayerPos()
+    public IEnumerator deletePlayer()
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Delete(deleteurl))
         {

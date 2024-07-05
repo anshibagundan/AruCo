@@ -52,7 +52,7 @@ public class QuizController : MonoBehaviour
             StartCoroutine(PostAndLoadScene("R"));
         }
 
-        // Qキーが押された瞬間を検出
+        // Enterキーが押された瞬間を検出
         if (Input.GetKeyDown(KeyCode.Return) && !isAnswered)
         {
             isAnswered = true;
@@ -68,7 +68,7 @@ public class QuizController : MonoBehaviour
             StartCoroutine(PostAndLoadScene("L"));
         }
 
-        // Eキーが押された瞬間を検出
+        // spaceキーが押された瞬間を検出
         if (Input.GetKeyDown(KeyCode.Space) && !isAnswered)
         {
             isAnswered = true;
