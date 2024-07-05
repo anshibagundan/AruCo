@@ -56,6 +56,10 @@ public class ChangeQuizScene : MonoBehaviour
             StartCoroutine(postPlayer());
             SceneManager.LoadScene("QuizScene");
         }
+        else if (other.gameObject.CompareTag("QuizCollider_final") && quizTFCount == 2)
+        {
+
+        }
         else
         {
             Debug.Log(quizTFCount);
