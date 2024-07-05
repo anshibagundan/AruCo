@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.35290605, g: 0.72563136, b: 0.96273816, a: 1}
+  m_IndirectSpecularColor: {r: 0.35300067, g: 0.7261183, b: 0.96314806, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3996,7 +3996,7 @@ Transform:
   m_GameObject: {fileID: 121842661}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -450, y: -32.360855, z: 790}
+  m_LocalPosition: {x: -357, y: -32.360855, z: 790}
   m_LocalScale: {x: 1, y: 2, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5531,7 +5531,7 @@ Transform:
   m_GameObject: {fileID: 161104937}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -50, y: -32.360855, z: -1054}
+  m_LocalPosition: {x: -50, y: -32.360855, z: -895}
   m_LocalScale: {x: 1, y: 2, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5558,6 +5558,59 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 30, y: 30, z: 100}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &161423654
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 161423655}
+  - component: {fileID: 161423656}
+  m_Layer: 0
+  m_Name: FinalCollider_6
+  m_TagString: QuizCollider_Final
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &161423655
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 161423654}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2239, y: -32.360855, z: -1696}
+  m_LocalScale: {x: 6.6613, y: 2, z: 3}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1328927706}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &161423656
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 161423654}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 30, y: 31.503517, z: 100}
+  m_Center: {x: 0, y: 0.7517586, z: 0}
 --- !u!1001 &162313055
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5825,6 +5878,59 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 167859795}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &173470768
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 173470769}
+  - component: {fileID: 173470770}
+  m_Layer: 0
+  m_Name: FinalCollider_2
+  m_TagString: QuizCollider_Final
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &173470769
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 173470768}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2603, y: -32.360855, z: 761}
+  m_LocalScale: {x: 6.6613, y: 2, z: 3}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1328927706}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &173470770
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 173470768}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 30, y: 31.503517, z: 100}
+  m_Center: {x: 0, y: 0.7517586, z: 0}
 --- !u!1001 &174558524
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11510,6 +11616,59 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 333444239}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &334569461
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 334569462}
+  - component: {fileID: 334569463}
+  m_Layer: 0
+  m_Name: FinalCollider_1
+  m_TagString: QuizCollider_Final
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &334569462
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 334569461}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1553, y: -32.360855, z: 1673}
+  m_LocalScale: {x: 6.6613, y: 2, z: 3}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1328927706}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &334569463
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 334569461}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 30, y: 31.503517, z: 100}
+  m_Center: {x: 0, y: 0.7517586, z: 0}
 --- !u!1001 &336217650
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17238,7 +17397,7 @@ Transform:
   m_GameObject: {fileID: 491175086}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1286, y: -32.360855, z: -1588.0721}
+  m_LocalPosition: {x: 1301, y: -32.360855, z: -1588.0721}
   m_LocalScale: {x: 1, y: 2, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -26199,7 +26358,7 @@ Transform:
   m_GameObject: {fileID: 748650229}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -438, y: -32.360855, z: -1607}
+  m_LocalPosition: {x: -305, y: -32.360855, z: -1607}
   m_LocalScale: {x: 1, y: 2, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -28560,7 +28719,7 @@ Transform:
   m_GameObject: {fileID: 805148575}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -694.6, y: -32.360855, z: -561}
+  m_LocalPosition: {x: -991, y: -32.360855, z: -561}
   m_LocalScale: {x: 3.5807, y: 2, z: 3}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -32700,6 +32859,59 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 911589881}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &914868270
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 914868271}
+  - component: {fileID: 914868272}
+  m_Layer: 0
+  m_Name: FinalCollider_8
+  m_TagString: QuizCollider_Final
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &914868271
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 914868270}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2302, y: -32.360855, z: -1628}
+  m_LocalScale: {x: 6.6613, y: 2, z: 3}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1328927706}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &914868272
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 914868270}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 30, y: 31.503517, z: 100}
+  m_Center: {x: 0, y: 0.7517586, z: 0}
 --- !u!1001 &916435418
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34706,7 +34918,7 @@ Transform:
   m_GameObject: {fileID: 995807065}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -34.14087, y: -32.360855, z: -1468.0721}
+  m_LocalPosition: {x: -34, y: -32.360855, z: -1600}
   m_LocalScale: {x: 1, y: 2, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -38373,7 +38585,7 @@ Transform:
   m_GameObject: {fileID: 1109633508}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -45, y: -32.360855, z: -542.97217}
+  m_LocalPosition: {x: 30, y: -32.360855, z: -542.97217}
   m_LocalScale: {x: 6.6613, y: 2, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -40543,6 +40755,59 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1186965290}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1188936215
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1188936216}
+  - component: {fileID: 1188936217}
+  m_Layer: 0
+  m_Name: FinalCollider_7
+  m_TagString: QuizCollider_Final
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1188936216
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1188936215}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1288, y: -32.360855, z: 120}
+  m_LocalScale: {x: 6.6613, y: 2, z: 3}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1328927706}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1188936217
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1188936215}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 30, y: 31.503517, z: 100}
+  m_Center: {x: 0, y: 0.7517586, z: 0}
 --- !u!1001 &1191951788
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -44561,6 +44826,14 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1109633511}
+  - {fileID: 334569462}
+  - {fileID: 173470769}
+  - {fileID: 2049997890}
+  - {fileID: 1360427383}
+  - {fileID: 1498946764}
+  - {fileID: 161423655}
+  - {fileID: 1188936216}
+  - {fileID: 914868271}
   - {fileID: 1950996134}
   - {fileID: 995807067}
   - {fileID: 1582136192}
@@ -45317,6 +45590,59 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1356317186}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1360427382
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1360427383}
+  - component: {fileID: 1360427384}
+  m_Layer: 0
+  m_Name: FinalCollider_4
+  m_TagString: QuizCollider_Final
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1360427383
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1360427382}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2230, y: -32.360855, z: 802}
+  m_LocalScale: {x: 6.6613, y: 2, z: 3}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1328927706}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1360427384
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1360427382}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 30, y: 31.503517, z: 100}
+  m_Center: {x: 0, y: 0.7517586, z: 0}
 --- !u!1001 &1362370511
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45990,7 +46316,7 @@ Transform:
   m_GameObject: {fileID: 1390753498}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 640, y: -32.360855, z: 785}
+  m_LocalPosition: {x: 454, y: -32.360855, z: 785}
   m_LocalScale: {x: 1, y: 2, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -48627,7 +48953,7 @@ Transform:
   m_GameObject: {fileID: 1486518254}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 859, y: -32.360855, z: -1607}
+  m_LocalPosition: {x: 502, y: -32.360855, z: -1607}
   m_LocalScale: {x: 1, y: 2, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -49320,6 +49646,59 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1498903802}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1498946763
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1498946764}
+  - component: {fileID: 1498946765}
+  m_Layer: 0
+  m_Name: FinalCollider_5
+  m_TagString: QuizCollider_Final
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1498946764
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1498946763}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1130, y: -32.360855, z: -2405}
+  m_LocalScale: {x: 6.6613, y: 2, z: 3}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1328927706}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1498946765
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1498946763}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 30, y: 31.503517, z: 100}
+  m_Center: {x: 0, y: 0.7517586, z: 0}
 --- !u!1001 &1499757514
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -52738,7 +53117,7 @@ Transform:
   m_GameObject: {fileID: 1582136190}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1138, y: -32.360855, z: -1588.0721}
+  m_LocalPosition: {x: -1149, y: -32.360855, z: -1588.0721}
   m_LocalScale: {x: 1, y: 2, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -63562,7 +63941,7 @@ Transform:
   m_GameObject: {fileID: 1950996132}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -50, y: -32.360855, z: 802}
+  m_LocalPosition: {x: -50, y: -32.360855, z: 874}
   m_LocalScale: {x: 6.4639, y: 2, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -67130,6 +67509,59 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2049133734}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2049997889
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2049997890}
+  - component: {fileID: 2049997891}
+  m_Layer: 0
+  m_Name: FinalCollider_3
+  m_TagString: QuizCollider_Final
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2049997890
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2049997889}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1121, y: -32.360855, z: 93}
+  m_LocalScale: {x: 6.6613, y: 2, z: 3}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1328927706}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &2049997891
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2049997889}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 30, y: 31.503517, z: 100}
+  m_Center: {x: 0, y: 0.7517586, z: 0}
 --- !u!1001 &2052275356
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -67724,7 +68156,7 @@ Transform:
   m_GameObject: {fileID: 2065913564}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -27, y: -32.360855, z: -50}
+  m_LocalPosition: {x: -27, y: -32.360855, z: -210}
   m_LocalScale: {x: 1, y: 2, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []

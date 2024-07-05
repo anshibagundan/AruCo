@@ -10,6 +10,7 @@ TagManager:
   - QuizCollider_1st
   - QuizCollider_2nd
   - QuizCollider_3rd
+  - QuizCollider_Final
   layers:
   - Default
   - TransparentFX

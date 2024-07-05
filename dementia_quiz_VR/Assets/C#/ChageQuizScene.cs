@@ -61,9 +61,14 @@ public class ChangeQuizScene : MonoBehaviour
             StartCoroutine(postPlayer());
             SceneManager.LoadScene("QuizScene");
         }
-        else if (other.gameObject.CompareTag("QuizCollider_final") && quizTFCount == 2)
+        else if (other.gameObject.CompareTag("QuizCollider_Final") && quizTFCount == 3)
         {
-
+            Debug.Log("OnTriggerEnter called");
+            Debug.Log(quizTFCount);
+            Debug.Log("3rdQuizCollider detected");
+            StartCoroutine(deletePlayer());
+            StartCoroutine(postPlayer());
+            SceneManager.LoadScene("FinalQuizScene");
         }
         else
         {
