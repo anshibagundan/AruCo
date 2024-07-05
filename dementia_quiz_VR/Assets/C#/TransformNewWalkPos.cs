@@ -14,7 +14,7 @@ public class TransformNewWalkPos : MonoBehaviour
     private const String Geturl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/quiz-tfs/";
     // PlayerLR‚ÌURL
     private const string getUrl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/lrs/";
-    private const string deleteUrl = "http://teamhopcard-aa92d1598b3a.herokuapp.com/lrs/destroy_all/";
+    private const string deleteUrl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/lrs/destroy_all/";
 
     Player playerData;
     PlayerLR playerLR;

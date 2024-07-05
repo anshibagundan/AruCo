@@ -294,7 +294,60 @@ public class QuizController : MonoBehaviour
             }
         }
     }
-    
+    //クイズの正解不正解を送る
+    private IEnumerator PostData(String LorR)
+    {
+        if (!hasNotQuiz)
+        {
+            //quizのidが奇数なら左が正解に，偶数なら右が正解にする
+            WWWForm form = new WWWForm();
+
+            if (quizDataId % 2 == 0)
+            {
+                if (LorR == "R")
+                {
+                    form.AddField("cor", "true");
+                    form.AddField("quiz", quizDataId);
+                }
+                else if (LorR == "L")
+                {
+                    form.AddField("cor", "false");
+                    form.AddField("quiz", quizDataId);
+                }
+            }
+            else
+            {
+                if (LorR == "R")
+                {
+                    form.AddField("cor", "false");
+                    form.AddField("quiz", quizDataId);
+                }
+                else if (LorR == "L")
+                {
+                    form.AddField("cor", "true");
+                    form.AddField("quiz", quizDataId);
+                }
+            }
+
+            //ここで正解不正解のデータを送る
+            using (UnityWebRequest webRequest = UnityWebRequest.Post(postUrl, form))
+            {
+                webRequest.SetRequestHeader("X-Debug-Mode", "true");
+                yield return webRequest.SendWebRequest();
+
+                if (webRequest.result == UnityWebRequest.Result.ConnectionError ||
+                    webRequest.result == UnityWebRequest.Result.ProtocolError)
+                {
+                    Debug.LogError("Error: " + webRequest.error);
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError("no quiz found");
+        }
+    }
+
     // スキップボタンが出たら、falseにする
     private void OnMessageReceived(object sender, MessageEventArgs e)
     {
