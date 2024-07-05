@@ -7,23 +7,24 @@ using UnityEngine.UIElements;
 
 public class ChangeQuizScene : MonoBehaviour
 {
-    //PlayerPos‚ÌPostUrl
+    //PlayerPosï¿½ï¿½PostUrl
     private String posturl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/players/";
-    //quizTF‚ÌGeturl
+    //quizTFï¿½ï¿½Geturl
     private const String Geturl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/quiz-tfs/";
+    private const String deleteurl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/players/destroy_all/";
     Player playerData;
     private Vector3 position;
     private Vector3 eulerRotation;
 
     void Start()
     {
-        // GameObject‚ÌˆÊ’u‚Æ‰ñ“]‚ğ‰Šú‰»
+        // GameObjectï¿½ÌˆÊ’uï¿½Æ‰ï¿½]ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         position = transform.position;
         eulerRotation = transform.eulerAngles;
               
     }
     
-    //QuizƒRƒ‰ƒCƒ_[ˆ—
+    //Quizï¿½Rï¿½ï¿½ï¿½Cï¿½_ï¿½[ï¿½ï¿½ï¿½ï¿½
     private void OnTriggerEnter(Collider other)
     {
         StartCoroutine(GetQuizTFCoroutine());        
@@ -32,6 +33,7 @@ public class ChangeQuizScene : MonoBehaviour
             Debug.Log("OnTriggerEnter called");
             Debug.Log(quizTFCount);
             Debug.Log("1stQuizCollider detected");
+            StartCoroutine(deletePlayerPos());
             StartCoroutine(postPlayer());
             SceneManager.LoadScene("QuizScene");
         }
@@ -40,6 +42,7 @@ public class ChangeQuizScene : MonoBehaviour
             Debug.Log("OnTriggerEnter called");
             Debug.Log(quizTFCount);
             Debug.Log("2ndQuizCollider detected");
+            StartCoroutine(deletePlayerPos());
             StartCoroutine(postPlayer());
             SceneManager.LoadScene("QuizScene");
         }
@@ -48,6 +51,7 @@ public class ChangeQuizScene : MonoBehaviour
             Debug.Log("OnTriggerEnter called");
             Debug.Log(quizTFCount);
             Debug.Log("3rdQuizCollider detected");
+            StartCoroutine(deletePlayerPos());
             StartCoroutine(postPlayer());
             SceneManager.LoadScene("QuizScene");
         }
@@ -57,7 +61,7 @@ public class ChangeQuizScene : MonoBehaviour
             Debug.Log("You missed something");
         }
     }
-    //ƒf[ƒ^‘—M
+    //ï¿½fï¿½[ï¿½^ï¿½ï¿½ï¿½M
     public IEnumerator postPlayer()
     {
         WWWForm form = new WWWForm();
@@ -84,7 +88,7 @@ public class ChangeQuizScene : MonoBehaviour
             }
         }
     }
-    //‚±‚±‚©‚ç’·‚³æ“¾
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ç’·ï¿½ï¿½ï¿½æ“¾
     private int quizTFCount = 0;
 
     [System.Serializable]
@@ -120,6 +124,21 @@ public class ChangeQuizScene : MonoBehaviour
                     Debug.LogError("Failed to parse JSON or Items array is null");
                     quizTFCount = 0;
                 }
+            }
+        }
+    }
+
+    //AllDelete Pos
+    public IEnumerator deletePlayerPos()
+    {
+        using (UnityWebRequest webRequest = UnityWebRequest.Delete(deleteurl))
+        {
+            webRequest.SetRequestHeader("X-Debug-Mode", "true");
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogError("Error: " + webRequest.error);
             }
         }
     }
