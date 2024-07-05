@@ -22,7 +22,7 @@ public class TransformNewWalkPos : MonoBehaviour
     Vector3 savedPosition;//DBから取得した座標をストックする
     Quaternion savedRotation;//DBから取得した回転をストックする
 
-      public Player getPlayerArray()
+    public Player getPlayerArray()
     {
         StartCoroutine(getPlayer());
         return playerData;
@@ -47,36 +47,44 @@ public class TransformNewWalkPos : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        Debug.Log("NewWalkScene Reloaded");
 
-        Debug.Log("NewWalkScene Reloded");
-        //getPlayerのコルーティンを回し、DBから座標取得
-        StartCoroutine(getPlayer());
+        // すべてのコルーチンが完了するまで待機
+        StartCoroutine(InitializeDataCoroutine());
+    }
 
-        //GetTFのコルーティンを回し、DBから問題回答数数取得
-        StartCoroutine(GetQuizTFCoroutine());
+    IEnumerator InitializeDataCoroutine()
+    {
+        yield return StartCoroutine(getPlayer());
+        yield return StartCoroutine(GetQuizTFCoroutine());
+        yield return StartCoroutine(getLR());
 
-        //getLRのコルーティンを回し、DBからLR取得
-        StartCoroutine(getLR());
+        // データが取得できたことを確認
+        if (playerData != null)
+        {
+            savedPosition.x = playerData.getPosX();
+            savedPosition.y = playerData.getPosY();
+            savedPosition.z = playerData.getPosZ();
 
-        //DBとのやり取りが確認できないため一時的にコメントアウト
+            savedRotation.x = playerData.getRotX();
+            savedRotation.y = playerData.getRotY();
+            savedRotation.z = playerData.getRotZ();
 
-        //DBから取得した情報を座標と回転に分配して代入
-        savedPosition.x = playerData.getPosX();
-        savedPosition.y = playerData.getPosY();
-        savedPosition.z = playerData.getPosZ();
+            Debug.Log(savedPosition);
 
-        savedRotation.x = playerData.getRotX();
-        savedRotation.y = playerData.getRotY();
-        savedRotation.z = playerData.getRotZ();
-        Debug.Log(savedPosition);
+            // シーン1に戻ったときにDBに保存していた位置に戻る
+            transform.position = savedPosition;
+            transform.rotation = savedRotation;
+            rotatePlayer();
+            Debug.Log("PositionLoaded");
 
-        // シーン1に戻ったときにDBに保存していた位置に戻す
-        transform.position = savedPosition;
-        transform.rotation = savedRotation;
-        rotatePlayer();
-        Debug.Log("PositionLoaded");
-        StartCoroutine(deletePlayerPos());
-        StartCoroutine(deletePlayerLR());
+            StartCoroutine(deletePlayerPos());
+            StartCoroutine(deletePlayerLR());
+        }
+        else
+        {
+            Debug.LogError("playerData is null");
+        }
     }
 
     private void rotatePlayer()
@@ -214,6 +222,12 @@ public class TransformNewWalkPos : MonoBehaviour
     //ここから長さ取得
     private int quizTFCount = 0;
 
+    [System.Serializable]
+    public class QuizTFWrapper
+    {
+        public QuizTF[] Items;
+    }
+
     private IEnumerator GetQuizTFCoroutine()
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Get(Geturl))
@@ -230,8 +244,17 @@ public class TransformNewWalkPos : MonoBehaviour
             else
             {
                 string json = webRequest.downloadHandler.text;
-                QuizTF[] quizTFDataArray = JsonUtility.FromJson<QuizTF[]>("{\"Items\":" + json + "}");
-                quizTFCount = quizTFDataArray.Length;
+                QuizTFWrapper wrapper = JsonUtility.FromJson<QuizTFWrapper>("{\"Items\":" + json + "}");
+
+                if (wrapper != null && wrapper.Items != null)
+                {
+                    quizTFCount = wrapper.Items.Length;
+                }
+                else
+                {
+                    Debug.LogError("Failed to parse JSON or Items array is null");
+                    quizTFCount = 0;
+                }
             }
         }
     }
