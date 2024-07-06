@@ -7,17 +7,21 @@ using UnityEngine.UIElements;
 
 public class ChangeQuizScene : MonoBehaviour
 {
-    //PlayerPos��PostUrl
+    //PlayerPos'sPostUrl
     private String posturl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/players/";
-    //quizTF��Geturl
+    //quizTF'sGeturl
     private const String Geturl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/quiz-tfs/";
     private const String deleteurl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/players/destroy_all/";
+    //ActTF'sGeturl
+    private const String GetUrl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/act-tfs/";
     Player playerData;
     private Vector3 position;
     private Vector3 eulerRotation;
     //�������璷���擾
     private int quizTFCount = 0;
+    private int actTFCount = 0;
 
+    private GoalPerfomance Goal;
     void Start()
     {
         // GameObject�̈ʒu�Ɖ�]��������
@@ -25,6 +29,7 @@ public class ChangeQuizScene : MonoBehaviour
         position = transform.position;
         eulerRotation = transform.eulerAngles;
         StartCoroutine(GetQuizTFCoroutine());
+        StartCoroutine(GetActTFCoroutine());
 
               
     }
@@ -65,11 +70,12 @@ public class ChangeQuizScene : MonoBehaviour
         {
             Debug.Log("OnTriggerEnter called");
             Debug.Log(quizTFCount);
-            Debug.Log("3rdQuizCollider detected");
+            Debug.Log("FinalQuizCollider detected");
             StartCoroutine(deletePlayer());
             StartCoroutine(postPlayer());
             SceneManager.LoadScene("FinalQuizScene");
         }
+        
         else
         {
             Debug.Log(quizTFCount);
@@ -138,6 +144,43 @@ public class ChangeQuizScene : MonoBehaviour
                 {
                     Debug.LogError("Failed to parse JSON or Items array is null");
                     quizTFCount = 0;
+                }
+            }
+        }
+    }
+        
+    public class ActTFWrapper
+    {
+        public ActTF[] Items;
+    }
+
+    private IEnumerator GetActTFCoroutine()
+    {
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(GetUrl))
+        {
+            webRequest.SetRequestHeader("X-Debug-Mode", "true");
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result == UnityWebRequest.Result.ConnectionError ||
+                webRequest.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogError("Error: " + webRequest.error);
+                actTFCount = 0;
+            }
+            else
+            {
+                string json = webRequest.downloadHandler.text;
+                QuizTFWrapper wrapper = JsonUtility.FromJson<QuizTFWrapper>("{\"Items\":" + json + "}");
+
+                if (wrapper != null && wrapper.Items != null)
+                {
+                    actTFCount = wrapper.Items.Length;
+                    Debug.Log("quizTFCount(QuizScene): " + actTFCount);
+                }
+                else
+                {
+                    Debug.LogError("Failed to parse JSON or Items array is null");
+                    actTFCount = 0;
                 }
             }
         }
