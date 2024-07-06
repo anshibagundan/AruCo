@@ -85,9 +85,18 @@ public class TransformNewWalkPos : MonoBehaviour
                 addRotationY = 90f;
             }
 
+
             // savedRotationに追加の回転を適用
             savedRotation.y += addRotationY;
 
+            if (savedRotation.y == -90f)
+            {
+                savedRotation.y = 270f;
+            }
+            else if (savedRotation.y == 360f)
+            {
+                savedRotation.y = 0f;
+            }
             // コルーチン終了後に位置を更新するために、メインスレッドで実行
             StartCoroutine(UpdateTransformNextFrame());
 
@@ -95,7 +104,7 @@ public class TransformNewWalkPos : MonoBehaviour
         }
         else
         {
-            Debug.LogError("playerData is null");
+            Debug.Log("playerData is null");
         }
     }
 
@@ -103,11 +112,11 @@ public class TransformNewWalkPos : MonoBehaviour
     {
         yield return null;
 
-        transform.rotation = savedRotation;
+        transform.rotation = Quaternion.Euler(0, savedRotation.y, 0);
         transform.position = savedPosition;
 
         Debug.Log("今のポジション " + transform.position);
-        Debug.Log("今の回転 " + transform.rotation.eulerAngles);
+        Debug.Log("今の回転 " + transform.rotation);
     }
 
     private void rotatePlayer()
@@ -175,20 +184,6 @@ public class TransformNewWalkPos : MonoBehaviour
         }
     }
 
-    //AllDelete Pos
-    public IEnumerator deletePlayerPos()
-    {
-        using (UnityWebRequest webRequest = UnityWebRequest.Delete(deleteurl))
-        {
-            webRequest.SetRequestHeader("X-Debug-Mode", "true");
-            yield return webRequest.SendWebRequest();
-
-            if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.LogError("Error: " + webRequest.error);
-            }
-        }
-    }
 
     //AllDelete LR
     public IEnumerator deletePlayerLR()
