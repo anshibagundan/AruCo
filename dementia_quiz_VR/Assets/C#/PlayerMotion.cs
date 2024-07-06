@@ -7,7 +7,7 @@ using UnityEngine.XR;
 public class PlayerMotion : MonoBehaviour
 {
     //quizTFのurl
-    private String geturl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/quiz-tfs/";
+    private String positionurl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/players/";
 
     // 左右の手のアンカーとなるトランスフォームを設定
     [SerializeField] private Transform LeftHandAnchorTransform = null;
@@ -37,14 +37,20 @@ public class PlayerMotion : MonoBehaviour
     const float RUN_THRESHOLD = 1.3f;
     public float moveScale = 0.3f;
 
+    //これが向き
+    private float rotationY = 0f;
+
     private void Start()
     {
         // CharacterControllerコンポーネントを取得
         Controller = GetComponent<CharacterController>();
+
+
     }
 
     private void Update()
     {
+        StartCoroutine(GetPlayerCoroutine());
         // 手を振る動作による移動制御
         HandShakeController();
         // CharacterControllerの更新
@@ -118,7 +124,19 @@ public class PlayerMotion : MonoBehaviour
                 SetMotionInertia();
 
             // ワールド座標のx軸方向にのみ移動するように設定
-            tmpMoveThrottle += Vector3.right * moveScale;
+            if (rotationY == 90f)
+            {
+                tmpMoveThrottle += Vector3.forward * moveScale;
+            }else if (rotationY == 0f)
+            {
+                tmpMoveThrottle += Vector3.right * moveScale;
+            }else if (rotationY == 270f)
+            {
+                tmpMoveThrottle += Vector3.back * moveScale;
+            }else if (rotationY == 180f)
+            {
+                tmpMoveThrottle += Vector3.left * moveScale;
+            }
 
             // 走行状態かどうかを判定
             bool isRun = DetectHandShakeRun(Math.Abs(handShakeVel.y));
@@ -207,13 +225,10 @@ public class PlayerMotion : MonoBehaviour
     }
     //Getdirection()はTransformNewWalkに記述したため削除しました。
 
-
-    //ここから長さ取得
-    private int quizTFCount = 0;
-
-    private IEnumerator GetQuizTFCoroutine()
+    //ここでRotationYを入手
+    private IEnumerator GetPlayerCoroutine()
     {
-        using (UnityWebRequest webRequest = UnityWebRequest.Get(geturl))
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(positionurl))
         {
             webRequest.SetRequestHeader("X-Debug-Mode", "true");
             yield return webRequest.SendWebRequest();
@@ -222,25 +237,24 @@ public class PlayerMotion : MonoBehaviour
                 webRequest.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.LogError("Error: " + webRequest.error);
-                quizTFCount = 0;
             }
             else
             {
                 string json = webRequest.downloadHandler.text;
-                QuizTF[] quizTFDataArray = JsonUtility.FromJson<QuizTF[]>("{\"Items\":" + json + "}");
-                quizTFCount = quizTFDataArray.Length;
+                Player playerData = JsonUtility.FromJson<Player>(json);
+
+                if (playerData != null)
+                {
+                    rotationY = playerData.rot_y;
+
+                }
+                else
+                {
+                    Debug.LogError("Failed to parse JSON or PlayerData is null");
+                }
             }
         }
+
     }
 
-
-    public void StartGetQuizTF()
-    {
-        StartCoroutine(GetQuizTFCoroutine());
-    }
-
-    public int GetQuizTFCount()
-    {
-        return quizTFCount;
-    }
 }

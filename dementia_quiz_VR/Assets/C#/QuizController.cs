@@ -37,13 +37,11 @@ public class QuizController : MonoBehaviour
     public void Start()
     {
         StartCoroutine(GetData());
-        ws = new WebSocket("wss://teamhopcard-aa92d1598b3a.herokuapp.com/ws/hop/quiz/");
-        ws.OnMessage += OnMessageReceived;
-        ws.Connect();
     }
 
     private void Update()
     {
+
         // 右コントローラーのボタン入力を検出
         if (CheckRightControllerButtons() && !isAnswered)
         {
@@ -356,32 +354,6 @@ public class QuizController : MonoBehaviour
             {
                 Debug.Log("Post successful");
             }
-        }
-    }
-
-
-    // スキップボタンが出たら、falseにする
-    private void OnMessageReceived(object sender, MessageEventArgs e)
-    {
-        if (e.IsText)
-        {
-            Debug.Log($"Received JSON data: {e.Data}");
-
-            // JSONデータを受け取ったらシーン遷移フラグを立てる
-            canTransition = true;
-            Debug.Log("Transition allowed");
-        }
-        else
-        {
-            Debug.Log("Received non-text data");
-        }
-    }
-
-    private void OnDestroy()
-    {
-        if (ws != null && ws.IsAlive)
-        {
-            ws.Close();
         }
     }
 }
