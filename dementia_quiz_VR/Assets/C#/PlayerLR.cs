@@ -1,13 +1,11 @@
-using System;
-
 [System.Serializable]
 public class PlayerLR
 {
-    public String rl;
+    public int id;
+    public string rl;
 
-    public String getLR()
+    public string getLR()
     {
         return rl;
     }
 }
-

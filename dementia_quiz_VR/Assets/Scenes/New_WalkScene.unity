@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.35300067, g: 0.7261183, b: 0.96314806, a: 1}
+  m_IndirectSpecularColor: {r: 0.35290605, g: 0.72563136, b: 0.96273816, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3980,6 +3980,7 @@ GameObject:
   m_Component:
   - component: {fileID: 121842662}
   - component: {fileID: 121842663}
+  - component: {fileID: 121842664}
   m_Layer: 0
   m_Name: DogCollider_4
   m_TagString: DogCollider
@@ -4023,6 +4024,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 30, y: 30, z: 100}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &121842664
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 121842661}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 116
+  m_CollisionDetection: 0
 --- !u!1001 &123359197
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5515,6 +5543,7 @@ GameObject:
   m_Component:
   - component: {fileID: 161104938}
   - component: {fileID: 161104939}
+  - component: {fileID: 161104940}
   m_Layer: 0
   m_Name: DogCollider_2
   m_TagString: DogCollider
@@ -5558,6 +5587,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 30, y: 30, z: 100}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &161104940
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 161104937}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 116
+  m_CollisionDetection: 0
 --- !u!1 &161423654
 GameObject:
   m_ObjectHideFlags: 0
@@ -26342,6 +26398,7 @@ GameObject:
   m_Component:
   - component: {fileID: 748650230}
   - component: {fileID: 748650231}
+  - component: {fileID: 748650232}
   m_Layer: 0
   m_Name: DogCollider_6
   m_TagString: DogCollider
@@ -26385,6 +26442,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 30, y: 30, z: 100}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &748650232
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748650229}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 116
+  m_CollisionDetection: 0
 --- !u!1001 &750165902
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28701,7 +28785,6 @@ GameObject:
   m_Component:
   - component: {fileID: 805148576}
   - component: {fileID: 805148577}
-  - component: {fileID: 805148579}
   - component: {fileID: 805148578}
   m_Layer: 0
   m_Name: DogCollider_1
@@ -28773,18 +28856,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
---- !u!114 &805148579
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 805148575}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82e9e88f1cbd6a34787135c39bb41697, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &805254286
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -46300,6 +46371,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1390753499}
   - component: {fileID: 1390753500}
+  - component: {fileID: 1390753501}
   m_Layer: 0
   m_Name: DogCollider_5
   m_TagString: DogCollider
@@ -46343,6 +46415,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 30, y: 30, z: 100}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &1390753501
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1390753498}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 116
+  m_CollisionDetection: 0
 --- !u!1001 &1394487279
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48937,6 +49036,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1486518255}
   - component: {fileID: 1486518256}
+  - component: {fileID: 1486518257}
   m_Layer: 0
   m_Name: DogCollider_7
   m_TagString: DogCollider
@@ -48980,6 +49080,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 30, y: 30, z: 100}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &1486518257
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1486518254}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 116
+  m_CollisionDetection: 0
 --- !u!1001 &1489499448
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -68140,6 +68267,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2065913565}
   - component: {fileID: 2065913566}
+  - component: {fileID: 2065913567}
   m_Layer: 0
   m_Name: DogCollider_3
   m_TagString: DogCollider
@@ -68183,6 +68311,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 30, y: 30, z: 100}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &2065913567
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065913564}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 116
+  m_CollisionDetection: 0
 --- !u!1001 &2066839700
 PrefabInstance:
   m_ObjectHideFlags: 0

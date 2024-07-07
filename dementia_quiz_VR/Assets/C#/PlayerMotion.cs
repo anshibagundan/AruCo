@@ -6,8 +6,7 @@ using UnityEngine.XR;
 
 public class PlayerMotion : MonoBehaviour
 {
-    //quizTFのurl
-    private String positionurl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/players/";
+
 
     // 左右の手のアンカーとなるトランスフォームを設定
     [SerializeField] private Transform LeftHandAnchorTransform = null;
@@ -36,21 +35,34 @@ public class PlayerMotion : MonoBehaviour
     const float WALK_THRESHOLD = 0.8f;
     const float RUN_THRESHOLD = 1.3f;
     public float moveScale = 0.3f;
+    private String LR;
+    private float rotY;
 
-    //これが向き
-    private float rotationY = 0f;
 
-    private void Start()
+    private void Awake()
     {
-        // CharacterControllerコンポーネントを取得
+        // CharacterController コンポーネントを取得
         Controller = GetComponent<CharacterController>();
+    }
 
+    private IEnumerator Start()
+    {
+        // プレイヤーデータの更新を待つ
+        yield return StartCoroutine(GetPlayerDataLR.UpdatePlayerData());
+        yield return StartCoroutine(GetPlayerData.UpdatePlayerData());
+
+        LR = GetPlayerDataLR.CurrentPlayerLR.getLR();
+        rotY = GetPlayerData.CurrentPlayer.getRotY();
+
+        // データ取得後に値を表示
+        Debug.LogWarning("Player Rotation Y: " + GetPlayerData.CurrentPlayer.getRotY());
+        Debug.LogWarning("Player LR: " + GetPlayerDataLR.CurrentPlayerLR.getLR());
 
     }
 
+
     private void Update()
     {
-        StartCoroutine(GetPlayerCoroutine());
         // 手を振る動作による移動制御
         HandShakeController();
         // CharacterControllerの更新
@@ -124,19 +136,44 @@ public class PlayerMotion : MonoBehaviour
                 SetMotionInertia();
 
             // ワールド座標のx軸方向にのみ移動するように設定
-            if (rotationY == 90f)
+
+            if (LR == "L" && rotY == 90)
             {
                 tmpMoveThrottle += Vector3.forward * moveScale;
-            }else if (rotationY == 0f)
-            {
-                tmpMoveThrottle += Vector3.right * moveScale;
-            }else if (rotationY == 270f)
+            }
+            else if (LR == "R" && rotY == 90)
             {
                 tmpMoveThrottle += Vector3.back * moveScale;
-            }else if (rotationY == 180f)
+            }
+            else if (LR == "R" && rotY == 0)
+            {
+                tmpMoveThrottle += Vector3.right * moveScale;
+            }
+            else if (LR == "L" && rotY == 0)
             {
                 tmpMoveThrottle += Vector3.left * moveScale;
             }
+            else if (LR == "L" && rotY == 270)
+            {
+                tmpMoveThrottle += Vector3.back * moveScale;
+            }
+            else if (LR == "R" && rotY == 270)
+            {
+                tmpMoveThrottle += Vector3.forward * moveScale;
+            }
+            else if (LR == "R" && rotY == 180)
+            {
+                tmpMoveThrottle += Vector3.left * moveScale;
+            }
+            else if (LR == "L" && rotY == 180)
+            {
+                tmpMoveThrottle += Vector3.right * moveScale;
+            }
+            else
+            {
+                tmpMoveThrottle += Vector3.right * moveScale;
+            }
+            Debug.Log("player rotation: " + GetPlayerData.CurrentPlayer.getRotY());
 
             // 走行状態かどうかを判定
             bool isRun = DetectHandShakeRun(Math.Abs(handShakeVel.y));
@@ -225,36 +262,6 @@ public class PlayerMotion : MonoBehaviour
     }
     //Getdirection()はTransformNewWalkに記述したため削除しました。
 
-    //ここでRotationYを入手
-    private IEnumerator GetPlayerCoroutine()
-    {
-        using (UnityWebRequest webRequest = UnityWebRequest.Get(positionurl))
-        {
-            webRequest.SetRequestHeader("X-Debug-Mode", "true");
-            yield return webRequest.SendWebRequest();
 
-            if (webRequest.result == UnityWebRequest.Result.ConnectionError ||
-                webRequest.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.LogError("Error: " + webRequest.error);
-            }
-            else
-            {
-                string json = webRequest.downloadHandler.text;
-                Player playerData = JsonUtility.FromJson<Player>(json);
-
-                if (playerData != null)
-                {
-                    rotationY = playerData.rot_y;
-
-                }
-                else
-                {
-                    Debug.LogError("Failed to parse JSON or PlayerData is null");
-                }
-            }
-        }
-
-    }
 
 }

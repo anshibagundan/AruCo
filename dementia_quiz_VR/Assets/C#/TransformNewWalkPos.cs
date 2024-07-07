@@ -9,12 +9,11 @@ public class TransformNewWalkPos : MonoBehaviour
 {
     //PlayerPosition��url
     private const String geturl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/players/";
-    private const String deleteurl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/players/destroy_all/";
     //quizTF��url
     private const String Geturl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/quiz-tfs/";
     // PlayerLR��URL
     private const string getUrl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/lrs/";
-    private const string deleteUrl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/lrs/destroy_all/";
+
 
     Player playerData;
     PlayerLR playerLR;
@@ -100,7 +99,7 @@ public class TransformNewWalkPos : MonoBehaviour
             // コルーチン終了後に位置を更新するために、メインスレッドで実行
             StartCoroutine(UpdateTransformNextFrame());
 
-            StartCoroutine(deletePlayerLR());
+
         }
         else
         {
@@ -185,20 +184,7 @@ public class TransformNewWalkPos : MonoBehaviour
     }
 
 
-    //AllDelete LR
-    public IEnumerator deletePlayerLR()
-    {
-        using (UnityWebRequest webRequest = UnityWebRequest.Delete(deleteUrl))
-        {
-            webRequest.SetRequestHeader("X-Debug-Mode", "true");
-            yield return webRequest.SendWebRequest();
 
-            if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.LogError("Error: " + webRequest.error);
-            }
-        }
-    }
 
     //�������璷���擾
     private int quizTFCount = 0;
