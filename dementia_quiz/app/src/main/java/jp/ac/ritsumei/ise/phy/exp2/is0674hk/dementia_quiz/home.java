@@ -46,7 +46,6 @@ public class home extends AppCompatActivity {
         easy = findViewById(R.id.easy);
         normal = findViewById(R.id.normal);
         difficult = findViewById(R.id.difficult);
-        act_selectDiff = findViewById(R.id.act_selectDiff);
         quiz_selectDiff = findViewById(R.id.quiz_selectDiff);
 
         // WebSocket接続を確立
