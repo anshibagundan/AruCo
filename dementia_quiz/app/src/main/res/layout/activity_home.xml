@@ -1,14 +1,33 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent" android:layout_height="match_parent" tools:context=".home">
     <!--     Quiz難易度 -->
-    <FrameLayout android:id="@+id/quiz_selectDiff" android:layout_width="match_parent" android:layout_height="match_parent" android:background="#ffedcc" android:visibility="visible">
-        <ImageView android:layout_width="300sp" android:layout_height="100sp" android:layout_gravity="center" android:layout_marginBottom="120sp" app:srcCompat="@drawable/difficulty_style"/>
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Arucoクイズ" android:textSize="50sp" android:textStyle="bold" android:background="@drawable/border_text" android:padding="10sp" android:layout_gravity="center_horizontal" android:layout_marginTop="50sp"/>
+    <FrameLayout
+        android:id="@+id/quiz_selectDiff"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffedcc"
+        android:visibility="visible">
+        <ImageView
+            android:layout_width="300sp"
+            android:layout_height="100sp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="120sp"
+            app:srcCompat="@drawable/difficulty_style"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Arucoクイズ"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            android:background="@drawable/border_text"
+            android:padding="10sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="50sp"/>
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="全3問" android:textSize="35sp" android:layout_gravity="center_horizontal" android:layout_marginTop="150sp"/>
         <!-- ボタンセレクト -->
         <LinearLayout android:layout_width="334dp" android:layout_height="wrap_content" android:layout_gravity="center" android:layout_marginTop="130sp" android:gravity="center" android:orientation="vertical">
-            <Button android:layout_width="230sp" android:layout_height="110sp" android:backgroundTint="#00ff00" android:alpha="0.2" android:onClick="set_quizEasy"/>
-            <Button android:layout_width="230sp" android:layout_height="110sp" android:layout_marginTop="40sp" android:backgroundTint="#00ddff" android:alpha="0.2" android:textSize="40sp" android:onClick="set_quizNormal"/>
-            <Button android:layout_width="230sp" android:layout_height="110sp" android:layout_marginTop="40sp" android:backgroundTint="#ff0000" android:alpha="0.2" android:textSize="40sp" android:onClick="set_quizDifficult"/>
+            <Button android:layout_width="230sp" android:layout_height="110sp" android:backgroundTint="#00ff00" android:alpha="0.2" android:onClick="setEasy"/>
+            <Button android:layout_width="230sp" android:layout_height="110sp" android:layout_marginTop="40sp" android:backgroundTint="#00ddff" android:alpha="0.2" android:textSize="40sp" android:onClick="setNormal"/>
+            <Button android:layout_width="230sp" android:layout_height="110sp" android:layout_marginTop="40sp" android:backgroundTint="#ff0000" android:alpha="0.2" android:textSize="40sp" android:onClick="setDifficult"/>
         </LinearLayout>
         <!--         難易度アイコン画像 -->
         <ImageView android:layout_width="150sp" android:layout_height="130sp" android:layout_gravity="center" android:layout_marginBottom="20sp" app:srcCompat="@drawable/easy_icon"/>
