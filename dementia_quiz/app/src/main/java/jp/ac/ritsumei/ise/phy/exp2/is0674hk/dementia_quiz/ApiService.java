@@ -50,8 +50,9 @@ import java.util.List;
         @DELETE("/act-tfs/destroy_all/")
         Call<Void> deleteAllActTF();
 
-
-
+        //UUIDをサーバから受け取る
+        @GET("getuuid/{six_code}")
+        Call<uuid> get_uuid(@Path("six_code") String six_code);
 
 
     }

@@ -43,9 +43,9 @@ public class home extends AppCompatActivity {
         // ApiServiceインスタンスを取得
         apiService = ApiClient.getApiService();
 
-        easy = findViewById(R.id.easy);
-        normal = findViewById(R.id.normal);
-        difficult = findViewById(R.id.difficult);
+//        easy = findViewById(R.id.easy);
+//        normal = findViewById(R.id.normal);
+//        difficult = findViewById(R.id.difficult);
         quiz_selectDiff = findViewById(R.id.quiz_selectDiff);
 
         // WebSocket接続を確立
@@ -129,8 +129,6 @@ public class home extends AppCompatActivity {
                 Log.e("set_quizDifficulty", "connection_fail");
             }
         });
-        quiz_selectDiff.setVisibility(View.GONE);
-        act_selectDiff.setVisibility(View.VISIBLE);
     }
 
     public void set_quizEasy(View view) {
