@@ -32,26 +32,7 @@
                 android:textSize="40sp" />
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="80sp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="記憶クイズ："
-                android:textSize="30sp" />
-
-            <TextView
-                android:id="@+id/quiz_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="loading"
-                android:textStyle="bold"
-                android:textSize="40sp" />
-
-        </LinearLayout>
 
         <TextView
             android:id="@+id/nowgame"

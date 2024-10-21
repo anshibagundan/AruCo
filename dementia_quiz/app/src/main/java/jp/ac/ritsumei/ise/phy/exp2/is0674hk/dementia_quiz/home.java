@@ -90,7 +90,6 @@ public class home extends AppCompatActivity {
         startActivity(intent);
     }
 
-    // 別クラスで SharedPreferences から uuid を取得する
 
 
     public void setEasy() {

@@ -1,11 +1,15 @@
 package jp.ac.ritsumei.ise.phy.exp2.is0674hk.dementia_quiz;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 import okio.ByteString;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -21,18 +25,29 @@ public class WebSocketClient extends WebSocketListener {
     private WebSocket webSocket;
 
     private CustomCircleView customCircleView;
+    OkHttpClient client = new OkHttpClient();
+    private Context context; // Contextを保持
 
 
 
-    public void start() {
-        OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url("wss://teamhopcard-aa92d1598b3a.herokuapp.com/ws/hop/").build();
+
+    public void startWebsocket() {
+        Request request = new Request.Builder().url("wss://teamhopcard-aa92d1598b3a.herokuapp.com/ws/xyz/").build();
         webSocket = client.newWebSocket(request, this);
-        client.dispatcher().executorService().shutdown();
     }
 
-    public WebSocketClient(CustomCircleView customCircleView) {
+    // WebSocketを閉じるメソッドを追加する
+    public void closeWebSocket() {
+        if (webSocket != null) {
+            webSocket.close(1000, "Closing connection");
+            client.dispatcher().executorService().shutdown(); // 接続を閉じた後にシャットダウン
+        }
+    }
+
+
+    public WebSocketClient(CustomCircleView customCircleView, Context context) {
         this.customCircleView = customCircleView;
+        this.context=context;
     }
 
     @Override
@@ -44,14 +59,24 @@ public class WebSocketClient extends WebSocketListener {
     public void onMessage(WebSocket webSocket, String text) {
         Log.d(TAG, "Received message: " + text);
         // JSONをパースして内容を確認する
+        //TODO 座標位置を相対値にする
         try {
             JSONObject json = new JSONObject(text);
-            float x = (float) (((float)json.getDouble("x")+872)*0.145+265);
-            float z = (float) (((float)json.getDouble("z")+966)*(-0.165)+1210);
-            Log.d(TAG,  "x = " + x + " z = " + z);
-            mainHandler.post(() -> {
-                customCircleView.setCirclePosition(x, z);
-            }); //y座標はいらんっしょ
+
+            //uuidが一致しているところのx,zを取得
+            String uuid=json.getString("uuid");
+            SharedPreferences uuidPrefs = context.getSharedPreferences("uuidPrefs", Context.MODE_PRIVATE);
+            String myuuid = uuidPrefs.getString("UUID", "デフォルト値");
+            Log.d("UUID Check", "UUID: " + myuuid); // ログで確認
+            if(uuid.equals(myuuid)){
+                float x = (float) (((float)json.getDouble("x")+872)*0.145+265);
+                float z = (float) (((float)json.getDouble("z")+966)*(-0.165)+1210);
+                Log.d(TAG,  "x = " + x + " z = " + z);
+                mainHandler.post(() -> {
+                    customCircleView.setCirclePosition(x, z);
+                }); //y座標はいらんっしょ
+            }
+
         } catch (JSONException e) {
             Log.e(TAG, "JSON parsing error: " + e.getMessage());
         }

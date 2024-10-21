@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +15,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,7 +33,8 @@ public class game extends AppCompatActivity {
     private CustomCircleView customCircleView;
     private int quizSize,actSize;
     private TextView nowgame;
-
+    private WebSocket webSocket;
+    private final OkHttpClient client = new OkHttpClient();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,11 +50,15 @@ public class game extends AppCompatActivity {
 
 
 
+
         act_setText();
         quiz_setText();
-        WebSocketClient webSocketClient = new WebSocketClient(customCircleView);
-        webSocketClient.start();
+        WebSocketClient webSocketClient = new WebSocketClient(customCircleView,this);
+        webSocketClient.startWebsocket();
     }
+
+    
+
 
     public void act_setText() {
         apiService.getAct_select().enqueue(new Callback<List<Act_select>>() {
