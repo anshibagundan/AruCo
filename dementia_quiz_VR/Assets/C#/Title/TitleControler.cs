@@ -2,7 +2,7 @@ using UnityEngine;
 using WebSocketSharp;
 using System.Collections;
 
-public class SceneTransition : MonoBehaviour
+public class TitleControler : MonoBehaviour
 {
     private WebSocket ws;
     private bool canTransition = false;
