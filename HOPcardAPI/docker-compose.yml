@@ -1,15 +1,13 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        platform: amd64
-        TARGETOS: linux
-        TARGETARCH: amd64
-        GOARCH: amd64
-    platform: linux/arm64
+  go:
+    container_name: air_sample
+    volumes:
+      - ./:/project/
+    working_dir: /project
+    tty: true
+    build: "./"
     ports:
-      - "8080:8080"
+      - 8080:8080
+    command: sh -c 'go mod tidy && air'
