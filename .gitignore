@@ -68,7 +68,6 @@ Assets/Plugins/Editor/JetBrains*
 
 # Visual Studio Code
 .vscode/
-
 # Built application files
 *.apk
 *.ap_
@@ -150,3 +149,6 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
+
+HOPcardAPI/tmp/
+.env
