@@ -1,7 +1,5 @@
 package jp.ac.ritsumei.ise.phy.exp2.is0674hk.dementia_quiz;
 
-import static android.content.Context.MODE_PRIVATE;
-
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.WebSocket;
@@ -13,12 +11,11 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class WebSocketClient extends WebSocketListener {
+public class WebSocketClient_xyz extends WebSocketListener {
     private static final String TAG = "WebSocketClient";
 
     private Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -27,6 +24,10 @@ public class WebSocketClient extends WebSocketListener {
     private CustomCircleView customCircleView;
     OkHttpClient client = new OkHttpClient();
     private Context context; // Contextを保持
+
+
+//    private static WebSocketClient_xyz instance;
+
 
 
 
@@ -45,10 +46,18 @@ public class WebSocketClient extends WebSocketListener {
     }
 
 
-    public WebSocketClient(CustomCircleView customCircleView, Context context) {
+    public WebSocketClient_xyz(CustomCircleView customCircleView, Context context) {
         this.customCircleView = customCircleView;
         this.context=context;
     }
+
+//    // インスタンスを取得するためのメソッド
+//    public static synchronized WebSocketClient_xyz getInstance(CustomCircleView customCircleView,Context context) {
+//        if (instance == null) {
+//            instance = new WebSocketClient_xyz(customCircleView,context);
+//        }
+//        return instance;
+//    }
 
     @Override
     public void onOpen(WebSocket webSocket, okhttp3.Response response) {

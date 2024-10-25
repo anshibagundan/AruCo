@@ -6,6 +6,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 import java.util.List;
 
@@ -50,9 +51,10 @@ import java.util.List;
         @DELETE("/act-tfs/destroy_all/")
         Call<Void> deleteAllActTF();
 
-        //UUIDをサーバから受け取る
-        @GET("getuuid/{six_code}")
-        Call<uuid> get_uuid(@Path("six_code") String six_code);
-
+        // UUIDをサーバから受け取る
+        @GET("getuuid")
+        Call<uuid> get_uuid(@Query("code") String six_code);
+        @POST("postuserdata")
+        Call<Void> postUserData(@Body UserData UserData);
 
     }

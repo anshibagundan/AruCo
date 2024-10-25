@@ -53,7 +53,8 @@
             android:backgroundTint="#990000"
             android:onClick="game_result"
             android:text="終了"
-            android:textSize="40sp" />
+            android:textSize="40sp"
+            android:visibility="gone"/>
 
         <ImageView
             android:id="@+id/map"
