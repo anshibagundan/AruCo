@@ -11,14 +11,14 @@ import (
 
 type WebSocketHandler struct {
 	upgrader     websocket.Upgrader
-	gameUsecase  *usecase.GameUsecase
+	gameUsecase  *usecase.DifficultyUsecase
 	connections  map[string]*websocket.Conn
 	mutex        sync.RWMutex
 	androidConns map[string]bool
 	unityConns   map[string]bool
 }
 
-func NewWebSocketHandler(gameUsecase *usecase.GameUsecase) *WebSocketHandler {
+func NewWebSocketHandler(gameUsecase *usecase.DifficultyUsecase) *WebSocketHandler {
 	return &WebSocketHandler{
 		upgrader: websocket.Upgrader{
 			CheckOrigin: func(r *http.Request) bool {
@@ -66,7 +66,7 @@ func (h *WebSocketHandler) HandleAndroidWebSocket(w http.ResponseWriter, r *http
 			break
 		}
 
-		unityMsg, err := h.gameUsecase.ProcessGameData(androidMsg.Difficulty)
+		unityMsg, err := h.gameUsecase.ProcessDifficultyData(androidMsg.Difficulty)
 		if err != nil {
 			continue
 		}

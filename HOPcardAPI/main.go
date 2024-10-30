@@ -34,7 +34,7 @@ func main() {
 	actionRepo := persistence.NewActionRepository(db)
 
 	//difficulty系の初期化
-	difficultyUsecase := usecase.NewGameUsecase(quizRepo, actionRepo)
+	difficultyUsecase := usecase.NewDifficultyUsecase(quizRepo, actionRepo)
 	difficultyHandler := handlers.NewWebSocketHandler(difficultyUsecase)
 
 	// 他の初期化ここに書いてね
