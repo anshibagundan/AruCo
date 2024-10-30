@@ -107,7 +107,7 @@ public class GetUUID : MonoBehaviour
         {
             yield return StartCoroutine(GetUUIDFromAPI());
             // 一定時間待機してから再度問い合わせる（例：5秒待機）
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(1f);
         }
         Debug.Log("UUIDを取得し、StatusDataに格納しました: " + statusData.UUID);
     }

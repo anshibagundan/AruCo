@@ -10,15 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d523c1a7aea3334491c10504a1dd3c1, type: 3}
-  m_Name: PlayerData
+  m_Name: StatusData
   m_EditorClassIdentifier: 
   name: 
   id: 0
-  level: 0
-  exp: 0
-  maxhp: 0
-  hp: 0
-  maxmp: 0
-  mp: 0
-  attack: 0
-  defence: 0
+  quizDiff: []
+  actDiff: 0
+  uuid: maj3jqk
+  lr: []

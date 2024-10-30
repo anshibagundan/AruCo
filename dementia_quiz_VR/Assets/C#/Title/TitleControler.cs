@@ -1,11 +1,22 @@
 using UnityEngine;
 using WebSocketSharp;
 using System.Collections;
+using App.BaseSystem.DataStores.ScriptableObjects.Status;
+using UnityEngine.Networking;
+using System;
+using System.Collections.Generic;
 
 public class TitleControler : MonoBehaviour
 {
     private WebSocket ws;
     private bool canTransition = false;
+
+    // APIのエンドポイントURL
+    private const string getUrl = "https://example.com/api/endpoint/"; //仮置き
+
+    // 参照するStatusData（ScriptableObject）
+    [SerializeField]
+    private StatusData statusData;
 
     private void Start()
     {
@@ -18,8 +29,10 @@ public class TitleControler : MonoBehaviour
     {
         if (canTransition)
         {
-            // シーン遷移の処理を行う
-            UnityEngine.SceneManagement.SceneManager.LoadScene("New_WalkScene");
+            canTransition = false; // シーン遷移が複数回行われないようにフラグをリセット
+
+            // データを取得してからシーン遷移を行う
+            StartCoroutine(GetDiffAndTransition());
         }
     }
 
@@ -36,6 +49,52 @@ public class TitleControler : MonoBehaviour
         else
         {
             Debug.Log("Received non-text data");
+        }
+    }
+
+    private IEnumerator GetDiffAndTransition()
+    {
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(getUrl))
+        {
+            // リクエストを送信し、レスポンスを待つ
+            yield return webRequest.SendWebRequest();
+
+            // エラーチェック
+            if (webRequest.result == UnityWebRequest.Result.ConnectionError ||
+                webRequest.result == UnityWebRequest.Result.ProtocolError)
+            {
+                Debug.LogError("データ取得時にエラーが発生しました: " + webRequest.error);
+            }
+            else
+            {
+                // レスポンスをテキストとして取得
+                string responseText = webRequest.downloadHandler.text;
+                Debug.Log("データ取得のレスポンス: " + responseText);
+
+                // レスポンスをパースしてGetDiffオブジェクトに変換
+                GetDiff getDiff = JsonUtility.FromJson<GetDiff>(responseText);
+
+                if (getDiff != null)
+                {
+                    // StatusDataにデータを格納
+                    statusData.UUID = getDiff.uuid;
+                    statusData.QuizDiff = new List<float>(Array.ConvertAll(getDiff.quiz_diff, item => (float)item));
+                    statusData.ActDiff = (float)getDiff.act_diff;
+
+                    // ScriptableObjectの変更を保存
+#if UNITY_EDITOR
+                    UnityEditor.EditorUtility.SetDirty(statusData);
+                    UnityEditor.AssetDatabase.SaveAssets();
+#endif
+
+                    // シーン遷移の処理を行う
+                    UnityEngine.SceneManagement.SceneManager.LoadScene("New_WalkScene");
+                }
+                else
+                {
+                    Debug.LogError("取得したデータのパースに失敗しました");
+                }
+            }
         }
     }
 
