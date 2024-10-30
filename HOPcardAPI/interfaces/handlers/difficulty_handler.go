@@ -9,30 +9,30 @@ import (
 	"sync"
 )
 
-type WebSocketHandler struct {
-	upgrader     websocket.Upgrader
-	gameUsecase  *usecase.DifficultyUsecase
-	connections  map[string]*websocket.Conn
-	mutex        sync.RWMutex
-	androidConns map[string]bool
-	unityConns   map[string]bool
+type DifficultyWebSocketHandler struct {
+	upgrader          websocket.Upgrader
+	difficultyUsecase *usecase.DifficultyUsecase
+	connections       map[string]*websocket.Conn
+	mutex             sync.RWMutex
+	androidConns      map[string]bool
+	unityConns        map[string]bool
 }
 
-func NewWebSocketHandler(gameUsecase *usecase.DifficultyUsecase) *WebSocketHandler {
-	return &WebSocketHandler{
+func NewDifficultyWebSocketHandler(gameUsecase *usecase.DifficultyUsecase) *DifficultyWebSocketHandler {
+	return &DifficultyWebSocketHandler{
 		upgrader: websocket.Upgrader{
 			CheckOrigin: func(r *http.Request) bool {
 				return true // 本番環境では適切に設定する
 			},
 		},
-		gameUsecase:  gameUsecase,
-		connections:  make(map[string]*websocket.Conn),
-		androidConns: make(map[string]bool),
-		unityConns:   make(map[string]bool),
+		difficultyUsecase: gameUsecase,
+		connections:       make(map[string]*websocket.Conn),
+		androidConns:      make(map[string]bool),
+		unityConns:        make(map[string]bool),
 	}
 }
 
-func (h *WebSocketHandler) HandleAndroidWebSocket(w http.ResponseWriter, r *http.Request) {
+func (h *DifficultyWebSocketHandler) HandleAndroidWebSocket(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	uuid := vars["uuid"]
 	if uuid == "" {
@@ -65,8 +65,7 @@ func (h *WebSocketHandler) HandleAndroidWebSocket(w http.ResponseWriter, r *http
 		if err != nil {
 			break
 		}
-
-		unityMsg, err := h.gameUsecase.ProcessDifficultyData(androidMsg.Difficulty)
+		unityMsg, err := h.difficultyUsecase.ProcessDifficultyData(androidMsg.Difficulty)
 		if err != nil {
 			continue
 		}
@@ -86,7 +85,7 @@ func (h *WebSocketHandler) HandleAndroidWebSocket(w http.ResponseWriter, r *http
 	}
 }
 
-func (h *WebSocketHandler) HandleUnityWebSocket(w http.ResponseWriter, r *http.Request) {
+func (h *DifficultyWebSocketHandler) HandleUnityWebSocket(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	uuid := vars["uuid"]
 	if uuid == "" {
