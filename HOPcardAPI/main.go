@@ -30,12 +30,22 @@ func main() {
 	uuidUseCase := usecase.NewUUIDUseCase(uuidRepo, uuidService)
 	uuidHandler := handlers.NewUUIDHandler(uuidUseCase)
 
+	//quiz,action系の初期化
+	quizRepo := persistence.NewQuizRepository(db)
+	actionRepo := persistence.NewActionRepository(db)
+
+	//difficulty系の初期化
+	difficultyUsecase := usecase.NewGameUsecase(quizRepo, actionRepo)
+	difficultyHandler := handlers.NewWebSocketHandler(difficultyUsecase)
+
 	// 他の初期化ここに書いてね
 
 	// ルーティング
 	r := mux.NewRouter()
 	r.HandleFunc("/createuuid", uuidHandler.CreateUUID).Methods("POST")
 	r.HandleFunc("/getuuid", uuidHandler.GetUUID).Methods("GET")
+	r.HandleFunc("/ws/android/{uuid}", difficultyHandler.HandleAndroidWebSocket)
+	r.HandleFunc("/ws/unity/{uuid}", difficultyHandler.HandleUnityWebSocket)
 
 	log.Fatal(http.ListenAndServe(":8080", r))
 }

@@ -12,6 +12,7 @@ type uuidRepository struct {
 }
 
 func NewUUIDRepository(db *gorm.DB) repositories.UUIDRepository {
+
 	return &uuidRepository{db: db}
 }
 
