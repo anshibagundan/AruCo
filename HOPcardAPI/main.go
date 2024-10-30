@@ -1,4 +1,3 @@
-// main.go
 package main
 
 import (
@@ -30,12 +29,22 @@ func main() {
 	uuidUseCase := usecase.NewUUIDUseCase(uuidRepo, uuidService)
 	uuidHandler := handlers.NewUUIDHandler(uuidUseCase)
 
+	//quiz,action系の初期化
+	quizRepo := persistence.NewQuizRepository(db)
+	actionRepo := persistence.NewActionRepository(db)
+
+	//difficulty系の初期化
+	difficultyUsecase := usecase.NewGameUsecase(quizRepo, actionRepo)
+	difficultyHandler := handlers.NewWebSocketHandler(difficultyUsecase)
+
 	// 他の初期化ここに書いてね
 
 	// ルーティング
 	r := mux.NewRouter()
 	r.HandleFunc("/createuuid", uuidHandler.CreateUUID).Methods("POST")
 	r.HandleFunc("/getuuid", uuidHandler.GetUUID).Methods("GET")
+	r.HandleFunc("/ws/difficulty/android/{uuid}", difficultyHandler.HandleAndroidWebSocket)
+	r.HandleFunc("/ws/difficulty/unity/{uuid}", difficultyHandler.HandleUnityWebSocket)
 
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
@@ -48,23 +57,20 @@ func initDB() (*gorm.DB, error) {
 	}
 
 	// 環境変数から接続情報を取得
-	dbUser := os.Getenv("DB_USER")
-	dbPassword := os.Getenv("DB_PASSWORD")
-	dbHost := os.Getenv("DB_HOST")
-	dbPort := os.Getenv("DB_PORT")
-	dbName := os.Getenv("DB_NAME")
+	dbURL := os.Getenv("DATABASE_URL")
 
-	// 接続文字列の構築
-	dsn := fmt.Sprintf(
-		"host=%s user=%s password=%s dbname=%s port=%s sslmode=require",
-		dbHost, dbUser, dbPassword, dbName, dbPort,
-	)
+	if dbURL == "" {
+		return nil, fmt.Errorf("DATABASE_URL is not set")
+	}
+
+	log.Printf("Connecting to database with URL: %s", dbURL)
 
 	// データベースに接続
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dbURL), &gorm.Config{})
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect database: %w", err)
 	}
+	log.Printf("Connected to database")
 
 	return db, nil
 }
