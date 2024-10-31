@@ -54,7 +54,6 @@ func (h *UserDataHandler) GetUserData(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response := map[string]interface{}{
-		"uuid":         uuid,
 		"ratio":        userData.Ratio,
 		"distance":     userData.Distance,
 		"change_count": userData.ChangeCount,
