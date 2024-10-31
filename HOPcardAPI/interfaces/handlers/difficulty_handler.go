@@ -9,34 +9,42 @@ import (
 	"sync"
 )
 
-type WebSocketHandler struct {
-	upgrader     websocket.Upgrader
-	gameUsecase  *usecase.GameUsecase
-	connections  map[string]*websocket.Conn
-	mutex        sync.RWMutex
-	androidConns map[string]bool
-	unityConns   map[string]bool
+type DifficultyWebSocketHandler struct {
+	upgrader          websocket.Upgrader
+	difficultyUsecase *usecase.DifficultyUsecase
+	androidConns      map[string]*websocket.Conn
+	unityConns        map[string]*websocket.Conn
+	mutex             sync.RWMutex
 }
 
-func NewWebSocketHandler(gameUsecase *usecase.GameUsecase) *WebSocketHandler {
-	return &WebSocketHandler{
+func NewDifficultyWebSocketHandler(difficultyUsecase *usecase.DifficultyUsecase) *DifficultyWebSocketHandler {
+	return &DifficultyWebSocketHandler{
 		upgrader: websocket.Upgrader{
 			CheckOrigin: func(r *http.Request) bool {
-				return true // 本番環境では適切に設定する
+				return true
 			},
 		},
-		gameUsecase:  gameUsecase,
-		connections:  make(map[string]*websocket.Conn),
-		androidConns: make(map[string]bool),
-		unityConns:   make(map[string]bool),
+		difficultyUsecase: difficultyUsecase,
+		androidConns:      make(map[string]*websocket.Conn),
+		unityConns:        make(map[string]*websocket.Conn),
 	}
 }
 
-func (h *WebSocketHandler) HandleAndroidWebSocket(w http.ResponseWriter, r *http.Request) {
+func (h *DifficultyWebSocketHandler) HandleAndroidWebSocket(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	uuid := vars["uuid"]
 	if uuid == "" {
 		http.Error(w, "UUID is required", http.StatusBadRequest)
+		return
+	}
+
+	// Unity側の接続が存在するか確認
+	h.mutex.RLock()
+	_, unityExists := h.unityConns[uuid]
+	h.mutex.RUnlock()
+
+	if !unityExists {
+		http.Error(w, "No matching Unity connection", http.StatusBadRequest)
 		return
 	}
 
@@ -47,13 +55,11 @@ func (h *WebSocketHandler) HandleAndroidWebSocket(w http.ResponseWriter, r *http
 	}
 
 	h.mutex.Lock()
-	h.connections[uuid] = conn
-	h.androidConns[uuid] = true
+	h.androidConns[uuid] = conn
 	h.mutex.Unlock()
 
 	defer func() {
 		h.mutex.Lock()
-		delete(h.connections, uuid)
 		delete(h.androidConns, uuid)
 		h.mutex.Unlock()
 		conn.Close()
@@ -66,41 +72,32 @@ func (h *WebSocketHandler) HandleAndroidWebSocket(w http.ResponseWriter, r *http
 			break
 		}
 
-		unityMsg, err := h.gameUsecase.ProcessGameData(androidMsg.Difficulty)
+		unityMsg, err := h.difficultyUsecase.ProcessDifficultyData(androidMsg.Difficulty)
 		if err != nil {
 			continue
 		}
 
-		// Unity側の接続が存在する場合、メッセージを転送
+		// Unity側の接続にのみメッセージを送信
 		h.mutex.RLock()
-		unityConn, exists := h.connections[uuid]
-		isUnity := h.unityConns[uuid]
+		if unityConn, exists := h.unityConns[uuid]; exists {
+			err = unityConn.WriteJSON(unityMsg)
+		}
 		h.mutex.RUnlock()
 
-		if exists && isUnity {
-			err = unityConn.WriteJSON(unityMsg)
-			if err != nil {
-				continue
-			}
+		// Android側には受信確認のみ送信
+		confirmMsg := map[string]string{"status": "received"}
+		err = conn.WriteJSON(confirmMsg)
+		if err != nil {
+			continue
 		}
 	}
 }
 
-func (h *WebSocketHandler) HandleUnityWebSocket(w http.ResponseWriter, r *http.Request) {
+func (h *DifficultyWebSocketHandler) HandleUnityWebSocket(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	uuid := vars["uuid"]
 	if uuid == "" {
 		http.Error(w, "UUID is required", http.StatusBadRequest)
-		return
-	}
-
-	// Android側の接続が存在するか確認
-	h.mutex.RLock()
-	_, androidExists := h.androidConns[uuid]
-	h.mutex.RUnlock()
-
-	if !androidExists {
-		http.Error(w, "No matching Android connection", http.StatusBadRequest)
 		return
 	}
 
@@ -111,19 +108,16 @@ func (h *WebSocketHandler) HandleUnityWebSocket(w http.ResponseWriter, r *http.R
 	}
 
 	h.mutex.Lock()
-	h.connections[uuid] = conn
-	h.unityConns[uuid] = true
+	h.unityConns[uuid] = conn
 	h.mutex.Unlock()
 
 	defer func() {
 		h.mutex.Lock()
-		delete(h.connections, uuid)
 		delete(h.unityConns, uuid)
 		h.mutex.Unlock()
 		conn.Close()
 	}()
 
-	// Unity側の接続を維持
 	for {
 		_, _, err := conn.ReadMessage()
 		if err != nil {

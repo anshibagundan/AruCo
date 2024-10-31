@@ -34,8 +34,11 @@ func main() {
 	actionRepo := persistence.NewActionRepository(db)
 
 	//difficulty系の初期化
-	difficultyUsecase := usecase.NewGameUsecase(quizRepo, actionRepo)
-	difficultyHandler := handlers.NewWebSocketHandler(difficultyUsecase)
+	difficultyUsecase := usecase.NewDifficultyUsecase(quizRepo, actionRepo)
+	difficultyHandler := handlers.NewDifficultyWebSocketHandler(difficultyUsecase)
+
+	// xyz系の初期化
+	xyzHandler := handlers.XYZNewWebSocketHandler()
 
 	// 他の初期化ここに書いてね
 
@@ -45,6 +48,8 @@ func main() {
 	r.HandleFunc("/getuuid", uuidHandler.GetUUID).Methods("GET")
 	r.HandleFunc("/ws/difficulty/android/{uuid}", difficultyHandler.HandleAndroidWebSocket)
 	r.HandleFunc("/ws/difficulty/unity/{uuid}", difficultyHandler.HandleUnityWebSocket)
+	r.HandleFunc("/ws/xyz/android/{uuid}", xyzHandler.HandleXYZAndroidWebSocket)
+	r.HandleFunc("/ws/xyz/unity/{uuid}", xyzHandler.HandleXYZUnityWebSocket)
 
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
