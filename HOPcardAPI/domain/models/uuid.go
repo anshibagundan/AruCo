@@ -7,7 +7,7 @@ import (
 )
 
 type UUID struct {
-	ID        uint           `json:"id" gorm:"primaryKey"`
+	ID        int            `json:"id" gorm:"primaryKey"`
 	UUID      string         `json:"uuid" gorm:"type:varchar(36)"`
 	Code      int            `json:"code"`
 	CreatedAt time.Time      `json:"created_at"`
