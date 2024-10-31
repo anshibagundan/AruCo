@@ -45,6 +45,9 @@ func main() {
 	userdataUseCase := usecase.NewUserDataUsecase(userdataRepo)
 	userdataHandler := handlers.NewUserDataHandler(*userdataUseCase)
 
+	// result系の初期化
+	resultHandler := handlers.ResultNewWebSocketHandler(quizRepo, userdataRepo, userdataUseCase)
+
 	// 他の初期化ここに書いてね
 
 	// ルーティング
@@ -57,6 +60,8 @@ func main() {
 	r.HandleFunc("/ws/xyz/unity/{uuid}", xyzHandler.HandleXYZUnityWebSocket)
 	r.HandleFunc("/createuserdata", userdataHandler.CreateUserData).Methods("POST")
 	r.HandleFunc("/getuserdata", userdataHandler.GetUserData).Methods("GET")
+	r.HandleFunc("/ws/result/android/{uuid}", resultHandler.HandleResultAndroidWebSocket)
+	r.HandleFunc("/ws/result/unity/{uuid}", resultHandler.HandleResultUnityWebSocket)
 
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
