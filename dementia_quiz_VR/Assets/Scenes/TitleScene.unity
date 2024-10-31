@@ -6484,7 +6484,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fac0807af0f4445919fe55c293b1347d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statusData: {fileID: 0}
+  statusData: {fileID: 11400000, guid: d4824e765e202054196ddd5d10d31adf, type: 2}
 --- !u!4 &1290759263
 Transform:
   m_ObjectHideFlags: 0
@@ -9334,7 +9334,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1899249559
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9378,7 +9378,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1899249558}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
