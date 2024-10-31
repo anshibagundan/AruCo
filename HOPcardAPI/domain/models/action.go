@@ -5,4 +5,5 @@ type Action struct {
 	Difficulty int    `json:"difficulty"`
 	LefSel     string `json:"lef_sel"`
 	RigSel     string `json:"rig_sel"`
+	Detail     string `json:"detail"`
 }
