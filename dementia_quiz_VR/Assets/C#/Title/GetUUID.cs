@@ -9,8 +9,8 @@ using App.BaseSystem.DataStores.ScriptableObjects.Status; // 名前空間を適�
 public class GetUUID : MonoBehaviour
 {
     // APIのエンドポイントURL
-    private const string postUrl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/quiz-tfs/";
-    private const string getUrl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/quiz-tfs/uuid/";
+    private const string postUrl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/createuuid/";
+    private const string getUrl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/q/";
 
     // 参照するStatusData（ScriptableObject）
     [SerializeField]
