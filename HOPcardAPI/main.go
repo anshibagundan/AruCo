@@ -22,14 +22,13 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// 初期化はinfra(persistence)->domain/service->usecase->handlerの順番で行うようにしよう
-	// uuid系の初期化
+	// UUID系の初期化
 	uuidRepo := persistence.NewUUIDRepository(db)
 	uuidService := services.NewUUIDService()
 	uuidUseCase := usecase.NewUUIDUseCase(uuidRepo, uuidService)
 	uuidHandler := handlers.NewUUIDHandler(uuidUseCase)
 
-	//quiz,action系の初期化
+	// Quiz, Action系の初期化
 	quizRepo := persistence.NewQuizRepository(db)
 	actionRepo := persistence.NewActionRepository(db)
 	quizUsecase := usecase.NewQuizUseCase(quizRepo)
@@ -37,22 +36,20 @@ func main() {
 	quizHandler := handlers.NewQuizHandler(quizUsecase)
 	actionHandler := handlers.NewActionHandler(actionUsecase)
 
-	//difficulty系の初期化
+	// Difficulty系の初期化
 	difficultyUsecase := usecase.NewDifficultyUsecase(quizRepo, actionRepo)
 	difficultyHandler := handlers.NewDifficultyWebSocketHandler(difficultyUsecase)
 
-	// xyz系の初期化
+	// XYZ系の初期化
 	xyzHandler := handlers.XYZNewWebSocketHandler()
 
-	// userdata系の初期化
+	// UserData系の初期化
 	userdataRepo := persistence.NewUserDataPersistence(db)
 	userdataUseCase := usecase.NewUserDataUsecase(userdataRepo)
 	userdataHandler := handlers.NewUserDataHandler(*userdataUseCase)
 
-	// result系の初期化
+	// Result系の初期化
 	resultHandler := handlers.ResultNewWebSocketHandler(quizRepo, actionRepo, userdataRepo, userdataUseCase)
-
-	// 他の初期化ここに書いてね
 
 	// ルーティング
 	r := mux.NewRouter()
@@ -69,10 +66,17 @@ func main() {
 	r.HandleFunc("/getquiz", quizHandler.GetQuiz).Methods("GET")
 	r.HandleFunc("/getaction", actionHandler.GetAction).Methods("GET")
 
-	log.Fatal(http.ListenAndServe(":8080", r))
+	// ポート設定
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // デフォルトポート
+	}
+
+	log.Printf("Starting server on port %s", port)
+	log.Fatal(http.ListenAndServe(":"+port, r))
 }
 
-// initDBは別ファイルの方がいいのかな\(´ω` \)
+// initDBはデータベース接続の初期化を行います
 func initDB() (*gorm.DB, error) {
 	// .envファイルの読み込み
 	if err := godotenv.Load(); err != nil {
@@ -81,7 +85,6 @@ func initDB() (*gorm.DB, error) {
 
 	// 環境変数から接続情報を取得
 	dbURL := os.Getenv("DATABASE_URL")
-
 	if dbURL == "" {
 		return nil, fmt.Errorf("DATABASE_URL is not set")
 	}
