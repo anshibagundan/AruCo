@@ -8,7 +8,9 @@ type ResultUnityMessage struct {
 }
 
 type ResultAndroidMessage struct {
-	Cor      []bool  `json:"cor"`
-	Distance float64 `json:"distance"`
-	Message  string  `json:"message"`
+	QuizNames  []string `json:"quiz_names"`
+	Difficulty string   `json:"difficulty"`
+	Cor        []bool   `json:"cor"`
+	Distance   float64  `json:"distance"`
+	Message    string   `json:"message"`
 }

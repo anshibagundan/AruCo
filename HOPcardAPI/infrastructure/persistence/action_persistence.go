@@ -19,3 +19,9 @@ func (r *actionRepository) FindOneByDifficulty(difficulty int) (*models.Action, 
 	err := r.db.Where("difficulty = ?", difficulty).First(&action).Error
 	return &action, err
 }
+
+func (r *actionRepository) FindOneByID(id int) (*models.Action, error) {
+	var action models.Action
+	err := r.db.Where("id = ?", id).First(&action).Error
+	return &action, err
+}

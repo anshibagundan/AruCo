@@ -46,7 +46,7 @@ func main() {
 	userdataHandler := handlers.NewUserDataHandler(*userdataUseCase)
 
 	// result系の初期化
-	resultHandler := handlers.ResultNewWebSocketHandler(quizRepo, userdataRepo, userdataUseCase)
+	resultHandler := handlers.ResultNewWebSocketHandler(quizRepo, actionRepo, userdataRepo, userdataUseCase)
 
 	// 他の初期化ここに書いてね
 

@@ -24,12 +24,13 @@ type ResultWebSocketHandler struct {
 	unityConns         map[string]*websocket.Conn
 	mutex              sync.RWMutex
 	quizRepository     repositories.QuizRepository
+	actionRepository   repositories.ActionRepository
 	userDataRepository repositories.UserDataRepository
 	userusecase        *usecase.UserDataUsecase
 }
 
 // ResultNewWebSocketHandler は、Unity側とAndroid側のWebSocket接続を管理するハンドラーを生成する
-func ResultNewWebSocketHandler(quizRepo repositories.QuizRepository, userDataRepo repositories.UserDataRepository, userUsecase *usecase.UserDataUsecase) *ResultWebSocketHandler {
+func ResultNewWebSocketHandler(quizRepo repositories.QuizRepository, actionRepo repositories.ActionRepository, userDataRepo repositories.UserDataRepository, userUsecase *usecase.UserDataUsecase) *ResultWebSocketHandler {
 	return &ResultWebSocketHandler{
 		upgrader: websocket.Upgrader{
 			CheckOrigin: func(r *http.Request) bool {
@@ -39,6 +40,7 @@ func ResultNewWebSocketHandler(quizRepo repositories.QuizRepository, userDataRep
 		androidConns:       make(map[string]*websocket.Conn),
 		unityConns:         make(map[string]*websocket.Conn),
 		quizRepository:     quizRepo,
+		actionRepository:   actionRepo,
 		userDataRepository: userDataRepo,
 		userusecase:        userUsecase,
 	}
@@ -103,7 +105,7 @@ func (h *ResultWebSocketHandler) HandleResultUnityWebSocket(w http.ResponseWrite
 		}
 
 		// ChatGPTへのプロンプトを準備
-		prompts, err := h.buildChatGPTPrompt(resultMsg.QuizID, resultMsg.Cor)
+		prompts, quiznames, difficulty, err := h.buildChatGPTPrompt(resultMsg.QuizID, resultMsg.ActionID, resultMsg.Cor)
 		if err != nil {
 			log.Printf("ChatGPTプロンプト作成に失敗しました: %v", err)
 			continue
@@ -121,9 +123,11 @@ func (h *ResultWebSocketHandler) HandleResultUnityWebSocket(w http.ResponseWrite
 
 		//Android側にデータを送信
 		resultAndroidMsg := models.ResultAndroidMessage{
-			Cor:      resultMsg.Cor,
-			Distance: resultMsg.Distance,
-			Message:  chatGPTResponse,
+			QuizNames:  quiznames,
+			Difficulty: difficulty,
+			Cor:        resultMsg.Cor,
+			Distance:   resultMsg.Distance,
+			Message:    chatGPTResponse,
 		}
 		h.mutex.RLock()
 		if androidConn, exists := h.androidConns[uuid]; exists {
@@ -137,13 +141,14 @@ func (h *ResultWebSocketHandler) HandleResultUnityWebSocket(w http.ResponseWrite
 }
 
 // buildChatGPTPrompt は、問題の詳細情報を元にChatGPTへのプロンプトを作成する
-func (h *ResultWebSocketHandler) buildChatGPTPrompt(quizIDs []int, cor []bool) ([]string, error) {
+func (h *ResultWebSocketHandler) buildChatGPTPrompt(quizIDs []int, actionID int, cor []bool) ([]string, []string, string, error) {
 	fmt.Printf("quizIDs: %v\n", quizIDs)
 	var prompts []string
+	var quiznames []string
 	for i, quizID := range quizIDs {
 		quiz, err := h.quizRepository.FindByID(quizID)
 		if err != nil {
-			return nil, fmt.Errorf("問題の取得に失敗しました: %v", err)
+			return nil, nil, "", fmt.Errorf("問題の取得に失敗しました: %v", err)
 		}
 
 		// Difficultyを人間が理解しやすい形式に変換
@@ -167,14 +172,31 @@ func (h *ResultWebSocketHandler) buildChatGPTPrompt(quizIDs []int, cor []bool) (
 
 		prompts = append(prompts, fmt.Sprintf("Difficulty: %s, Name: %s, Detail: %s, %s",
 			difficultyStr, quiz.Name, quiz.Detail, correctness))
+		quiznames = append(quiznames, quiz.Name)
 	}
+
+	action, err := h.actionRepository.FindOneByID(actionID)
+	if err != nil {
+		return nil, nil, "", fmt.Errorf("アクションの取得に失敗しました: %v", err)
+	}
+
+	difficultyStr := "Unknown"
+	switch action.Difficulty {
+	case 1:
+		difficultyStr = "簡単"
+	case 2:
+		difficultyStr = "ふつう"
+	case 3:
+		difficultyStr = "難しい"
+	}
+
 	correctness := "不正解"
 	if cor[len(cor)-1] {
 		correctness = "正解"
 	}
-	prompts = append(prompts, fmt.Sprintf("\n 運動中や途中のクイズの間に出現した犬の数を数える問題は %sでした．この問題は注意力を問う問題です．この認知症予防の問題3問と注意力を問う問題から高齢者向けの認知症予防の観点で評価とアドバイスを2文以内で簡潔に評価してください．主語を「あなた」で答えてください．", correctness))
+	prompts = append(prompts, fmt.Sprintf("\n 運動中や途中のクイズの間に出現した犬の数を数える問題は %sで，難易度は %sでした．この問題は注意力を問う問題です．この認知症予防の問題3問と注意力を問う問題から高齢者向けの認知症予防の観点で評価とアドバイスを2文以内で簡潔に評価してください．主語を「あなた」で答えてください．", correctness, difficultyStr))
 
-	return prompts, nil
+	return prompts, quiznames, difficultyStr, nil
 }
 
 // countTrue は、boolの配列からtrueの数をカウントする
