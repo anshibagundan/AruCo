@@ -2,7 +2,7 @@
 FROM golang:1.23.1 AS builder
 
 # ワーキングディレクトリを設定
-WORKDIR /project
+WORKDIR /app
 
 # 依存関係をダウンロード
 COPY go.mod ./
@@ -13,12 +13,17 @@ RUN go mod download
 COPY . .
 
 # アプリケーションをビルド
-RUN go build -o app .
+RUN CGO_ENABLED=0 GOOS=linux go build -o main .
 
 # 最終イメージ
 FROM gcr.io/distroless/base
 
-COPY --from=builder /project/app /app
+WORKDIR /app
+COPY --from=builder /app/main /app/main
+
+# 環境変数の設定
+ENV PORT=8080
+EXPOSE 8080
 
 # アプリケーションを起動
-CMD ["/app"]
+CMD ["/app/main"]
