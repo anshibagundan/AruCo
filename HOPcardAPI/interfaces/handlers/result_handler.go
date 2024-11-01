@@ -194,7 +194,7 @@ func (h *ResultWebSocketHandler) buildChatGPTPrompt(quizIDs []int, actionID int,
 	if cor[len(cor)-1] {
 		correctness = "正解"
 	}
-	prompts = append(prompts, fmt.Sprintf("\n 運動中や途中のクイズの間に出現した犬の数を数える問題は %sで，難易度は %sでした．この問題は注意力を問う問題です．この認知症予防の問題3問と注意力を問う問題から高齢者向けの認知症予防の観点で評価とアドバイスを2文以内で簡潔に評価してください．主語を「あなた」で答えてください．", correctness, difficultyStr))
+	prompts = append(prompts, fmt.Sprintf("\n 運動中や途中のクイズの間に出現した犬の数を数える問題は %sで，難易度は %sでした．この問題は注意力を問う問題です．この認知症予防の問題3問と注意力を問う問題から高齢者向けの認知症予防の観点で評価とアドバイスを問題名を使わずに2文以内で簡潔に評価してください．主語を「あなた」で答えてください．", correctness, difficultyStr))
 
 	return prompts, quiznames, difficultyStr, nil
 }
