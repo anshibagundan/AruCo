@@ -1,31 +1,14 @@
-# ベースイメージ
-FROM golang:1.23.1 AS builder
+FROM golang:latest as builder
 
-# ワーキングディレクトリを設定
-WORKDIR /build
-
-# 依存関係をダウンロード
-COPY go.mod ./
-COPY go.sum ./
-RUN go mod download
-
-# ソースコードをコピー
+ENV CGO_ENABLED=0
+ENV GOOS=linux
+ENV GOARCH=amd64
+WORKDIR /go/src/github.com/yokoe/go-server-example
 COPY . .
+RUN go build main.go
 
-# アプリケーションをビルド
-RUN CGO_ENABLED=0 GOOS=linux go build -o main
+# runtime image
+FROM alpine
+COPY --from=builder /go/src/github.com/yokoe/go-server-example /app
 
-# 最終イメージ
-FROM gcr.io/distroless/static:nonroot
-
-# 実行ファイルをコピー
-COPY --from=builder /build/main /main
-
-# 環境変数の設定
-ENV PORT=8080
-
-# ポートの公開
-EXPOSE 8080
-
-# 実行コマンドの設定
-CMD /app/main 8080
+CMD /app/main $PORT
