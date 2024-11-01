@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // /getuuidからuuidを取得し永久保存
-    public void getAndsaveUUID(){
+    public void getAndsaveUUID(View view){
         // EditText から入力された値を取得し、文字列に変換
         String inputText = editText.getText().toString();
         // 文字列を数値に変換して変数に格納(今のとこ使用してない)
