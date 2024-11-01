@@ -20,8 +20,8 @@ func (r *quizRepository) FindByDifficulty(difficulty int, limit int) ([]models.Q
 	return quizzes, err
 }
 
-func (r *quizRepository) FindByID(id int) (models.Quiz, error) {
+func (r *quizRepository) FindByID(id int) (*models.Quiz, error) {
 	var quiz models.Quiz
 	err := r.db.Where("id = ?", id).First(&quiz).Error
-	return quiz, err
+	return &quiz, err
 }
