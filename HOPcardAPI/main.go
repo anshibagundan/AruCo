@@ -32,6 +32,10 @@ func main() {
 	//quiz,action系の初期化
 	quizRepo := persistence.NewQuizRepository(db)
 	actionRepo := persistence.NewActionRepository(db)
+	quizUsecase := usecase.NewQuizUseCase(quizRepo)
+	actionUsecase := usecase.NewActionUseCase(actionRepo)
+	quizHandler := handlers.NewQuizHandler(quizUsecase)
+	actionHandler := handlers.NewActionHandler(actionUsecase)
 
 	//difficulty系の初期化
 	difficultyUsecase := usecase.NewDifficultyUsecase(quizRepo, actionRepo)
@@ -62,6 +66,8 @@ func main() {
 	r.HandleFunc("/getuserdata", userdataHandler.GetUserData).Methods("GET")
 	r.HandleFunc("/ws/result/android/{uuid}", resultHandler.HandleResultAndroidWebSocket)
 	r.HandleFunc("/ws/result/unity/{uuid}", resultHandler.HandleResultUnityWebSocket)
+	r.HandleFunc("/getquiz", quizHandler.GetQuiz).Methods("GET")
+	r.HandleFunc("/getaction", actionHandler.GetAction).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
