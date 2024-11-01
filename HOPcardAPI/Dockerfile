@@ -11,4 +11,4 @@ RUN go build main.go
 FROM alpine
 COPY --from=builder /go/src/github.com/yokoe/go-server-example /app
 
-CMD /app/main $PORT
+CMD /app/main 8080
