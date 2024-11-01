@@ -40,6 +40,8 @@ public class result extends AppCompatActivity {
     private UserData UserData;
     private Context context; // Contextを保持
     private float tem_distance=1;
+    private TextView distanceText;
+    private TextView feedbackText;
     WebSocketClient_result webSocketClient_result=new WebSocketClient_result(this);
 
 
@@ -54,6 +56,8 @@ public class result extends AppCompatActivity {
         quiz1_text=findViewById(R.id.quiz1_text);
         quiz2_text=findViewById(R.id.quiz2_text);
         quiz3_text=findViewById(R.id.quiz3_text);
+        distanceText=findViewById(R.id.distanceText);
+        feedbackText=findViewById(R.id.feedbackText);
         databaseHelper = new DataBaseHelper(this);
         getTF();
         MakeQuizPercent(quiz1,quiz2,quiz3);
@@ -61,6 +65,9 @@ public class result extends AppCompatActivity {
         percent=(act_percent+quiz_percent)*100;
         setTF_act();
         setTF_quiz();
+        setDistance(WebSocketClient_result.distance);
+        setFeedBack(WebSocketClient_result.feedback);
+
     }
 
 
@@ -80,6 +87,14 @@ public class result extends AppCompatActivity {
         quiz1_text.setText(marubatsu(quiz1));
         quiz2_text.setText(marubatsu(quiz2));
         quiz3_text.setText(marubatsu(quiz3));
+    }
+
+    //距離を表示
+    public void setDistance(String distance){
+        distanceText.setText(distance);
+    }
+    public void setFeedBack(String feedback){
+        feedbackText.setText(feedback);
     }
 
     //booleanから〇✕返す
@@ -147,48 +162,4 @@ public class result extends AppCompatActivity {
 
     }
 
-//    //perをPOST＋tfデータ削除＋画面遷移
-//    public void post_per(View view){
-//        Log.e("percent",String.valueOf(percent));
-//        List<User> users = databaseHelper.getAllUsers();
-//        int Listlength = users.size() + 1;
-//        // 現在の日付を取得
-//        date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
-//        Log.e("percent","length;"+String.valueOf(Listlength));
-//        User user =new User(Listlength,percent,date);
-//        databaseHelper.insertUser(user);
-//
-//
-//
-//        apiService.deleteAllQuizTF().enqueue(new Callback<Void>() {
-//            @Override
-//            public void onResponse(Call<Void> call, Response<Void> response) {
-//                if (response.isSuccessful()){
-//                    //ACT-TFの削除リクエストを送信
-//                    apiService.deleteAllActTF().enqueue(new Callback<Void>() {
-//                        @Override
-//                        public void onResponse(Call<Void> call, Response<Void> response) {
-//                            if (response.isSuccessful()){
-//                                Intent intent = new Intent(result.this, MainActivity.class);
-//                                startActivity(intent);
-//                            }else{
-//                                // Act_TFの削除リクエストが失敗した場合のエラーハンドリング
-//                            }
-//                        }
-//                        @Override
-//                        public void onFailure(Call<Void> call, Throwable t) {
-//                            // Act_TFの削除リクエストが失敗した場合のエラーハンドリング
-//                        }
-//                    });
-//                }else{
-//                    // Quiz_TFの削除リクエストが失敗した場合のエラーハンドリング
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Void> call, Throwable t) {
-//                // Quiz_TFの削除リクエストが失敗した場合のエラーハンドリング
-//            }
-//        });
-//    }
 }

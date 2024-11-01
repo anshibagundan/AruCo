@@ -34,13 +34,15 @@ public class WebSocketClient_result extends WebSocketListener {
 
     // ブーリアン型のリストを作成
     public static List<Boolean> corList = new ArrayList<>();
+    public static String feedback;
+    public static String distance;
     WebSocketClient_xyz webSocketClient_xyz=new WebSocketClient_xyz(customCircleView,context);
 
 
 
 
-    public void startWebsocket() {
-        Request request = new Request.Builder().url("wss://teamhopcard-aa92d1598b3a.herokuapp.com/ws/result/").build();
+    public void startWebsocket(String uuid) {
+        Request request = new Request.Builder().url("wss://teamhopcard-aa92d1598b3a.herokuapp.com/ws/result/android/"+uuid).build();
         webSocket = client.newWebSocket(request, this);
     }
 
@@ -69,21 +71,23 @@ public class WebSocketClient_result extends WebSocketListener {
         try {
             JSONObject json = new JSONObject(text);
 
-            String uuid=json.getString("uuid");
-            SharedPreferences uuidPrefs = context.getSharedPreferences("uuidPrefs", Context.MODE_PRIVATE);
-            String myuuid = uuidPrefs.getString("UUID", "デフォルト値");
-            Log.d("UUID Check", "UUID: " + myuuid); // ログで確認
-            if(uuid.equals(myuuid)){
-                JSONArray cor=json.getJSONArray("cor");
-                // corからブーリアン型の値をリストに追加
-                for (int i = 0; i < cor.length(); i++) {
-                    corList.add(cor.getBoolean(i));
-                }
-                //終了ボタン見えるようにする
-                game.finish_button.setVisibility(View.VISIBLE);
-                // /xyzのwebsocketを閉じる
-                webSocketClient_xyz.closeWebSocket();
+//            String uuid=json.getString("uuid");
+//            SharedPreferences uuidPrefs = context.getSharedPreferences("uuidPrefs", Context.MODE_PRIVATE);
+//            String myuuid = uuidPrefs.getString("UUID", "デフォルト値");
+//            Log.d("UUID Check", "UUID: " + myuuid); // ログで確認
+
+            distance=json.getString("distance");
+            feedback=json.getString("message");
+            JSONArray cor=json.getJSONArray("cor");
+            // corからブーリアン型の値をリストに追加
+            for (int i = 0; i < cor.length(); i++) {
+                corList.add(cor.getBoolean(i));
             }
+            //終了ボタン見えるようにする
+            game.finish_button.setVisibility(View.VISIBLE);
+            // /xyzのwebsocketを閉じる
+            webSocketClient_xyz.closeWebSocket();
+
 
         } catch (JSONException e) {
             Log.e(TAG, "JSON parsing error: " + e.getMessage());

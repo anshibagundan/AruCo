@@ -32,8 +32,8 @@ public class WebSocketClient_xyz extends WebSocketListener {
 
 
 
-    public void startWebsocket() {
-        Request request = new Request.Builder().url("wss://teamhopcard-aa92d1598b3a.herokuapp.com/ws/xyz/").build();
+    public void startWebsocket(String uuid) {
+        Request request = new Request.Builder().url("wss://teamhopcard-aa92d1598b3a.herokuapp.com/ws/xyz/android/"+uuid).build();
         webSocket = client.newWebSocket(request, this);
     }
 
@@ -72,19 +72,36 @@ public class WebSocketClient_xyz extends WebSocketListener {
         try {
             JSONObject json = new JSONObject(text);
 
-            //uuidが一致しているところのx,zを取得
-            String uuid=json.getString("uuid");
-            SharedPreferences uuidPrefs = context.getSharedPreferences("uuidPrefs", Context.MODE_PRIVATE);
-            String myuuid = uuidPrefs.getString("UUID", "デフォルト値");
-            Log.d("UUID Check", "UUID: " + myuuid); // ログで確認
-            if(uuid.equals(myuuid)){
-                float x = (float) (((float)json.getDouble("x")+872)*0.145+265);
-                float z = (float) (((float)json.getDouble("z")+966)*(-0.165)+1210);
-                Log.d(TAG,  "x = " + x + " z = " + z);
-                mainHandler.post(() -> {
-                    customCircleView.setCirclePosition(x, z);
-                }); //y座標はいらんっしょ
-            }
+//            //uuidが一致しているところのx,zを取得
+//            String uuid=json.getString("uuid");
+//            SharedPreferences uuidPrefs = context.getSharedPreferences("uuidPrefs", Context.MODE_PRIVATE);
+//            String myuuid = uuidPrefs.getString("UUID", "デフォルト値");
+//            Log.d("UUID Check", "UUID: " + myuuid); // ログで確認
+//            if(uuid.equals(myuuid)){
+//                float x = (float) (((float)json.getDouble("x")+872)*0.145+265);
+//                float z = (float) (((float)json.getDouble("z")+966)*(-0.165)+1210);
+//                Log.d(TAG,  "x = " + x + " z = " + z);
+//                mainHandler.post(() -> {
+//                    customCircleView.setCirclePosition(x, z);
+//                }); //y座標はいらんっしょ
+//            }
+
+            // 画面の幅と高さを取得
+            int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
+            int screenHeight = context.getResources().getDisplayMetrics().heightPixels;
+
+            float x = (float) (((float)json.getDouble("x")+872)*0.145+265);
+            float z = (float) (((float)json.getDouble("z")+966)*(-0.165)+1210);
+
+            // 相対位置に変換
+            float X = x / 1920 * screenWidth;  // 1920 は基準の幅（例）
+            float Z = z / 1080 * screenHeight; // 1080 は基準の高さ（例）
+
+            Log.d(TAG,  "x = " + x + " z = " + z);
+            Log.d(TAG,  "X = " + X + " Z = " + Z);
+            mainHandler.post(() -> {
+                customCircleView.setCirclePosition(X, Z);
+            }); //y座標はいらんっしょ
 
         } catch (JSONException e) {
             Log.e(TAG, "JSON parsing error: " + e.getMessage());

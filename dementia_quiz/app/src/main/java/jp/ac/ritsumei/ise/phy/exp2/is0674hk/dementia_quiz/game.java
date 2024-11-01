@@ -48,6 +48,7 @@ public class game extends AppCompatActivity {
     private final OkHttpClient client = new OkHttpClient();
     private Context context; // Contextを保持
     public static Button finish_button;
+    public TextView diff_text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,87 +58,37 @@ public class game extends AppCompatActivity {
         // ApiServiceインスタンスを取得
         apiService = ApiClient.getApiService();
 
-        act_text = findViewById(R.id.act_text);
+
         nowgame=findViewById(R.id.nowgame);
         customCircleView = findViewById(R.id.customCircleView);
         finish_button=findViewById(R.id.finish_button);
+        diff_text=findViewById(R.id.diff_text);
 
 
+        SharedPreferences uuidPrefs = context.getSharedPreferences("uuidPrefs", Context.MODE_PRIVATE);
+        String myuuid = uuidPrefs.getString("UUID", "デフォルト値");
+        Log.d("UUID Check", "UUID: " + myuuid); // ログで確認
+
+        setDiff(home.difficulty);
         WebSocketClient_xyz webSocketClient_xyz = new WebSocketClient_xyz(customCircleView,this);
         WebSocketClient_result webSocketClient_result=new WebSocketClient_result(this);
-        webSocketClient_xyz.startWebsocket();
-        webSocketClient_result.startWebsocket();
+        webSocketClient_xyz.startWebsocket(myuuid);
+        webSocketClient_result.startWebsocket(myuuid);
     }
 
 
-
-
-
-
-    public void act_setText() {
-        apiService.getAct_select().enqueue(new Callback<List<Act_select>>() {
-            @Override
-            public void onResponse(Call<List<Act_select>> call, Response<List<Act_select>> response) {
-                int act_diff = 0;
-                if (response.isSuccessful() && response.body() != null) {
-                    Log.d("act_diff", String.valueOf(response.body().get(0)));
-                    act_diff = response.body().get(0).getSelect_diff();
-                    if (act_diff >= 1 && act_diff <= 6) {
-                        act_diff_text = "簡単";
-                    } else if (act_diff >= 7 && act_diff <= 12) {
-                        act_diff_text = "普通";
-                    } else if (act_diff >= 13 && act_diff <= 18) {
-                        act_diff_text = "難しい";
-                    } else {
-                        act_diff_text = "未定義";  // 1~18以外の値の場合のデフォルトメッセージ
-                    }
-                    quiz_text.setText(String.valueOf(act_diff_text));
-                    Log.d("act_diff", String.valueOf(act_diff));
-                } else {
-                    Log.e("act_diff", "fail ");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Act_select>> call, Throwable t) {
-                Log.e("act_diff", "onFailure ");
-            }
-        });
+    //難易度を表示
+    public void setDiff(int difficulty){
+        if(difficulty==1){
+            diff_text.setText("かんたん");
+        }
+        if(difficulty==2){
+            diff_text.setText("ふつう");
+        }
+        if (difficulty==3){
+            diff_text.setText("むずかしい");
+        }
     }
-
-    public void quiz_setText() {
-        apiService.getQuiz_select().enqueue(new Callback<List<Quiz_select>>() {
-            @Override
-            public void onResponse(Call<List<Quiz_select>> call, Response<List<Quiz_select>> response) {
-                int quiz_diff = 0;
-                if (response.isSuccessful() && response.body() != null) {
-                    Log.d("quiz_diff", String.valueOf(response.body().get(0)));
-                    quiz_diff = response.body().get(0).getSelect_diff();
-                    switch (quiz_diff) {
-                        case 1:
-                            quiz_diff_text = "簡単";
-                            break;
-                        case 2:
-                            quiz_diff_text = "普通";
-                            break;
-                        case 3:
-                            quiz_diff_text = "難しい";
-                            break;
-                    }
-                    act_text.setText(String.valueOf(quiz_diff_text));
-                    Log.d("quiz_diff", String.valueOf(quiz_diff));
-                } else {
-                    Log.e("quiz_diff", "fail ");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Quiz_select>> call, Throwable t) {
-                Log.e("quiz_diff", "onFailure");
-            }
-        });
-    }
-
 
     public void game_result(View view){
         Intent intent =new Intent(game.this,result.class);

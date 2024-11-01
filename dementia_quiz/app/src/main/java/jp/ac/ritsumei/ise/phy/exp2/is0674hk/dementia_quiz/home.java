@@ -26,15 +26,10 @@ import retrofit2.Callback;
 public class home extends AppCompatActivity {
 
     private ApiService apiService;
-    private Button easy;
-    private Button normal;
-    private Button difficult;
-    private FrameLayout act_selectDiff;
-    private FrameLayout quiz_selectDiff;
     private WebSocket webSocket;
     private final OkHttpClient client = new OkHttpClient();
-    private int randEasy,randNormal,randDifficult;
     private String myuuid;
+    public static int difficulty;
 
 
 
@@ -51,14 +46,13 @@ public class home extends AppCompatActivity {
         myuuid = uuidPrefs.getString("UUID", "default-uuid");
 
         // WebSocket接続を確立
-        startWebSocket();
-
+        startWebSocket(myuuid);
 
     }
 
     // WebSocket接続を確立
-    private void startWebSocket() {
-        Request request = new Request.Builder().url("wss://teamhopcard-aa92d1598b3a.herokuapp.com/ws/difficulty").build();
+    private void startWebSocket(String uuid) {
+        Request request = new Request.Builder().url("wss://teamhopcard-aa92d1598b3a.herokuapp.com/ws/difficulty/android/"+uuid).build();
         webSocket = client.newWebSocket(request, new WebSocketListener() {
             @Override
             public void onOpen(WebSocket webSocket, okhttp3.Response response) {
@@ -75,16 +69,17 @@ public class home extends AppCompatActivity {
     }
 
     // データを送信してWebSocket接続を閉じる
-    private void sendDataAndCloseWebSocket(String uuid, int difficulty) {
+    private void sendDataAndCloseWebSocket(int difficulty) {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("uuid", uuid);
             jsonObject.put("difficulty",difficulty);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         webSocket.send(jsonObject.toString());
         webSocket.close(1000, null);
+        this.difficulty=difficulty;
+
 
         Intent intent = new Intent(this, game.class);
         startActivity(intent);
@@ -93,12 +88,13 @@ public class home extends AppCompatActivity {
 
 
     public void setEasy() {
-        sendDataAndCloseWebSocket(myuuid,1);
+        sendDataAndCloseWebSocket(1);
     }
     public void setNormal(){
-        sendDataAndCloseWebSocket(myuuid,2);
+        sendDataAndCloseWebSocket(2);
     }
     public void setDifficult(){
-        sendDataAndCloseWebSocket(myuuid,3);
+        sendDataAndCloseWebSocket(3);
     }
+
 }
