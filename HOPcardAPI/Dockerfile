@@ -28,4 +28,4 @@ ENV PORT=8080
 EXPOSE 8080
 
 # 実行コマンドの設定
-CMD ["/main"]
+CMD /app/main 8080
