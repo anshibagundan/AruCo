@@ -52,7 +52,7 @@ public class home extends AppCompatActivity {
 
     // WebSocket接続を確立
     private void startWebSocket(String uuid) {
-        Request request = new Request.Builder().url("wss://teamhopcard-aa92d1598b3a.herokuapp.com/ws/difficulty/android/"+uuid).build();
+        Request request = new Request.Builder().url("https://hopcardapi-4f6e9a3bf06d.herokuapp.com/ws/difficulty/android/"+uuid).build();
         webSocket = client.newWebSocket(request, new WebSocketListener() {
             @Override
             public void onOpen(WebSocket webSocket, okhttp3.Response response) {

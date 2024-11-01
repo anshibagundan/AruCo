@@ -42,7 +42,7 @@ public class WebSocketClient_result extends WebSocketListener {
 
 
     public void startWebsocket(String uuid) {
-        Request request = new Request.Builder().url("wss://teamhopcard-aa92d1598b3a.herokuapp.com/ws/result/android/"+uuid).build();
+        Request request = new Request.Builder().url("whttps://hopcardapi-4f6e9a3bf06d.herokuapp.com/ws/result/android/"+uuid).build();
         webSocket = client.newWebSocket(request, this);
     }
 

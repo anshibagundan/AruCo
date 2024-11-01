@@ -34,7 +34,7 @@ public class result extends AppCompatActivity {
     private TextView quiz1_text;
     private TextView quiz2_text;
     private TextView quiz3_text;
-    private DataBaseHelper databaseHelper;
+
     public static ArrayList<String> dateList;
     private String date;
     private UserData UserData;
@@ -58,7 +58,7 @@ public class result extends AppCompatActivity {
         quiz3_text=findViewById(R.id.quiz3_text);
         distanceText=findViewById(R.id.distanceText);
         feedbackText=findViewById(R.id.feedbackText);
-        databaseHelper = new DataBaseHelper(this);
+
         getTF();
         MakeQuizPercent(quiz1,quiz2,quiz3);
         MakeActPercent(act1);

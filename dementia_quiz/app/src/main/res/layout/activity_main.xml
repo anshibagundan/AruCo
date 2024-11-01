@@ -93,6 +93,7 @@
                     android:textSize="30sp"/>
 
                 <EditText
+                    android:hint="6桁コードを入力"
                     android:id="@+id/inputCode"
                     android:layout_width="200dp"
                     android:layout_height="50dp"

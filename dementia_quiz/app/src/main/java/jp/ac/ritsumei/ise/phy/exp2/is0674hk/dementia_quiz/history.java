@@ -16,8 +16,8 @@ import java.util.Locale;
 
 
 public class history extends AppCompatActivity {
-    private DataBaseHelper databaseHelper;
-    private UserAdapter userAdapter;
+
+
     public static ListView userListView;
     public static ArrayAdapter<String> adapter;
     public FrameLayout popup;
