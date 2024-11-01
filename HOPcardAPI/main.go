@@ -76,7 +76,7 @@ func main() {
 	log.Fatal(http.ListenAndServe(":"+port, r))
 }
 
-// initDBはデータベース接続の初期化を行います
+// initDBは別ファイルの方がいいのかな\(´ω` \)
 func initDB() (*gorm.DB, error) {
 	// .envファイルの読み込み
 	if err := godotenv.Load(); err != nil {
