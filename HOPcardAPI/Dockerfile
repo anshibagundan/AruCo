@@ -26,4 +26,4 @@ ENV PORT=8080
 EXPOSE 8080
 
 # アプリケーションを起動
-CMD ["/app/main"]
+CMD ["./app/main"]
