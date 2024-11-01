@@ -1,5 +1,5 @@
 build:
   docker:
     web:
-      dockerfile: HOPCardAPI/Dockerfile
-      context: HOPCardAPI
+      dockerfile: HOPcardAPI/Dockerfile
+      context: HOPcardAPI
