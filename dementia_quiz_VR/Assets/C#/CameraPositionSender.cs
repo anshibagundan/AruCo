@@ -42,7 +42,7 @@ public class CameraPositionSender : MonoBehaviour
             }
 
             // 0.1秒ごとに更新
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.5f);
         }
     }
 

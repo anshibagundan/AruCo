@@ -6,46 +6,158 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using App.BaseSystem.DataStores.ScriptableObjects.Status;
-using UnityEngine.XR;
+using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit;
+using WebSocketSharp;
+
+
+// VRコントローラーの入力を処理し、アクションの選択と結果の送信を管理するクラス
 
 public class ActionController : MonoBehaviour
 {
+    // VRコントローラーの参照
+    [SerializeField] private XRController rightController;
+    [SerializeField] private XRController leftController;
+
+    // Input System用のアクション参照
+    [SerializeField] private InputActionReference rightHandActions;
+    [SerializeField] private InputActionReference leftHandActions;
+
+    // UI要素の参照
     public TextMeshProUGUI Actname;
     public TextMeshProUGUI Actsel_1;
     public TextMeshProUGUI Actsel_2;
-    public StatusData statusData;  // statusDataはアセット上に存在するScriptableObject
+    public TextMeshProUGUI WaitingText;
 
-    private const string GetUrl = "https://hopcardapi-4f6e9a3bf06d.herokuapp.com/ws/difficulty/unity/{uuid}/";
-    private const string PostUrl = "https://hopcardapi-4f6e9a3bf06d.herokuapp.com/ws/result/unity/{uuid}/";
+    // ステータスデータの参照
+    public StatusData statusData;
 
-    private bool hasnotAct = false;
-    private bool isProcessing = false;
-    private string uuid;
+    // API エンドポイントURL
+    private string GetUrl;
+    private string PostUrl;
 
+    // 状態管理フラグ
+    private bool hasnotAct = false;      // アクションデータが取得できていないかどうか
+    private bool isProcessing = false;    // データ処理中かどうか
+    private bool isConnected = false;     // サーバーに接続されているかどうか
+
+    // 接続リトライ設定
+    private int maxRetries = 5;          // 最大再試行回数
+    private float retryDelay = 2f;       // 再試行間の待機時間（秒）
+
+    
+    // コンポーネントが有効になった時の処理
+    
+    private void OnEnable()
+    {
+        EnableInputActions();
+    }
+
+    
+    // コンポーネントが無効になった時の処理
+    private void OnDisable()
+    {
+        DisableInputActions();
+    }
+
+    
+    // Input Actionを有効化
+    private void EnableInputActions()
+    {
+        if (rightHandActions != null)
+            rightHandActions.action.Enable();
+        if (leftHandActions != null)
+            leftHandActions.action.Enable();
+    }
+
+    
+    // Input Actionを無効化
+    private void DisableInputActions()
+    {
+        if (rightHandActions != null)
+            rightHandActions.action.Disable();
+        if (leftHandActions != null)
+            leftHandActions.action.Disable();
+    }
+
+    
+    // 初期化処理
     public void Start()
     {
-        uuid = statusData.UUID;
-        //いちおうUUIDの確認
-        if (string.IsNullOrEmpty(uuid))
+        // UUIDの検証
+        if (string.IsNullOrEmpty(statusData.UUID))
         {
             Debug.LogError("UUIDが設定されていません。");
             return;
         }
-        StartCoroutine(GetData());
+
+        // APIエンドポイントの設定
+        GetUrl = "https://hopcardapi-4f6e9a3bf06d.herokuapp.com/getaction";
+        PostUrl = $"wss://hopcardapi-4f6e9a3bf06d.herokuapp.com/ws/result/unity/{statusData.UUID}/";
+
+        SetupInitialDisplay();
+        StartCoroutine(TryEstablishConnection());
     }
 
+   
+    // 初期UI表示の設定
+    private void SetupInitialDisplay()
+    {
+        if (WaitingText != null)
+        {
+            WaitingText.text = "少々お待ちください";
+            WaitingText.gameObject.SetActive(true);
+        }
+        if (Actsel_1 != null) Actsel_1.gameObject.SetActive(false);
+        if (Actsel_2 != null) Actsel_2.gameObject.SetActive(false);
+    }
+
+    
+    // サーバーとの接続確立を試行
+    private IEnumerator TryEstablishConnection()
+    {
+        int retryCount = 0;
+        while (!isConnected && retryCount < maxRetries)
+        {
+            yield return StartCoroutine(GetData());
+
+            if (!hasnotAct)
+            {
+                isConnected = true;
+                if (WaitingText != null) WaitingText.gameObject.SetActive(false);
+                if (Actsel_1 != null) Actsel_1.gameObject.SetActive(true);
+                if (Actsel_2 != null) Actsel_2.gameObject.SetActive(true);
+            }
+            else
+            {
+                retryCount++;
+                if (retryCount < maxRetries)
+                {
+                    yield return new WaitForSeconds(retryDelay);
+                }
+                else
+                {
+                    if (WaitingText != null) WaitingText.text = "接続に失敗しました";
+                    Debug.LogError("最大リトライ回数を超過しました");
+                }
+            }
+        }
+    }
+
+    
+    // 毎フレームの更新処理
     private void Update()
     {
-        if (isProcessing) return;
+        if (!isConnected || isProcessing) return;
 
-        // 右コントローラーのボタン入力を検出
+        // 右コントローラーの入力チェック
         if (CheckRightControllerButtons())
         {
             isProcessing = true;
             StartCoroutine(PostData("R"));
         }
 
-        // 左コントローラーのボタン入力を検出
+        // 左コントローラーの入力チェック
         if (CheckLeftControllerButtons())
         {
             isProcessing = true;
@@ -53,53 +165,45 @@ public class ActionController : MonoBehaviour
         }
     }
 
+    
+    // 右コントローラーのボタン入力をチェック
+    
     private bool CheckRightControllerButtons()
     {
-        // 右コントローラーの全てのボタンを確認
-        InputDevice rightController = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
-        if (rightController.isValid)
+        // VRコントローラーのチェック
+        if (rightController != null && rightController.inputDevice.isValid)
         {
-            bool buttonValue;
-            if (rightController.TryGetFeatureValue(CommonUsages.primaryButton, out buttonValue) && buttonValue)
-                return true;
-            if (rightController.TryGetFeatureValue(CommonUsages.secondaryButton, out buttonValue) && buttonValue)
-                return true;
-            if (rightController.TryGetFeatureValue(CommonUsages.gripButton, out buttonValue) && buttonValue)
-                return true;
-            if (rightController.TryGetFeatureValue(CommonUsages.triggerButton, out buttonValue) && buttonValue)
-                return true;
+            return rightHandActions?.action?.triggered ?? false;
         }
 
-        return false;
+        // デバッグ用キーボード入力
+        return Keyboard.current != null && Keyboard.current.enterKey.isPressed;
     }
 
+    
+    // 左コントローラーのボタン入力をチェック
+    
     private bool CheckLeftControllerButtons()
     {
-        // 左コントローラーの全てのボタンを確認
-        InputDevice leftController = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
-        if (leftController.isValid)
+        // VRコントローラーのチェック
+        if (leftController != null && leftController.inputDevice.isValid)
         {
-            bool buttonValue;
-            if (leftController.TryGetFeatureValue(CommonUsages.primaryButton, out buttonValue) && buttonValue)
-                return true;
-            if (leftController.TryGetFeatureValue(CommonUsages.secondaryButton, out buttonValue) && buttonValue)
-                return true;
-            if (leftController.TryGetFeatureValue(CommonUsages.gripButton, out buttonValue) && buttonValue)
-                return true;
-            if (leftController.TryGetFeatureValue(CommonUsages.triggerButton, out buttonValue) && buttonValue)
-                return true;
+            return leftHandActions?.action?.triggered ?? false;
         }
 
-        return false;
+        // デバッグ用キーボード入力
+        return Keyboard.current != null && Keyboard.current.spaceKey.isPressed;
     }
-    //クイズデータ取得
+
+    
+    // サーバーからアクションデータを取得
     private IEnumerator GetData()
     {
-        // APIに問い合わせ
-        string url = GetUrl.Replace("{uuid}", uuid) + "?id=" + statusData.ActDiff;
+        string url = $"{GetUrl}?id={statusData.ActDiff}";
 
         using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
         {
+            Debug.Log($"{GetUrl}?id={statusData.ActDiff}");
             webRequest.SetRequestHeader("X-Debug-Mode", "true");
             yield return webRequest.SendWebRequest();
 
@@ -107,18 +211,18 @@ public class ActionController : MonoBehaviour
                 webRequest.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.LogError("エラー: " + webRequest.error);
+                hasnotAct = true;
             }
             else
             {
                 string json = webRequest.downloadHandler.text;
-
-                // JSONレスポンスをパース
                 SelectionData selectionData = JsonUtility.FromJson<SelectionData>(json);
 
                 if (selectionData != null)
                 {
                     Actsel_1.text = selectionData.lef_sel;
                     Actsel_2.text = selectionData.rig_sel;
+                    hasnotAct = false;
                 }
                 else
                 {
@@ -129,15 +233,17 @@ public class ActionController : MonoBehaviour
         }
     }
 
+    
+    // 選択結果をサーバーに送信
+    // <param name="LorR">左右の選択（"L" または "R"）</param>
     private IEnumerator PostData(string LorR)
     {
         if (!hasnotAct)
         {
-            // 偶奇で正解判定
-            bool isCorrect = false;
-            isCorrect = (statusData.ActDiff % 2 == 0) ? (LorR == "R") : (LorR == "L");//なんかかっこいい書き方
+            // 正解判定
+            bool isCorrect = (statusData.ActDiff % 2 == 0) ? (LorR == "R") : (LorR == "L");
 
-            // statusData.LRに結果を保存
+            // 結果の記録
             if (statusData.LR != null)
             {
                 statusData.LR.Add(isCorrect);
@@ -148,7 +254,7 @@ public class ActionController : MonoBehaviour
                 statusData.LR = new List<bool> { isCorrect };
             }
 
-            // 送信するデータを作成
+            // 送信データの準備
             PostDataPayload payload = new PostDataPayload
             {
                 quiz_id = statusData.QuizDiff.ToArray(),
@@ -157,28 +263,54 @@ public class ActionController : MonoBehaviour
             };
 
             string jsonPayload = JsonUtility.ToJson(payload);
+            bool isCompleted = false;
+            string errorMessage = null;
 
-            byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonPayload);
-            string url = PostUrl.Replace("{uuid}", uuid);
-
-            using (UnityWebRequest request = new UnityWebRequest(url, "POST"))
+            // WebSocket通信
+            using (WebSocket ws = new WebSocket(PostUrl))
             {
-                request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-                request.downloadHandler = new DownloadHandlerBuffer();
-                request.SetRequestHeader("Content-Type", "application/json");
-                request.SetRequestHeader("X-Debug-Mode", "true");
-
-                yield return request.SendWebRequest();
-
-                if (request.result == UnityWebRequest.Result.Success)
+                ws.OnOpen += (sender, e) =>
                 {
-                    // リクエスト成功時の処理
-                    SceneManager.LoadScene("TitleScene");
-                }
-                else
+                    Debug.Log("WebSocket接続が開かれました");
+                    ws.Send(jsonPayload);
+                };
+
+                ws.OnMessage += (sender, e) =>
                 {
-                    Debug.LogError("Error: " + request.error);
+                    Debug.Log("WebSocketでメッセージを受信しました: " + e.Data);
+                    isCompleted = true;
+                    ws.Close();
+                };
+
+                ws.OnError += (sender, e) =>
+                {
+                    Debug.LogError("WebSocketエラー: " + e.Message);
+                    errorMessage = e.Message;
+                    isCompleted = true;
+                    ws.Close();
+                };
+
+                ws.OnClose += (sender, e) =>
+                {
+                    Debug.Log("WebSocket接続が閉じられました");
+                };
+
+                ws.ConnectAsync();
+
+                while (!isCompleted)
+                {
+                    yield return null;
                 }
+            }
+
+            // 通信結果の処理
+            if (string.IsNullOrEmpty(errorMessage))
+            {
+                SceneManager.LoadScene("TitleScene");
+            }
+            else
+            {
+                Debug.LogError("WebSocket通信中のエラー: " + errorMessage);
             }
         }
         else
@@ -188,6 +320,8 @@ public class ActionController : MonoBehaviour
         isProcessing = false;
     }
 
+    
+    // 選択肢データのシリアライズ用クラス
     [Serializable]
     public class SelectionData
     {
@@ -195,6 +329,8 @@ public class ActionController : MonoBehaviour
         public string rig_sel;
     }
 
+    
+    // 送信データのシリアライズ用クラス
     [Serializable]
     public class PostDataPayload
     {
