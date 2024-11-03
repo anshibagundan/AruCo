@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: StatusData
   m_EditorClassIdentifier: 
   name: 
-  id: 0
-  quizDiff: 
+  id: 2
+  quizDiff: 030000000200000004000000
   actDiff: 1
   uuid: de158130-e94a-5192-8bb9-d27007ad1944
-  lr: 
+  lr: 01000101
