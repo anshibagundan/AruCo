@@ -49,6 +49,7 @@ public class game extends AppCompatActivity {
     private Context context; // Contextを保持
     public static Button finish_button;
     public TextView diff_text;
+    private ImageView diff_image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,16 +60,17 @@ public class game extends AppCompatActivity {
         apiService = ApiClient.getApiService();
 
 
-        nowgame=findViewById(R.id.nowgame);
+
         customCircleView = findViewById(R.id.customCircleView);
         finish_button=findViewById(R.id.finish_button);
-        diff_text=findViewById(R.id.diff_text);
+        diff_image=findViewById(R.id.diff_image);
 
 
         SharedPreferences uuidPrefs = getSharedPreferences("uuidPrefs", Context.MODE_PRIVATE);
         String myuuid = uuidPrefs.getString("UUID", "デフォルト値");
         Log.d("UUID Check", "UUID: " + myuuid); // ログで確認
 
+        finish_button.setEnabled(false);
         setDiff(home.difficulty);
         WebSocketClient_xyz webSocketClient_xyz = new WebSocketClient_xyz(customCircleView,this);
         WebSocketClient_result webSocketClient_result=new WebSocketClient_result(this);
@@ -80,13 +82,13 @@ public class game extends AppCompatActivity {
     //難易度を表示
     public void setDiff(int difficulty){
         if(difficulty==1){
-            diff_text.setText("かんたん");
+            diff_image.setImageResource(R.drawable.easy_button);
         }
         if(difficulty==2){
-            diff_text.setText("ふつう");
+            diff_image.setImageResource(R.drawable.normal_button);
         }
         if (difficulty==3){
-            diff_text.setText("むずかしい");
+            diff_image.setImageResource(R.drawable.hard_button);
         }
     }
 

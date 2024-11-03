@@ -1,0 +1,27 @@
+<!-- res/drawable/textview_background.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 背景の灰色 -->
+    <item android:top="0sp" android:bottom="0sp">
+        <shape android:shape="rectangle">
+            <solid android:color="#ffeeaa"/>
+        </shape>
+    </item>
+
+    <!-- 上の青線 -->
+    <item android:top="50dp" android:bottom="0dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#0000ff"/>
+            <size android:height="2dp"/>
+        </shape>
+    </item>
+
+    <!-- 下の青線 -->
+    <item android:top="0dp" android:bottom="50dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#0000ff"/>
+            <size android:height="2dp"/>
+        </shape>
+    </item>
+
+</layer-list>

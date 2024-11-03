@@ -83,11 +83,13 @@ public class WebSocketClient_result extends WebSocketListener {
             for (int i = 0; i < cor.length(); i++) {
                 corList.add(cor.getBoolean(i));
             }
-            //終了ボタン見えるようにする
-            game.finish_button.setVisibility(View.VISIBLE);
-            // /xyzのwebsocketを閉じる
-            webSocketClient_xyz.closeWebSocket();
-
+            if(corList.size()==4){
+                //終了ボタン見えるようにする
+                game.finish_button.setAlpha(0.9f);
+                game.finish_button.setEnabled(true);
+                // /xyzのwebsocketを閉じる
+                webSocketClient_xyz.closeWebSocket();
+            }
 
         } catch (JSONException e) {
             Log.e(TAG, "JSON parsing error: " + e.getMessage());
