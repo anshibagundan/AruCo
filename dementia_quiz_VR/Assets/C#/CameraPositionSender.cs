@@ -33,7 +33,7 @@ public class CameraPositionSender : MonoBehaviour
                 Vector3 cameraPosition = transform.position;
 
                 // 座標をJSON形式に変換
-                string json = JsonUtility.ToJson(new HOPPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z));
+                string json = JsonUtility.ToJson(new HOPPosition(cameraPosition.x,cameraPosition.z));
 
                 Debug.Log("Sending data: " + json);
 
@@ -42,7 +42,7 @@ public class CameraPositionSender : MonoBehaviour
             }
 
             // 0.1秒ごとに更新
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.5f);
         }
     }
 
@@ -61,13 +61,11 @@ public class CameraPositionSender : MonoBehaviour
     public class HOPPosition
     {
         public float x;
-        public float y;
         public float z;
 
-        public HOPPosition(float x, float y, float z)
+        public HOPPosition(float x,float z)
         {
             this.x = x;
-            this.y = y;
             this.z = z;
         }
     }
