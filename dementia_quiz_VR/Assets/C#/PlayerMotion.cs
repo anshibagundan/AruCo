@@ -47,9 +47,11 @@ public class PlayerMotion : MonoBehaviour
     private int QuizIdData2;
     private int QuizIdData3;
     private QuizTF[] QuizTFDataArray;
+    private int ShakeCount;
 
     private void Start()
     {
+        ShakeCount = 0;
         // CharacterControllerコンポーネントを取得
         Controller = GetComponent<CharacterController>();
     }
@@ -115,6 +117,7 @@ public class PlayerMotion : MonoBehaviour
 
         // 移動効果を計算し、MoveThrottleに加算
         MoveThrottle += CalculateMoveEffect(moveInfluence, ort, handShakeVel, handShakeAcc);
+        ShakeCount += 1;
     }
 
     private Vector3 CalculateMoveEffect(float moveInfluence, Quaternion ort, Vector3 handShakeVel, Vector3 handShakeAcc)
