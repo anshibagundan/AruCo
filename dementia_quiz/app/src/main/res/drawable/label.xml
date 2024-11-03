@@ -1,27 +1,20 @@
-<!-- res/drawable/textview_background.xml -->
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 背景の色 (必要であれば) -->
+    <solid android:color="#ffffff" />
 
-    <!-- 背景の灰色 -->
-    <item android:top="0sp" android:bottom="0sp">
-        <shape android:shape="rectangle">
-            <solid android:color="#ffeeaa"/>
-        </shape>
-    </item>
+    <!-- 枠線の色と太さ -->
+    <stroke
+        android:width="3dp"
+        android:color="#2222aa" /> <!-- ここで枠線の色を指定 -->
 
-    <!-- 上の青線 -->
-    <item android:top="50dp" android:bottom="0dp">
-        <shape android:shape="rectangle">
-            <solid android:color="#0000ff"/>
-            <size android:height="2dp"/>
-        </shape>
-    </item>
+    <!-- 角丸 (オプション) -->
+    <corners android:radius="2dp" />
 
-    <!-- 下の青線 -->
-    <item android:top="0dp" android:bottom="50dp">
-        <shape android:shape="rectangle">
-            <solid android:color="#0000ff"/>
-            <size android:height="2dp"/>
-        </shape>
-    </item>
-
-</layer-list>
+    <!-- パディング (オプション) -->
+    <padding
+        android:left="10dp"
+        android:top="4dp"
+        android:right="10dp"
+        android:bottom="4dp" />
+</shape>

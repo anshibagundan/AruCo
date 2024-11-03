@@ -37,7 +37,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="280sp"
             android:backgroundTint="#990000"
-            android:alpha="0.3"
+            android:alpha="0.4"
             android:onClick="game_result"
             android:text="終了"
             android:textSize="40sp"

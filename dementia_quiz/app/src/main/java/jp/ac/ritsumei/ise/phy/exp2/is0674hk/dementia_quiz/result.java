@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -82,11 +83,36 @@ public class result extends AppCompatActivity {
     //〇✕テキストをセット
     public void setTF_act(){
         act1_text.setText(marubatsu(act1));
+        if (act1) {
+            act1_text.setTextColor(Color.parseColor("#ff0000"));
+        } else {
+            act1_text.setTextColor(Color.parseColor("#0000ff"));
+        }
     }
     public void setTF_quiz() {
+        // quiz1の結果を設定し、色を変更
         quiz1_text.setText(marubatsu(quiz1));
+        if (quiz1) { // quiz1がtrueの場合
+            quiz1_text.setTextColor(Color.parseColor("#ff0000")); // 赤（#ff0000）
+        } else { // quiz1がfalseの場合
+            quiz1_text.setTextColor(Color.parseColor("#0000ff")); // 青（#0000ff）
+        }
+
+        // quiz2の結果を設定し、色を変更
         quiz2_text.setText(marubatsu(quiz2));
+        if (quiz2) { // quiz2がtrueの場合
+            quiz2_text.setTextColor(Color.parseColor("#ff0000")); // 赤（#ff0000）
+        } else { // quiz2がfalseの場合
+            quiz2_text.setTextColor(Color.parseColor("#0000ff")); // 青（#0000ff）
+        }
+
+        // quiz3の結果を設定し、色を変更
         quiz3_text.setText(marubatsu(quiz3));
+        if (quiz3) { // quiz3がtrueの場合
+            quiz3_text.setTextColor(Color.parseColor("#ff0000")); // 赤（#ff0000）
+        } else { // quiz3がfalseの場合
+            quiz3_text.setTextColor(Color.parseColor("#0000ff")); // 青（#0000ff）
+        }
     }
 
     //距離を表示
