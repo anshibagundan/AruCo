@@ -3,9 +3,6 @@ using System.Collections.Generic;
 
 namespace App.BaseSystem.DataStores.ScriptableObjects.Status
 {
-    /// <summary>
-    /// ステータスを持つオブジェクトのデータ群 (対象: プレイヤー、敵、破壊可能オブジェクトなど)
-    /// </summary>
     [CreateAssetMenu(menuName = "ScriptableObject/Data/Status")]
     public class StatusData : BaseData
     {
@@ -24,6 +21,22 @@ namespace App.BaseSystem.DataStores.ScriptableObjects.Status
         }
         [SerializeField]
         private float actDiff;
+
+        public int SerialNum
+        {
+            get => serialNum;
+            set => serialNum = value;
+        }
+        [SerializeField]
+        private int serialNum;
+
+        public string CurrentName
+        {
+            get => currentName;
+            set => currentName = value;
+        }
+        [SerializeField]
+        private string currentName;
 
         public string UUID
         {
