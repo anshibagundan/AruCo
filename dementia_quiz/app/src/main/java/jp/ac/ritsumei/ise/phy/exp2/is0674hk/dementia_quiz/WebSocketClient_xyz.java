@@ -33,7 +33,7 @@ public class WebSocketClient_xyz extends WebSocketListener {
 
 
     public void startWebsocket(String uuid) {
-        Request request = new Request.Builder().url("https://hopcardapi-4f6e9a3bf06d.herokuapp.com/ws/xyz/android/"+uuid).build();
+        Request request = new Request.Builder().url("wss://hopcardapi-4f6e9a3bf06d.herokuapp.com/ws/xyz/android/"+uuid).build();
         webSocket = client.newWebSocket(request, this);
     }
 
@@ -61,7 +61,7 @@ public class WebSocketClient_xyz extends WebSocketListener {
 
     @Override
     public void onOpen(WebSocket webSocket, okhttp3.Response response) {
-        Log.d(TAG, "WebSocket Connection Opened");
+        Log.d(TAG, "WebSocket_xyz Connection Opened");
     }
 
     @Override

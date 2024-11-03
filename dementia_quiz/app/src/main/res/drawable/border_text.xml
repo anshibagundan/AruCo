@@ -6,7 +6,7 @@
     <!-- 枠線の色と太さ -->
     <stroke
         android:width="2dp"
-        android:color="#000000" /> <!-- 赤い枠線 -->
+        android:color="#000000" /> <!-- ここで枠線の色を指定 -->
 
     <!-- 角丸 (オプション) -->
     <corners android:radius="4dp" />

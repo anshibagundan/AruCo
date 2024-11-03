@@ -44,6 +44,7 @@ public class home extends AppCompatActivity {
         // SharedPreferences から UUID を取得
         SharedPreferences uuidPrefs = getSharedPreferences("uuidPrefs", MODE_PRIVATE);
         myuuid = uuidPrefs.getString("UUID", "default-uuid");
+        Log.d("UUID Check ホーム開いたとき", "UUID: " + myuuid); // ログで確認
 
         // WebSocket接続を確立
         startWebSocket(myuuid);
@@ -52,7 +53,8 @@ public class home extends AppCompatActivity {
 
     // WebSocket接続を確立
     private void startWebSocket(String uuid) {
-        Request request = new Request.Builder().url("https://hopcardapi-4f6e9a3bf06d.herokuapp.com/ws/difficulty/android/"+uuid).build();
+        Request request = new Request.Builder().url("wss://hopcardapi-4f6e9a3bf06d.herokuapp.com/ws/difficulty/android/"+uuid).build();
+
         webSocket = client.newWebSocket(request, new WebSocketListener() {
             @Override
             public void onOpen(WebSocket webSocket, okhttp3.Response response) {
@@ -70,6 +72,10 @@ public class home extends AppCompatActivity {
 
     // データを送信してWebSocket接続を閉じる
     private void sendDataAndCloseWebSocket(int difficulty) {
+        if (webSocket == null) {
+            Log.e("WebSocket", "WebSocket not connected");
+            return;
+        }
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("difficulty",difficulty);
@@ -77,24 +83,40 @@ public class home extends AppCompatActivity {
             e.printStackTrace();
         }
         webSocket.send(jsonObject.toString());
-        webSocket.close(1000, null);
+        Log.d("WebSocket", "Sent: " + jsonObject);
         this.difficulty=difficulty;
+
 
 
         Intent intent = new Intent(this, game.class);
         startActivity(intent);
+        Log.d("WebSocket", "scene changed");
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (webSocket != null) {
+            webSocket.close(1000, "Activity Pausing");
+            Log.d("WebSocket", "Closed in onPause()");
+            webSocket = null;
+        }
     }
 
 
 
-    public void setEasy() {
+    public void setEasy(View view) {
         sendDataAndCloseWebSocket(1);
+        Log.d("難易度", "かんたん");
     }
-    public void setNormal(){
+    public void setNormal(View view) {
         sendDataAndCloseWebSocket(2);
+        Log.d("難易度", "ふつう");
     }
-    public void setDifficult(){
+    public void setDifficult(View view){
         sendDataAndCloseWebSocket(3);
+        Log.d("難易度", "むずかしい");
     }
 
 }

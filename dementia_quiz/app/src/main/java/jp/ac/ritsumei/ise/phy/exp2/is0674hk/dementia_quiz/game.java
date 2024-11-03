@@ -65,7 +65,7 @@ public class game extends AppCompatActivity {
         diff_text=findViewById(R.id.diff_text);
 
 
-        SharedPreferences uuidPrefs = context.getSharedPreferences("uuidPrefs", Context.MODE_PRIVATE);
+        SharedPreferences uuidPrefs = getSharedPreferences("uuidPrefs", Context.MODE_PRIVATE);
         String myuuid = uuidPrefs.getString("UUID", "デフォルト値");
         Log.d("UUID Check", "UUID: " + myuuid); // ログで確認
 
