@@ -4,6 +4,7 @@ import (
 	"HOPcardAPI/domain/models"
 	"HOPcardAPI/domain/repositories"
 	"HOPcardAPI/domain/services"
+	"gorm.io/gorm"
 	"math/rand"
 )
 
@@ -34,10 +35,10 @@ func (uc *uuidUseCase) CreateUUID() (*models.UUID, error) {
 
 		// 生成したコードが既に存在するかを確認
 		uuid, err := uc.uuidRepo.FindByCode(code)
-		if err != nil {
+		if err != nil && err != gorm.ErrRecordNotFound { // エラーが「record not found」以外の場合のみ処理中断
 			return nil, err
 		}
-		if uuid.Code != code {
+		if uuid == nil || uuid.Code != code {
 			break // 一意なコードが見つかったらループを抜ける
 		}
 	}

@@ -4,6 +4,7 @@ import (
 	"HOPcardAPI/domain/models"
 	"HOPcardAPI/usecase"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 )
@@ -27,6 +28,7 @@ func (h *UUIDHandler) CreateUUID(w http.ResponseWriter, r *http.Request) {
 		UUID: uuid.UUID,
 		Code: uuid.Code,
 	}
+	fmt.Println(response)
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(response)
