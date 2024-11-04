@@ -15,7 +15,6 @@ type UUID struct {
 	DeletedAt gorm.DeletedAt `json:"deleted_at" gorm:"index"`
 }
 
-// レスポンス用の構造体
 type UUIDResponse struct {
 	UUID string `json:"uuid"`
 	Code int    `json:"code"`

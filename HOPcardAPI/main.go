@@ -53,7 +53,7 @@ func main() {
 
 	// ルーティング
 	r := mux.NewRouter()
-	r.HandleFunc("/createuuid", uuidHandler.CreateUUID).Methods("POST")
+	r.HandleFunc("/createuuid", uuidHandler.CreateUUID).Methods("GET")
 	r.HandleFunc("/getuuid", uuidHandler.GetUUID).Methods("GET")
 	r.HandleFunc("/ws/difficulty/android/{uuid}", difficultyHandler.HandleAndroidWebSocket)
 	r.HandleFunc("/ws/difficulty/unity/{uuid}", difficultyHandler.HandleUnityWebSocket)
