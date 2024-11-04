@@ -16,28 +16,9 @@ func NewUUIDHandler(uc usecase.UUIDUseCase) *UUIDHandler {
 	return &UUIDHandler{uuidUseCase: uc}
 }
 
-type createUUIDRequest struct {
-	Code int `json:"code"`
-}
-
 func (h *UUIDHandler) CreateUUID(w http.ResponseWriter, r *http.Request) {
-	var req createUUIDRequest
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	uuid, err := h.uuidUseCase.CreateUUID(req.Code)
+	uuid, err := h.uuidUseCase.CreateUUID()
 	if err != nil {
-		if err.Error() == "code already exists" {
-			// 既存のコードの場合は409 Conflictを返す
-			w.WriteHeader(http.StatusConflict)
-			json.NewEncoder(w).Encode(map[string]string{
-				"error": "Code already exists",
-			})
-			return
-		}
-		// その他のエラーは500 Internal Server Error
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
