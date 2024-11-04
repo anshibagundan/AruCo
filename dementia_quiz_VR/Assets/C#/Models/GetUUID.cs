@@ -6,6 +6,6 @@ namespace App.Models
     public class GetUUID
     {
         public string uuid;
-        public int serialNum;
+        public int code;
     }
 }

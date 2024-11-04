@@ -7,7 +7,7 @@ using App.Models;
 public class UUIDGetter : MonoBehaviour
 {
     // APIのエンドポイントURL
-    private const string apiUrl = "https://hopcardapi-4f6e9a3bf06d.herokuapp.com/createuuid/";
+    private const string apiUrl = "https://hopcardapi-4f6e9a3bf06d.herokuapp.com/createuuid";
 
     // 参照するStatusData（ScriptableObject）
     [SerializeField]
@@ -28,7 +28,7 @@ public class UUIDGetter : MonoBehaviour
 
     private IEnumerator RequestUUID()
     {
-        using (UnityWebRequest webRequest = new UnityWebRequest(apiUrl, "POST"))
+        using (UnityWebRequest webRequest = new UnityWebRequest(apiUrl, "Get"))
         {
             // リクエストヘッダーを設定
             webRequest.SetRequestHeader("Content-Type", "application/json");
@@ -56,7 +56,7 @@ public class UUIDGetter : MonoBehaviour
 
                 // UUIDとSerialNumをStatusDataに格納
                 statusData.UUID = response.uuid;
-                statusData.SerialNum = response.serialNum;
+                statusData.SerialNum = response.code;
 
                 // ScriptableObjectの変更を保存
 #if UNITY_EDITOR

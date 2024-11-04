@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: 
   id: 0
-  quizDiff: []
+  quizDiff: 000000000000000000000000
   actDiff: 0
-  uuid: 
+  serialNum: 229555
+  currentName: 
+  uuid: daba84f3-e48a-5654-b166-180175532818
   lr: []

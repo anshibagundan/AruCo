@@ -7,15 +7,25 @@ using System.Collections.Generic;
 
 public class TitleControler : MonoBehaviour
 {
-    private WebSocket wsQuizConnection; //クイズの難易度取得用
-    private bool canTransition = false; //画面遷移管理用フラグ
-    private bool isConnecting = false; //接続状況管理用フラグ
+    private WebSocket wsQuizConnection;
+    private bool canTransition = false;
+    private bool isConnecting = false;
 
     [SerializeField]
     private StatusData statusData;
 
+    private UUIDGetter uuidGetter;  
     private void Start()
     {
+        StartCoroutine(InitializeAndConnect());
+    }
+
+    private IEnumerator InitializeAndConnect()
+    {
+        // UUIDGetterのStartメソッドを待つ
+        yield return new WaitForSeconds(0.1f);  // UUIDGetterの処理を待つための短い遅延
+
+        // WebSocket接続を開始
         ConnectToWebSocket();
     }
 
@@ -93,8 +103,8 @@ public class TitleControler : MonoBehaviour
     //データ格納処理
     private void SetData(GetQuizData data)
     {
-        statusData.QuizDiff = new List<int>(data.quizid);
-        statusData.ActDiff = data.actionid;
+        statusData.QuizDiff = new List<int>(data.quiz_id);
+        statusData.ActDiff = data.action_id;
         Debug.Log($"受け取ったQuizDiff: [{string.Join(", ", statusData.QuizDiff)}]");
         Debug.Log($"受け取ったActDiff: {statusData.ActDiff}");
         canTransition = true;  //格納出来たらフラグをtrueに
