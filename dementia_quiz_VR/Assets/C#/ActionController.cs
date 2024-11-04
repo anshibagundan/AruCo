@@ -159,7 +159,7 @@ public class ActionController : MonoBehaviour
             else
             {
                 string json = webRequest.downloadHandler.text;
-                SelectionData selectionData = JsonUtility.FromJson<SelectionData>(json);
+                GetAction selectionData = JsonUtility.FromJson<GetAction>(json);
 
                 if (selectionData != null)
                 {
@@ -192,7 +192,7 @@ public class ActionController : MonoBehaviour
                 statusData.LR = new List<bool> { isCorrect };
             }
 
-            PostDataPayload payload = new PostDataPayload
+            PostResult payload = new PostResult
             {
                 quiz_id = statusData.QuizDiff.ToArray(),
                 action_id = statusData.ActDiff,
@@ -274,20 +274,5 @@ public class ActionController : MonoBehaviour
             Debug.LogError("コネクション失敗");
         }
         isProcessing = false;
-    }
-
-    [Serializable]
-    public class SelectionData
-    {
-        public string lef_sel;
-        public string rig_sel;
-    }
-
-    [Serializable]
-    public class PostDataPayload
-    {
-        public int[] quiz_id;
-        public int action_id;
-        public bool[] cor;
     }
 }
