@@ -16,7 +16,7 @@ func NewActionRepository(db *gorm.DB) repositories.ActionRepository {
 
 func (r *actionRepository) FindOneByDifficulty(difficulty int) (*models.Action, error) {
 	var action models.Action
-	err := r.db.Where("difficulty = ?", difficulty).First(&action).Error
+	err := r.db.Where("difficulty = ?", difficulty).Order("RANDOM()").First(&action).Error
 	return &action, err
 }
 
