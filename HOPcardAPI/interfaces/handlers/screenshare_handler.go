@@ -4,6 +4,7 @@ import (
 	"HOPcardAPI/domain/models"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
+	"log"
 	"net/http"
 	"sync"
 )
@@ -35,20 +36,26 @@ func (h *ScreenShareHandler) HandleUnityWebSocket(w http.ResponseWriter, r *http
 		return
 	}
 
+	log.Printf("Unityクライアント接続要求: UUID=%s", uuid)
+
 	h.mutex.RLock()
 	_, androidExists := h.androidConns[uuid]
 	h.mutex.RUnlock()
 
 	if !androidExists {
+		log.Printf("Android接続が見つかりません: UUID=%s", uuid)
 		http.Error(w, "Android接続が見つかりません", http.StatusBadRequest)
 		return
 	}
 
 	conn, err := h.upgrader.Upgrade(w, r, nil)
 	if err != nil {
+		log.Printf("Unity WebSocketアップグレード失敗: %v", err)
 		http.Error(w, "WebSocket接続の確立に失敗しました", http.StatusInternalServerError)
 		return
 	}
+
+	log.Printf("Unityクライアント接続成功: UUID=%s", uuid)
 
 	h.mutex.Lock()
 	h.unityConns[uuid] = conn
@@ -87,11 +94,16 @@ func (h *ScreenShareHandler) HandleAndroidWebSocket(w http.ResponseWriter, r *ht
 		return
 	}
 
+	log.Printf("Androidクライアント接続要求: UUID=%s", uuid)
+
 	conn, err := h.upgrader.Upgrade(w, r, nil)
 	if err != nil {
+		log.Printf("Android WebSocketアップグレード失敗: %v", err)
 		http.Error(w, "WebSocket接続の確立に失敗しました", http.StatusInternalServerError)
 		return
 	}
+
+	log.Printf("Androidクライアント接続成功: UUID=%s", uuid)
 
 	h.mutex.Lock()
 	h.androidConns[uuid] = conn
