@@ -1,13 +1,14 @@
-version: "3.8"
+version: '3.8'
 
 services:
-  go:
-    container_name: app
-    volumes:
-      - ./:/project/
-    working_dir: /project
-    tty: true
-    build: "./"
+  go-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - 8080:8080
-    command: sh -c 'go mod tidy && air'
+      - "8080:8080"
+    environment:
+      - PORT=8080
+    env_file:
+      - .env
+    container_name: go

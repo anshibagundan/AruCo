@@ -212,6 +212,7 @@ func countTrue(cor []bool) int {
 
 // HandleResultAndroidWebSocket は、Android側からのWebSocket接続要求を処理する
 func (h *ResultWebSocketHandler) HandleResultAndroidWebSocket(w http.ResponseWriter, r *http.Request) {
+	// リクエストパラメータからUUIDを取得
 	vars := mux.Vars(r)
 	uuid := vars["uuid"]
 	if uuid == "" {
@@ -219,17 +220,20 @@ func (h *ResultWebSocketHandler) HandleResultAndroidWebSocket(w http.ResponseWri
 		return
 	}
 
-	// Android側の接続を確立する
+	// AndroidクライアントとのWebSocket接続を確立する
 	conn, err := h.upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Printf("接続のアップグレードに失敗しました: %v", err)
 		http.Error(w, "接続のアップグレードに失敗しました", http.StatusInternalServerError)
 		return
 	}
+
+	// ハンドラーのAndroid接続マップにこの接続を格納する
 	h.mutex.Lock()
 	h.androidConns[uuid] = conn
 	h.mutex.Unlock()
 
+	// この関数が終了する際に接続を削除し、閉じるように設定
 	defer func() {
 		h.mutex.Lock()
 		delete(h.androidConns, uuid)
@@ -237,6 +241,29 @@ func (h *ResultWebSocketHandler) HandleResultAndroidWebSocket(w http.ResponseWri
 		conn.Close() // 接続を閉じる
 	}()
 
+	// 接続を維持するために1分ごとにpingメッセージを送信するためのタイカーを作成
+	ticker := time.NewTicker(30 * time.Second) // 30秒ごとにpingを送信
+	defer ticker.Stop()
+
+	// pingメッセージを送るために別のゴルーチンを開始
+	go func() {
+		for range ticker.C {
+			// androidConnsマップに安全にアクセスするためロックをかける
+			h.mutex.RLock()
+			if androidConn, exists := h.androidConns[uuid]; exists {
+				// 接続を維持するためにpingメッセージを送信
+				err := androidConn.WriteMessage(websocket.PingMessage, []byte{})
+				if err != nil {
+					log.Printf("Pingの送信に失敗しました: %v", err)
+					h.mutex.RUnlock()
+					return // pingが失敗した場合、ゴルーチンを終了
+				}
+			}
+			h.mutex.RUnlock()
+		}
+	}()
+
+	// Androidクライアントからの受信メッセージを処理するメインループ
 	for {
 		var resultMsg models.ResultAndroidMessage
 		err := conn.ReadJSON(&resultMsg)
@@ -245,7 +272,7 @@ func (h *ResultWebSocketHandler) HandleResultAndroidWebSocket(w http.ResponseWri
 			break
 		}
 
-		// Unity側に結果を転送する
+		// Unity側に受信メッセージを転送する
 		h.mutex.RLock()
 		if unityConn, exists := h.unityConns[uuid]; exists {
 			err := unityConn.WriteJSON(resultMsg)
