@@ -16,7 +16,7 @@ func NewQuizRepository(db *gorm.DB) repositories.QuizRepository {
 
 func (r *quizRepository) FindByDifficulty(difficulty int, limit int) ([]models.Quiz, error) {
 	var quizzes []models.Quiz
-	err := r.db.Where("difficulty = ?", difficulty).Limit(limit).Find(&quizzes).Error
+	err := r.db.Where("difficulty = ?", difficulty).Order("RANDOM()").Limit(limit).Find(&quizzes).Error
 	return quizzes, err
 }
 
