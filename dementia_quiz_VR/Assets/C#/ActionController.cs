@@ -58,14 +58,14 @@ public class ActionController : MonoBehaviour
 
     public void Start()
     {
-        if (string.IsNullOrEmpty(statusData.UUID))
+        if (string.IsNullOrEmpty(statusData.uuid))
         {
-            Debug.LogError("UUIDが設定されていません。");
+            Debug.LogError("uuidが設定されていません。");
             return;
         }
 
         GetUrl = "https://hopcardapi-4f6e9a3bf06d.herokuapp.com/getaction";
-        PostUrl = $"wss://hopcardapi-4f6e9a3bf06d.herokuapp.com/ws/result/unity/{statusData.UUID}";
+        PostUrl = $"wss://hopcardapi-4f6e9a3bf06d.herokuapp.com/ws/result/unity/{statusData.uuid}";
 
         SetupInitialDisplay();
         StartCoroutine(TryEstablishConnection());

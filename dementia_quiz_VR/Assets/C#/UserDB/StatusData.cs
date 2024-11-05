@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace App.BaseSystem.DataStores.ScriptableObjects.Status
 {
     /// <summary>
-    /// �X�e�[�^�X�����I�u�W�F�N�g�̃f�[�^�Q (�Ώ�: �v���C���[�A�G�A�j��\�I�u�W�F�N�g�Ȃ�)
+    /// ステータスデータオブジェクトのデータ群 (対象: プレイヤー、エネミー、操作可能オブジェクトなど)
     /// </summary>
     [CreateAssetMenu(menuName = "ScriptableObject/Data/Status")]
     public class StatusData : BaseData
@@ -24,7 +24,8 @@ namespace App.BaseSystem.DataStores.ScriptableObjects.Status
             set => actDiff = value;
         }
         [SerializeField]
-        public string UUID
+        private string uuid;
+        public string Uuid
         {
             get => uuid;
             set => uuid = value;
@@ -35,6 +36,20 @@ namespace App.BaseSystem.DataStores.ScriptableObjects.Status
         {
             get => lr;
             set => lr = value;
+        }
+        [SerializeField]
+        private string x;
+        public string X
+        {
+            get => x;
+            set => x = value;
+        }
+        [SerializeField]
+        private string y;
+        public string Y
+        {
+            get => y;
+            set => y = value;
         }
     }
 }

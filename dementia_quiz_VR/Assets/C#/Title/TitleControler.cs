@@ -102,7 +102,7 @@ public class TitleControler : MonoBehaviour
         {
             Debug.Log("Start WebSocket received: {e.Data}");
             //StartQuizWebSocket(e.Data);
-            StartQuizWebSocket(statusData.UUID); //テスト用にごり押しコード
+            StartQuizWebSocket(statusData.uuid); //テスト用にごり押しコード
         }
     }
 
