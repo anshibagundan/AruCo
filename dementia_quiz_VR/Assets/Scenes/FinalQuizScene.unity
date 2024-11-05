@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.15406476, g: 0.17534745, b: 0.1864043, a: 1}
+  m_IndirectSpecularColor: {r: 0.15406652, g: 0.1753296, b: 0.18630129, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -836,7 +836,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: quiz loading...
+  m_text: "\u72AC\u306F\u5408\u8A08\u4F55\u5339\uFF1F"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4f54daad40949d5418dbbab9f425d02a, type: 2}
   m_sharedMaterial: {fileID: 2113093274853300671, guid: 4f54daad40949d5418dbbab9f425d02a,
@@ -1498,7 +1498,7 @@ Transform:
   m_GameObject: {fileID: 577442095}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 482, y: 282, z: -956}
+  m_LocalPosition: {x: 482, y: 100, z: -956}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2813,9 +2813,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c74fa255bbac497f9dd881bc0e96359, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rightController: {fileID: 0}
+  leftController: {fileID: 0}
+  rightHandActions: {fileID: 0}
+  leftHandActions: {fileID: 0}
   Actname: {fileID: 64688183}
   Actsel_1: {fileID: 1746468802}
   Actsel_2: {fileID: 219291747}
+  WaitingText: {fileID: 0}
+  statusData: {fileID: 11400000, guid: d4824e765e202054196ddd5d10d31adf, type: 2}
 --- !u!4 &1614603111
 Transform:
   m_ObjectHideFlags: 0
