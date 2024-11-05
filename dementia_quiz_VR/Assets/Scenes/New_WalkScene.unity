@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.35379204, g: 0.72330034, b: 0.9528675, a: 1}
+  m_IndirectSpecularColor: {r: 0.3521114, g: 0.724135, b: 0.9581087, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -28633,10 +28633,11 @@ GameObject:
   - component: {fileID: 805662255}
   - component: {fileID: 805662254}
   - component: {fileID: 805662259}
-  - component: {fileID: 805662258}
-  - component: {fileID: 805662257}
-  - component: {fileID: 805662260}
   - component: {fileID: 805662261}
+  - component: {fileID: 805662257}
+  - component: {fileID: 805662262}
+  - component: {fileID: 805662260}
+  - component: {fileID: 805662263}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Player
@@ -28743,20 +28744,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c1796fb66f46594ca365389906595cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &805662258
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 805662249}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f341be3758eacd4bba1de14d3bd898a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  id: 18
-  act: {fileID: 2128593043}
 --- !u!114 &805662259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28796,9 +28783,55 @@ MonoBehaviour:
   m_GameObject: {fileID: 805662249}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7cb5c9dfbe3c4ae687a2c89ccaf95f6, type: 3}
+  m_Script: {fileID: 11500000, guid: c08506a68df38d94cb64461fc9168a84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  id: 0
+  statusData: {fileID: 11400000, guid: d4824e765e202054196ddd5d10d31adf, type: 2}
+--- !u!114 &805662262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 805662249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccbd42bfe114f41848e5c4ce8169100d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LeftHandAnchorTransform: {fileID: 0}
+  RightHandAnchorTransform: {fileID: 0}
+  objectToRotate: {fileID: 0}
+  rotationDuration: 1
+  moveScale: 200
+--- !u!54 &805662263
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 805662249}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &807722712
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32210,7 +32243,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 902788255}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8818c33e9f42610478f803fa5049251c, type: 3}
   m_Name: 
