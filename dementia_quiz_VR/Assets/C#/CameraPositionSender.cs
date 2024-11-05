@@ -65,7 +65,7 @@ public class CameraPositionSender : MonoBehaviour
 
         public HOPPosition(float x, float z)
         {
-            this.ajsdskljlk
+            this.x = x;
             this.z = z;
         }
     }
