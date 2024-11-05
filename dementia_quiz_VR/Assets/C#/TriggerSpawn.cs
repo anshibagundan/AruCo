@@ -1,3 +1,4 @@
+using App.BaseSystem.DataStores.ScriptableObjects.Status;
 using UnityEngine;
 
 public class TriggerSpawn : MonoBehaviour
@@ -122,7 +123,7 @@ public class TriggerSpawn : MonoBehaviour
                 break;
 
         }
-        
+
     }
 
     private void SpawnSpace1(int num)
@@ -230,5 +231,26 @@ public class TriggerSpawn : MonoBehaviour
     {
         PlayerID playerIdComponent = player.GetComponent<PlayerID>();
         return playerIdComponent != null ? playerIdComponent.id : 1; // �f�t�H���g�l��1�ɐݒ�
+    }
+}
+public class PlayerID : MonoBehaviour
+{
+    [HideInInspector]
+    public int id;
+
+    [SerializeField]
+    private StatusData statusData;
+
+    private void Start()
+    {
+        if (statusData != null)
+        {
+            id = (int)statusData.ActDiff;
+        }
+        else
+        {
+            Debug.LogError($"StatusData is not assigned on {gameObject.name}");
+            id = 0;  // ƒfƒtƒHƒ‹ƒg’l‚ðÝ’è
+        }
     }
 }
