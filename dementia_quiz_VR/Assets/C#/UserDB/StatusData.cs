@@ -3,55 +3,53 @@ using System.Collections.Generic;
 
 namespace App.BaseSystem.DataStores.ScriptableObjects.Status
 {
+    /// <summary>
+    /// ステータスデータオブジェクトのデータ群 (対象: プレイヤー、エネミー、操作可能オブジェクトなど)
+    /// </summary>
     [CreateAssetMenu(menuName = "ScriptableObject/Data/Status")]
     public class StatusData : BaseData
     {
+        [SerializeField]
+        private List<int> quizDiff = new List<int>();
         public List<int> QuizDiff
         {
             get => quizDiff;
             set => quizDiff = value;
         }
         [SerializeField]
-        private List<int> quizDiff = new List<int>();
-
-        public float ActDiff
+        private int actDiff;
+        public int ActDiff
         {
             get => actDiff;
             set => actDiff = value;
         }
         [SerializeField]
-        private float actDiff;
-
-        public int SerialNum
-        {
-            get => serialNum;
-            set => serialNum = value;
-        }
-        [SerializeField]
-        private int serialNum;
-
-        public string CurrentName
-        {
-            get => currentName;
-            set => currentName = value;
-        }
-        [SerializeField]
-        private string currentName;
-
-        public string UUID
+        private string uuid;
+        public string Uuid
         {
             get => uuid;
             set => uuid = value;
         }
         [SerializeField]
-        private string uuid;
-
-        public List<float> LR
+        private List<bool> lr = new List<bool>();
+        public List<bool> LR
         {
             get => lr;
             set => lr = value;
         }
         [SerializeField]
-        private List<float> lr = new List<float>();
+        private string x;
+        public string X
+        {
+            get => x;
+            set => x = value;
+        }
+        [SerializeField]
+        private string y;
+        public string Y
+        {
+            get => y;
+            set => y = value;
+        }
     }
 }

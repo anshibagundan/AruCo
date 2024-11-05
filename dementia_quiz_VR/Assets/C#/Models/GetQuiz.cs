@@ -1,8 +1,9 @@
 using System;
 
-[Serializable]
-public class GetQuizData
+[System.Serializable]
+public class GetQuiz
 {
-    public int[] quiz_id;
-    public int action_id;
+    public String Question;
+    public String lef_sel;
+    public String rig_sel;
 }

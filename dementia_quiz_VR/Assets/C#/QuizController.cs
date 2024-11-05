@@ -5,19 +5,22 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR;
+using App.BaseSystem.DataStores.ScriptableObjects.Status;
+using UnityEngine.InputSystem;//enterキー入力のため
 
 public class QuizController : MonoBehaviour
 {
 
-    public TextMeshProUGUI Quizname;
-    public TextMeshProUGUI Quizsel_1;
-    public TextMeshProUGUI Quizsel_2;
+    public TextMeshProUGUI Question;
+    public TextMeshProUGUI Quizlef;
+    public TextMeshProUGUI Quizrig;
     public GameObject objectToRotate;
     public float rotationDuration = 1f; // 回転にかける時間
     private bool isRotating = false; // 回転中かどうかのフラグ
     private const string difficultyGetUrl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/quiz-selects/";
     private const string baseGetUrl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/quizzes/";
     private const string posturl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/quiz-tfs/";
+    private const string QetQuizurl = "https://hopcardapi-4f6e9a3bf06d.herokuapp.com/getquiz";//合ってるかわからんけどいったんこう書いておく
     private int difficulty = 1;
     private String geturl;
     private int randomIndex = 1;
@@ -27,12 +30,18 @@ public class QuizController : MonoBehaviour
     private bool isfinalQuiz = false;
     private bool fullAskedQuiz = false;
     private Quaternion endRotation;
-    private bool isAnswered = false;
+    private bool isAnswered = false;//解答した後の処理のために必要な切り替えに必要な処理っぽい
     private const int maxAttempts = 30;
+    private int Quizdiff;
+    private GetQuiz QuizData;
+    [SerializeField]
+    private StatusData statusData;
+    int LRCount = 0;//LR要素数の初期化
 
     public void Start()
     {
         StartCoroutine(GetData());
+        //statusDataのアセットのLRの要素数を0にしないとエラーはくので注意
     }
 
     private void Update()
@@ -41,34 +50,42 @@ public class QuizController : MonoBehaviour
         if (CheckRightControllerButtons() && !isAnswered)
         {
             isAnswered = true;
-            StartCoroutine(PostData("R"));
-            StartCoroutine(RotateCoroutine("R"));
+            StartCoroutine(PostData());
+            StartCoroutine(RotateCoroutine());
         }
 
         // 左コントローラーのボタン入力を検出
         if (CheckLeftControllerButtons() && !isAnswered)
         {
             isAnswered = true;
-            StartCoroutine(PostData("L"));
-            StartCoroutine(RotateCoroutine("L"));
+            StartCoroutine(PostData());
+            StartCoroutine(RotateCoroutine());
         }
     }
 
 
     private bool CheckRightControllerButtons()
     {
+
+        // Enterキーの確認
+        if (Keyboard.current != null &&
+            (Keyboard.current.enterKey.isPressed || Keyboard.current.numpadEnterKey.isPressed))
+        {
+            return true;
+        }
         // 右コントローラーの全てのボタンを確認
-        InputDevice rightController = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
+        UnityEngine.XR.InputDevice rightController = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
+
         if (rightController.isValid)
         {
             bool buttonValue;
-            if (rightController.TryGetFeatureValue(CommonUsages.primaryButton, out buttonValue) && buttonValue)
+            if (rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.primaryButton, out buttonValue) && buttonValue)
                 return true;
-            if (rightController.TryGetFeatureValue(CommonUsages.secondaryButton, out buttonValue) && buttonValue)
+            if (rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.secondaryButton, out buttonValue) && buttonValue)
                 return true;
-            if (rightController.TryGetFeatureValue(CommonUsages.gripButton, out buttonValue) && buttonValue)
+            if (rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.gripButton, out buttonValue) && buttonValue)
                 return true;
-            if (rightController.TryGetFeatureValue(CommonUsages.triggerButton, out buttonValue) && buttonValue)
+            if (rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.triggerButton, out buttonValue) && buttonValue)
                 return true;
             // 他のボタンも必要に応じて追加
         }
@@ -78,17 +95,17 @@ public class QuizController : MonoBehaviour
     private bool CheckLeftControllerButtons()
     {
         // 左コントローラーの全てのボタンを確認
-        InputDevice leftController = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
+        UnityEngine.XR.InputDevice leftController = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
         if (leftController.isValid)
         {
             bool buttonValue;
-            if (leftController.TryGetFeatureValue(CommonUsages.primaryButton, out buttonValue) && buttonValue)
+            if (leftController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.primaryButton, out buttonValue) && buttonValue)
                 return true;
-            if (leftController.TryGetFeatureValue(CommonUsages.secondaryButton, out buttonValue) && buttonValue)
+            if (leftController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.secondaryButton, out buttonValue) && buttonValue)
                 return true;
-            if (leftController.TryGetFeatureValue(CommonUsages.gripButton, out buttonValue) && buttonValue)
+            if (leftController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.gripButton, out buttonValue) && buttonValue)
                 return true;
-            if (leftController.TryGetFeatureValue(CommonUsages.triggerButton, out buttonValue) && buttonValue)
+            if (leftController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.triggerButton, out buttonValue) && buttonValue)
                 return true;
             // 他のボタンも必要に応じて追加
         }
@@ -98,80 +115,19 @@ public class QuizController : MonoBehaviour
     //クイズを取得する関数
     private IEnumerator GetData()
     {
-        //クイズの難易度取得
-        using (UnityWebRequest webRequest = UnityWebRequest.Get(difficultyGetUrl))
+        // nullチェック
+        if (statusData == null)
         {
-            webRequest.SetRequestHeader("X-Debug-Mode", "true");
-            yield return webRequest.SendWebRequest();
-
-            if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.LogError("Error: " + webRequest.error);
-            }
-            else
-            {
-                string json = webRequest.downloadHandler.text;
-
-                QuizSelDiff[] QuizSelDiffDataArray = JsonHelper.FromJson<QuizSelDiff>(json);
-
-                if (QuizSelDiffDataArray != null && QuizSelDiffDataArray.Length > 0)
-                {
-                    QuizSelDiff QuizSelDiffData = QuizSelDiffDataArray[0];
-
-                    difficulty = QuizSelDiffData.select_diff;
-                }
-                else
-                {
-                    Debug.LogWarning("No quizdiff found.");
-                }
-            }
+            Debug.LogError("StatusData is not assigned!");
+            yield break;
         }
+        //StatusDataからQuizDIffを取得
+        LRCount = statusData.LR.Count;
+        Quizdiff = 1 + statusData.QuizDiff[LRCount];//要素数をクエリパラメータとする
 
         //クイズの難易度に合わせてURLを指定
-        geturl = baseGetUrl + "?difficulty=" + difficulty;
-
-        //出題済みクイズをGet
-        using (UnityWebRequest webRequest = UnityWebRequest.Get(posturl))
-        {
-            webRequest.SetRequestHeader("X-Debug-Mode", "true");
-            yield return webRequest.SendWebRequest();
-
-            if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.LogError("Error: " + webRequest.error);
-            }
-            else
-            {
-                string json = webRequest.downloadHandler.text;
-
-                QuizTF[] quizTFDataArray = JsonHelper.FromJson<QuizTF>(json);
-
-                if (quizTFDataArray != null && quizTFDataArray.Length > 0)
-                {
-
-                    if (quizTFDataArray.Length == 2)
-                    {
-                        AskedQuestionList = new int[2] { quizTFDataArray[0].quiz, quizTFDataArray[1].quiz };
-                    }
-                    else if (quizTFDataArray.Length == 1)
-                    {
-                        AskedQuestionList = new int[1] { quizTFDataArray[0].quiz };
-                    }
-                    else if (quizTFDataArray.Length >= 3)
-                    {
-
-                        Debug.LogWarning("Asked Quiz Remained");
-                        fullAskedQuiz = true;
-                    }
-                }
-                else
-                {
-                    Debug.LogWarning("No Askedquiz found.");
-                }
-            }
-
-        }
-
+        //元はdifficultyに問い合わせてた
+        geturl = QetQuizurl + "?id=" + Quizdiff;
 
         //難易度に合わせてクイズを取得
         using (UnityWebRequest webRequest = UnityWebRequest.Get(geturl))
@@ -182,60 +138,59 @@ public class QuizController : MonoBehaviour
             if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
             {
                 Debug.LogError("Error: " + webRequest.error);
+
             }
             else
             {
+                /*
+                 JSONファイルは以下のように帰ってくるはず
+                "Question" : String,
+                "lef_sel" : String,
+                "rig_sel" : String
+                ex:
+                "Question" : "1+1は？",
+                "lef_sel" : "2",
+                "rig_sel" : "3"
+                */
                 string json = webRequest.downloadHandler.text;
+                Debug.Log("受信したJSONデータ: " + json);
 
-                Quiz[] quizDataArray = JsonHelper.FromJson<Quiz>(json);
-
-                if (quizDataArray != null && quizDataArray.Length > 0)
+                try
                 {
-                    int maxAttempts = 30; // 最大試行回数
-                    int attempts = 0; // 試行回数のカウンター
+                    QuizData = JsonUtility.FromJson<GetQuiz>(json);
+                    // パース成功
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"JSON Parse Error: {e.Message}");
+                }
 
-                    while (attempts < maxAttempts)
+                if (QuizData != null)
+                {
+                    Debug.Log($"パースしたデータ:" +
+                        $"\n Question: {QuizData.Question}" +
+                        $"\n Left: {QuizData.lef_sel}" +
+                        $"\n Right: {QuizData.rig_sel}");
+
+                    if (statusData.LR.Count == 0)
                     {
-                        randomIndex = UnityEngine.Random.Range(0, quizDataArray.Length);
-                        Quiz QuizData = quizDataArray[randomIndex];
-                        quizDataId = quizDataArray[randomIndex].id;
-
-                        if (AskedQuestionList == null || AskedQuestionList.Length == 0)
-                        {
-                            Quizname.text = QuizData.name;
-                            Quizsel_1.text = "1: " + QuizData.sel_1;
-                            Quizsel_2.text = "2: " + QuizData.sel_2;
-                            break;
-                        }
-                        else if (AskedQuestionList.Length == 1)
-                        {
-                            if (AskedQuestionList[0] != quizDataId)
-                            {
-                                Quizname.text = QuizData.name;
-                                Quizsel_1.text = "1: " + QuizData.sel_1;
-                                Quizsel_2.text = "2: " + QuizData.sel_2;
-                                break;
-                            }
-                        }
-                        else if (AskedQuestionList.Length == 2)
-                        {
-                            if (AskedQuestionList[0] != quizDataId && AskedQuestionList[1] != quizDataId)
-                            {
-                                Quizname.text = QuizData.name;
-                                Quizsel_1.text = "1: " + QuizData.sel_1;
-                                Quizsel_2.text = "2: " + QuizData.sel_2;
-                                isfinalQuiz = true;
-                                break;
-                            }
-                        }
-
-                        attempts++; // 試行回数をインクリメント
+                        Question.text = QuizData.Question;
+                        Quizlef.text = "1: " + QuizData.lef_sel;
+                        Quizrig.text = "2: " + QuizData.rig_sel;
                     }
-
-                    if (attempts == maxAttempts)
+                    else if (statusData.LR.Count == 1)
                     {
-                        Debug.LogError("Failed to find a quiz that hasn't been asked.");
-                        hasnotQuiz = true;
+                        Question.text = QuizData.Question;
+                        Quizlef.text = "1: " + QuizData.lef_sel;
+                        Quizrig.text = "2: " + QuizData.rig_sel;
+                    }
+                    else if (statusData.LR.Count == 2)
+                    {
+                        Question.text = QuizData.Question;
+                        Quizlef.text = "1: " + QuizData.lef_sel;
+                        Quizrig.text = "2: " + QuizData.rig_sel;
+                        isfinalQuiz = true;
+
                     }
                 }
                 else
@@ -248,119 +203,94 @@ public class QuizController : MonoBehaviour
     }
 
     //クイズの正解不正解を送る
-    private IEnumerator PostData(String LorR)
+    private IEnumerator PostData()
     {
         if (!hasnotQuiz)
         {
-            //quizのidが奇数なら左が正解に，偶数なら右が正解にする
-            WWWForm form = new WWWForm();
-
-            if (quizDataId % 2 == 0)
+            //quizのidが偶数なら右が正解に，奇数なら左が正解にする
+            if (IsEven(statusData.QuizDiff[LRCount]))//元はquizDataId % 2 == 0
             {
-                if (LorR == "R")
-                {
-                    form.AddField("cor", "true");
-                    form.AddField("quiz", quizDataId);
-                }
-                else if (LorR == "L")
-                {
-                    form.AddField("cor", "false");
-                    form.AddField("quiz", quizDataId);
-                }
+                statusData.LR.Add(true);
             }
             else
             {
-                if (LorR == "R")
-                {
-                    form.AddField("cor", "false");
-                    form.AddField("quiz", quizDataId);
-                }
-                else if (LorR == "L")
-                {
-                    form.AddField("cor", "true");
-                    form.AddField("quiz", quizDataId);
-                }
-            }
-
-            //ここで正解不正解のデータを送る
-            using (UnityWebRequest webRequest = UnityWebRequest.Post(posturl, form))
-            {
-                webRequest.SetRequestHeader("X-Debug-Mode", "true");
-                yield return webRequest.SendWebRequest();
-
-                if (webRequest.result == UnityWebRequest.Result.ConnectionError ||
-                    webRequest.result == UnityWebRequest.Result.ProtocolError)
-                {
-                    Debug.LogError("Error: " + webRequest.error);
-                }
+                statusData.LR.Add(false);
             }
         }
         else
         {
             Debug.LogError("no quiz found");
         }
+
+        yield return null;
     }
     //回転用
-    IEnumerator RotateCoroutine(String LorR)
+    IEnumerator RotateCoroutine()
     {
-        isRotating = true;
-        Quaternion startRotation = objectToRotate.transform.rotation;
+            isRotating = true;
+            Quaternion startRotation = objectToRotate.transform.rotation;
 
 
-        if (AskedQuestionList == null ||AskedQuestionList.Length == 1 )
-        {
-            if (LorR == "R" )
+            if (statusData.LR.Count == 1)
             {
-                endRotation = startRotation * Quaternion.Euler(0, 90, 0);
+                if (statusData.LR[statusData.LR.Count - 1] == true)//元LorR == "R"
+                {
+                    endRotation = startRotation * Quaternion.Euler(0, 90, 0);
+                }
+                else if (statusData.LR[statusData.LR.Count - 1] == false)//元LorR == "L"
+                {
+                    endRotation = startRotation * Quaternion.Euler(0, -90, 0);
+                }
+                else
+                {
+                    endRotation = startRotation * Quaternion.Euler(0, 0, 0);
+                }
+
             }
-            else if(LorR == "L")
+            else if (statusData.LR.Count == 2)
             {
-                endRotation = startRotation * Quaternion.Euler(0, -90, 0);
+                if (statusData.LR[statusData.LR.Count - 1] == false)//R
+                {
+                    endRotation = startRotation * Quaternion.Euler(0, 1, 0);
+                }
+                else if (statusData.LR[statusData.LR.Count - 1] == true)//L
+                {
+                    endRotation = startRotation * Quaternion.Euler(0, -90, 0);
+                }
+                else
+                {
+                    endRotation = startRotation * Quaternion.Euler(0, 0, 0);
+                }
+            }
+
+
+
+            float elapsedTime = 0;
+
+            while (elapsedTime < rotationDuration)
+            {
+                objectToRotate.transform.rotation = Quaternion.Slerp(startRotation, endRotation, elapsedTime / rotationDuration);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            objectToRotate.transform.rotation = endRotation;
+            isRotating = false;
+            isAnswered = false;
+
+            // 回転後にシーンを読み込む
+            if (!isfinalQuiz)
+            {
+                UnityEngine.SceneManagement.SceneManager.LoadScene("New_WalkScene");
             }
             else
             {
-                endRotation = startRotation * Quaternion.Euler(0, 0, 0);
+                UnityEngine.SceneManagement.SceneManager.LoadScene("New_WalkScene");
             }
-
-        }else if (AskedQuestionList.Length == 2)
+    　}
+        /// <returns>True:偶数値　False:奇数値</returns>
+        private bool IsEven(int num)
         {
-            if (LorR == "R" )
-            {
-                endRotation = startRotation * Quaternion.Euler(0, 1, 0);
-            }
-            else if(LorR == "L")
-            {
-                endRotation = startRotation * Quaternion.Euler(0, -90, 0);
-            }
-            else
-            {
-                endRotation = startRotation * Quaternion.Euler(0, 0, 0);
-            }
-        }
-
-
-
-        float elapsedTime = 0;
-
-        while (elapsedTime < rotationDuration)
-        {
-            objectToRotate.transform.rotation = Quaternion.Slerp(startRotation, endRotation, elapsedTime / rotationDuration);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        objectToRotate.transform.rotation = endRotation;
-        isRotating = false;
-        isAnswered = false;
-
-        // 回転後にシーンを読み込む
-        if (!isfinalQuiz)
-        {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("New_WalkScene");
-        }
-        else
-        {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("New_WalkScene");
+            return (num % 2 == 0);
         }
     }
-}
