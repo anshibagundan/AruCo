@@ -22,7 +22,7 @@ public class GetUUID : MonoBehaviour
     void Start()
     {
         // 1. DBのUUIDが空かどうか確認し、空でなければ以降の処理はスキップする
-        if (!string.IsNullOrEmpty(statusData.UUID))
+        if (!string.IsNullOrEmpty(statusData.uuid))
         {
             Debug.Log("UUIDが既に存在します。処理をスキップします。");
             return;
@@ -103,13 +103,13 @@ public class GetUUID : MonoBehaviour
     // APIからUUIDを取得するまで定期的に問い合わせるコルーチン
     private IEnumerator PollForUUID()
     {
-        while (string.IsNullOrEmpty(statusData.UUID))
+        while (string.IsNullOrEmpty(statusData.uuid))
         {
             yield return StartCoroutine(GetUUIDFromAPI());
             // 一定時間待機してから再度問い合わせる（例：5秒待機）
             yield return new WaitForSeconds(1f);
         }
-        Debug.Log("UUIDを取得し、StatusDataに格納しました: " + statusData.UUID);
+        Debug.Log("UUIDを取得し、StatusDataに格納しました: " + statusData.uuid);
     }
 
     // APIからUUIDを取得するコルーチン
@@ -141,7 +141,7 @@ public class GetUUID : MonoBehaviour
                 if (!string.IsNullOrEmpty(uuidResponse.uuid))
                 {
                     // UUIDをStatusDataに格納
-                    statusData.UUID = uuidResponse.uuid;
+                    statusData.uuid = uuidResponse.uuid;
 
                     // ScriptableObjectの変更を保存
 #if UNITY_EDITOR

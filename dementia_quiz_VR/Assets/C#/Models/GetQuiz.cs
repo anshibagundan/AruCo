@@ -7,5 +7,3 @@ public class GetQuiz
     public String lef_sel;
     public String rig_sel;
 }
-
-

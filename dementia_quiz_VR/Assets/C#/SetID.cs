@@ -1,7 +1,7 @@
 using UnityEngine;
 using App.BaseSystem.DataStores.ScriptableObjects.Status;
 
-public class PlayerID : MonoBehaviour
+public class SetD : MonoBehaviour
 {
     [HideInInspector] public int id;
     //public GetActDifficulty act;
