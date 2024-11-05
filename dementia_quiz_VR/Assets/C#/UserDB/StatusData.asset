@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: 
   id: 0
-  quizDiff: 000000000000000000000000
+  quizDiff: []
   actDiff: 0
   uuid: 
-  lr: 
+  lr: []
