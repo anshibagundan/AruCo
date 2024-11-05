@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerID : MonoBehaviour
+public class SetD : MonoBehaviour
 {
     [HideInInspector] public int id;
     public GetActDifficulty act;
