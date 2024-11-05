@@ -4,41 +4,37 @@ using System.Collections.Generic;
 namespace App.BaseSystem.DataStores.ScriptableObjects.Status
 {
     /// <summary>
-    /// ƒXƒe[ƒ^ƒX‚ğ‚ÂƒIƒuƒWƒFƒNƒg‚Ìƒf[ƒ^ŒQ (‘ÎÛ: ƒvƒŒƒCƒ„[A“GA”j‰ó‰Â”\ƒIƒuƒWƒFƒNƒg‚È‚Ç)
+    /// ï¿½Xï¿½eï¿½[ï¿½^ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½ÂƒIï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½Ìƒfï¿½[ï¿½^ï¿½Q (ï¿½Îï¿½: ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Aï¿½Gï¿½Aï¿½jï¿½ï¿½Â”\ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½È‚ï¿½)
     /// </summary>
     [CreateAssetMenu(menuName = "ScriptableObject/Data/Status")]
     public class StatusData : BaseData
     {
+        [SerializeField]
+        private List<int> quizDiff = new List<int>();
         public List<int> QuizDiff
         {
             get => quizDiff;
             set => quizDiff = value;
         }
         [SerializeField]
-        private List<int> quizDiff = new List<int>();
-
-        public float ActDiff
+        private int actDiff;
+        public int ActDiff
         {
             get => actDiff;
             set => actDiff = value;
         }
         [SerializeField]
-        private float actDiff;
-
         public string UUID
         {
             get => uuid;
             set => uuid = value;
         }
         [SerializeField]
-        private string uuid;
-
-        public List<float> LR
+        private List<bool> lr = new List<bool>();
+        public List<bool> LR
         {
             get => lr;
             set => lr = value;
         }
-        [SerializeField]
-        private List<float> lr = new List<float>();
     }
 }
