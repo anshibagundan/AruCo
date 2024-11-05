@@ -28635,9 +28635,10 @@ GameObject:
   - component: {fileID: 805662259}
   - component: {fileID: 805662261}
   - component: {fileID: 805662257}
-  - component: {fileID: 805662262}
   - component: {fileID: 805662260}
   - component: {fileID: 805662263}
+  - component: {fileID: 805662265}
+  - component: {fileID: 805662264}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Player
@@ -28786,25 +28787,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c08506a68df38d94cb64461fc9168a84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 0
-  statusData: {fileID: 11400000, guid: d4824e765e202054196ddd5d10d31adf, type: 2}
---- !u!114 &805662262
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 805662249}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ccbd42bfe114f41848e5c4ce8169100d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LeftHandAnchorTransform: {fileID: 0}
-  RightHandAnchorTransform: {fileID: 0}
-  objectToRotate: {fileID: 0}
-  rotationDuration: 1
-  moveScale: 200
 --- !u!54 &805662263
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -28832,6 +28814,49 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!143 &805662264
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 805662249}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0.72, z: 0}
+--- !u!114 &805662265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 805662249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccbd42bfe114f41848e5c4ce8169100d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LeftHandAnchorTransform: {fileID: 986586201}
+  RightHandAnchorTransform: {fileID: 1262224695}
+  objectToRotate: {fileID: 805662249}
+  rotationDuration: 1
+  moveScale: 0.3
 --- !u!1001 &807722712
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32194,8 +32219,6 @@ GameObject:
   - component: {fileID: 902788257}
   - component: {fileID: 902788256}
   - component: {fileID: 902788258}
-  - component: {fileID: 902788260}
-  - component: {fileID: 902788259}
   m_Layer: 0
   m_Name: XR Rig
   m_TagString: Untagged
@@ -32243,54 +32266,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 902788255}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8818c33e9f42610478f803fa5049251c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!143 &902788259
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 902788255}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.72, z: 0}
---- !u!114 &902788260
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 902788255}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ccbd42bfe114f41848e5c4ce8169100d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LeftHandAnchorTransform: {fileID: 324457215}
-  RightHandAnchorTransform: {fileID: 869345448}
-  objectToRotate: {fileID: 1567831943}
-  rotationDuration: 1
-  moveScale: 1
 --- !u!1001 &903035313
 PrefabInstance:
   m_ObjectHideFlags: 0
