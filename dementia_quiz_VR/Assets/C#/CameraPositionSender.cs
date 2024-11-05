@@ -61,13 +61,11 @@ public class CameraPositionSender : MonoBehaviour
     public class HOPPosition
     {
         public float x;
-        public float y;
         public float z;
 
-        public HOPPosition(float x, float y, float z)
+        public HOPPosition(float x, float z)
         {
             this.x = x;
-            this.y = y;
             this.z = z;
         }
     }
