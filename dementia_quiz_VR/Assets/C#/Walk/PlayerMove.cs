@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
-public class PlayerMover : MonoBehaviour
+public class PlayerMove : MonoBehaviour
 {
     [SerializeField] private float _moveSpeed = 5;
 

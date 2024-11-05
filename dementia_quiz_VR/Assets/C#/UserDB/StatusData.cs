@@ -9,13 +9,13 @@ namespace App.BaseSystem.DataStores.ScriptableObjects.Status
     [CreateAssetMenu(menuName = "ScriptableObject/Data/Status")]
     public class StatusData : BaseData
     {
-        public List<float> QuizDiff
+        public List<int> QuizDiff
         {
             get => quizDiff;
             set => quizDiff = value;
         }
         [SerializeField]
-        private List<float> quizDiff = new List<float>();
+        private List<int> quizDiff = new List<int>();
 
         public float ActDiff
         {
@@ -33,12 +33,12 @@ namespace App.BaseSystem.DataStores.ScriptableObjects.Status
         [SerializeField]
         private string uuid;
 
-        public List<float> LR
+        public List<bool> LR
         {
             get => lr;
             set => lr = value;
         }
         [SerializeField]
-        private List<float> lr = new List<float>();
+        private List<bool> lr = new List<bool>();
     }
 }
