@@ -294,11 +294,3 @@ public class QuizController : MonoBehaviour
             return (num % 2 == 0);
         }
     }
-
-[System.Serializable]
-public class GetQuiz
-{
-    public String Question;
-    public String lef_sel;
-    public String rig_sel;
-}

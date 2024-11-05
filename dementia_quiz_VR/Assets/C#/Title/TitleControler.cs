@@ -103,10 +103,12 @@ public class TitleControler : MonoBehaviour
     //データ格納処理
     private void SetData(GetQuizData data)
     {
+        Debug.Log($"受け取ったQuizDiff: [{string.Join(", ", data.quiz_id)}]");
+        Debug.Log($"受け取ったActDiff: {data.action_id}");
         statusData.QuizDiff = new List<int>(data.quiz_id);
         statusData.ActDiff = data.action_id;
-        Debug.Log($"受け取ったQuizDiff: [{string.Join(", ", statusData.QuizDiff)}]");
-        Debug.Log($"受け取ったActDiff: {statusData.ActDiff}");
+        Debug.Log($"格納したQuizDiff: [{string.Join(", ", statusData.QuizDiff)}]");
+        Debug.Log($"格納したActDiff: {statusData.ActDiff}");
         canTransition = true;  //格納出来たらフラグをtrueに
     }
 
