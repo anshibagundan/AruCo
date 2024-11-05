@@ -5,8 +5,10 @@ import (
 	"HOPcardAPI/usecase"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
+	"log"
 	"net/http"
 	"sync"
+	"time"
 )
 
 type DifficultyWebSocketHandler struct {
@@ -115,6 +117,23 @@ func (h *DifficultyWebSocketHandler) HandleUnityWebSocket(w http.ResponseWriter,
 		delete(h.unityConns, uuid)
 		h.mutex.Unlock()
 		conn.Close()
+	}()
+	ticker := time.NewTicker(30 * time.Second)
+	defer ticker.Stop()
+
+	go func() {
+		for range ticker.C {
+			h.mutex.RLock()
+			if unityConn, exists := h.unityConns[uuid]; exists {
+				err := unityConn.WriteMessage(websocket.PingMessage, []byte{})
+				if err != nil {
+					log.Printf("Failed to send ping to Unity: %v", err)
+					h.mutex.RUnlock()
+					return
+				}
+			}
+			h.mutex.RUnlock()
+		}
 	}()
 
 	for {
