@@ -9,14 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d523c1a7aea3334491c10504a1dd3c1, type: 3}
-  m_Name: StatusData
+  m_Script: {fileID: 11500000, guid: dc65360b8a2087d45b9f98708c820263, type: 3}
+  m_Name: UserData
   m_EditorClassIdentifier: 
   name: 
   id: 0
-  quizDiff: 000000000000000000000000
-  actDiff: 0
-  serialNum: 229555
-  currentName: 
-  uuid: daba84f3-e48a-5654-b166-180175532818
-  lr: []
+  userName: []

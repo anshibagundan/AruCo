@@ -24,7 +24,7 @@ namespace App.BaseSystem.DataStores.ScriptableObjects.Status
             set => actDiff = value;
         }
         [SerializeField]
-        private string uuid;
+        public string uuid;
         public string Uuid
         {
             get => uuid;
