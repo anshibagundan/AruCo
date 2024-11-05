@@ -33,7 +33,7 @@ public class QuizController : MonoBehaviour
     private bool isAnswered = false;//解答した後の処理のために必要な切り替えに必要な処理っぽい
     private const int maxAttempts = 30;
     private int Quizdiff;
-    private Quiz QuizData;
+    private GetQuiz QuizData;
     [SerializeField]
     private StatusData statusData;
     int LRCount = 0;//LR要素数の初期化
@@ -157,7 +157,7 @@ public class QuizController : MonoBehaviour
 
                 try
                 {
-                    QuizData = JsonUtility.FromJson<Quiz>(json);
+                    QuizData = JsonUtility.FromJson<GetQuiz>(json);
                     // パース成功
                 }
                 catch (Exception e)

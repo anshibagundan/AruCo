@@ -1,7 +1,7 @@
 using System;
 
 [System.Serializable]
-public class Quiz
+public class GetQuiz
 {
     public String Question;
     public String lef_sel;
