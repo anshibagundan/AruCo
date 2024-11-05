@@ -84,9 +84,8 @@ func (h *DifficultyWebSocketHandler) HandleAndroidWebSocket(w http.ResponseWrite
 		}
 		h.mutex.RUnlock()
 
-		// Android側には受信確認のみ送信
-		confirmMsg := map[string]string{"status": "received"}
-		err = conn.WriteJSON(confirmMsg)
+		// Android側にもメッセージを送信
+		err = conn.WriteJSON(unityMsg)
 		if err != nil {
 			continue
 		}
