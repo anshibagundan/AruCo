@@ -51,6 +51,9 @@ func main() {
 	// Result系の初期化
 	resultHandler := handlers.ResultNewWebSocketHandler(quizRepo, actionRepo, userdataRepo, userdataUseCase)
 
+	// Cast系の初期化
+	screenShareHandler := handlers.NewScreenShareHandler()
+
 	// ルーティング
 	r := mux.NewRouter()
 	r.HandleFunc("/createuuid", uuidHandler.CreateUUID).Methods("GET")
@@ -65,6 +68,8 @@ func main() {
 	r.HandleFunc("/ws/result/unity/{uuid}", resultHandler.HandleResultUnityWebSocket)
 	r.HandleFunc("/getquiz", quizHandler.GetQuiz).Methods("GET")
 	r.HandleFunc("/getaction", actionHandler.GetAction).Methods("GET")
+	r.HandleFunc("/ws/cast/android/{uuid}", screenShareHandler.HandleAndroidWebSocket)
+	r.HandleFunc("/ws/cast/unity/{uuid}", screenShareHandler.HandleUnityWebSocket)
 
 	// ポート設定
 	port := os.Getenv("PORT")
