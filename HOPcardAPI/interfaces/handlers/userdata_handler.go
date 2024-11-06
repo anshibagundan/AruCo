@@ -88,13 +88,13 @@ func (h *UserDataHandler) GetUserData(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response := map[string]interface{}{
-		"uuid":                 uuid,
-		"ratio":                userData.Ratio,
-		"distance":             userData.Distance,
-		"change_count":         userData.ChangeCount,
-		"quiz_correct_rates":   userData.QuizCorrectRates,
-		"action_correct_rates": userData.ActionCorrectRates,
-		"message":              message,
+		"uuid":                uuid,
+		"ratio":               userData.Ratio,
+		"distance":            userData.Distance,
+		"change_count":        userData.ChangeCount,
+		"quiz_correct_rates":  userData.QuizCorrectRates,
+		"action_correct_rate": userData.ActionCorrectRate,
+		"message":             message,
 	}
 
 	w.Header().Set("Content-Type", "application/json")

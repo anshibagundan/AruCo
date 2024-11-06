@@ -92,11 +92,11 @@ func (uc *userDataUsecase) GetUserDataByUuid(uuid string) (*UserDataResponse, er
 	}
 
 	response := &UserDataResponse{
-		Ratio:              userData.Ratio,
-		Distance:           userData.Distance,
-		ChangeCount:        userData.ChangeCount,
-		QuizCorrectRates:   quizCorrectRates,
-		ActionCorrectRates: actionCorrectRates,
+		Ratio:             userData.Ratio,
+		Distance:          userData.Distance,
+		ChangeCount:       userData.ChangeCount,
+		QuizCorrectRates:  quizCorrectRates,
+		ActionCorrectRate: actionCorrectRates[0].CorrectRate,
 	}
 
 	return response, nil
@@ -168,11 +168,11 @@ func (uc *userDataUsecase) SaveUserActionResult(uuid string, actionID int, corre
 
 // UserDataResponse は GetUserDataByUuid で返されるレスポンス構造体
 type UserDataResponse struct {
-	Ratio              float64             `json:"ratio"`
-	Distance           float64             `json:"distance"`
-	ChangeCount        int                 `json:"change_count"`
-	QuizCorrectRates   []QuizCorrectRate   `json:"quiz_correct_rates"`
-	ActionCorrectRates []ActionCorrectRate `json:"action_correct_rates"`
+	Ratio             float64           `json:"ratio"`
+	Distance          float64           `json:"distance"`
+	ChangeCount       int               `json:"change_count"`
+	QuizCorrectRates  []QuizCorrectRate `json:"quiz_correct_rates"`
+	ActionCorrectRate float64           `json:"action_correct_rates"`
 }
 
 // QuizCorrectRate はその正解率、名前、詳細を保持する構造体
