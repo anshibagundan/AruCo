@@ -45,7 +45,8 @@ public class result extends AppCompatActivity {
     private TextView distanceText;
     private TextView feedbackText;
     WebSocketClient_result webSocketClient_result=new WebSocketClient_result(this);
-
+    String quiz1_name,quiz2_name,quiz3_name;
+    private TextView quiz1_name_text,quiz2_name_text,quiz3_name_text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +61,9 @@ public class result extends AppCompatActivity {
         quiz3_text=findViewById(R.id.quiz3_text);
         distanceText=findViewById(R.id.distanceText);
         feedbackText=findViewById(R.id.feedbackText);
-
+        quiz1_name_text=findViewById(R.id.quiz1_name_text);
+        quiz2_name_text=findViewById(R.id.quiz2_name_text);
+        quiz3_name_text=findViewById(R.id.quiz3_name_text);
 
 //        clearDateAndScore();
         getTF();
@@ -71,6 +74,7 @@ public class result extends AppCompatActivity {
         setTF_quiz();
         setDistance(WebSocketClient_result.distance);
         setFeedBack(WebSocketClient_result.feedback);
+        setQuizName();
 
     }
 
@@ -81,6 +85,18 @@ public class result extends AppCompatActivity {
         quiz2=WebSocketClient_result.corList.get(1);
         quiz3=WebSocketClient_result.corList.get(2);
         act1=WebSocketClient_result.corList.get(3);
+    }
+    //クイズの問題を取得
+    public void getQuizName(){
+        quiz1_name=WebSocketClient_result.quiz_nameList.get(0);
+        quiz2_name=WebSocketClient_result.quiz_nameList.get(1);
+        quiz3_name=WebSocketClient_result.quiz_nameList.get(2);
+    }
+    public void setQuizName(){
+        getQuizName();
+        quiz1_name_text.setText(quiz1_name);
+        quiz2_name_text.setText(quiz2_name);
+        quiz3_name_text.setText(quiz3_name);
     }
 
     //〇✕テキストをセット

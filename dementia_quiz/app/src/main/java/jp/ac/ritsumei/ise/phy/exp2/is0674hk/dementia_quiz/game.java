@@ -72,9 +72,10 @@ public class game extends AppCompatActivity {
     public static Button finish_button;
     public TextView diff_text;
     private ImageView diff_image;
-    private ImageView imageView;
+    private ImageView live;
     private WebSocketClient webSocketClient;
     private String serverUrl;
+    private String TAG = "WebSocket";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,13 +90,15 @@ public class game extends AppCompatActivity {
         customCircleView = findViewById(R.id.customCircleView);
         finish_button=findViewById(R.id.finish_button);
         diff_image=findViewById(R.id.diff_image);
-        imageView=findViewById(R.id.imageView);
+        live=findViewById(R.id.live);
 
 
         SharedPreferences uuidPrefs = getSharedPreferences("uuidPrefs", MODE_PRIVATE);
         String myuuid = uuidPrefs.getString("UUID", "デフォルト値");
         Log.d("UUID Check", "UUID: " + myuuid); // ログで確認
         serverUrl = "wss://hopcardapi-4f6e9a3bf06d.herokuapp.com/ws/cast/android/"+myuuid;
+
+        Log.d(TAG,"kekekekeke"+serverUrl);
 
         finish_button.setEnabled(false);
         setDiff(home.difficulty);
@@ -105,7 +108,7 @@ public class game extends AppCompatActivity {
         webSocketClient_result.startWebsocket(myuuid);
 
         try {
-            URI uri = new URI(serverUrl);
+            URI url = new URI(serverUrl);
 
             // SSL証明書の検証を無視（テスト目的のみ）
             TrustManager[] trustAllCerts = new TrustManager[]{
@@ -119,16 +122,16 @@ public class game extends AppCompatActivity {
             sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
             SSLSocketFactory factory = sslContext.getSocketFactory();
 
-            webSocketClient = new WebSocketClient(uri) {
+            webSocketClient = new WebSocketClient(url) {
                 @Override
                 public void onOpen(ServerHandshake handshakedata) {
                     runOnUiThread(() -> {
-                        Log.d(TAG, "WebSocket接続成功");
+                        Log.d(TAG, "WebSocket_cast接続成功");
                     });
                 }
 
                 @Override
-                public void onMessage(String message) {
+                public void onMessage( String message) {
                     runOnUiThread(() -> {
                         Log.d(TAG, "メッセージ受信");
                         try {
@@ -136,7 +139,7 @@ public class game extends AppCompatActivity {
                             String base64Image = jsonObject.getString("data");
                             byte[] imageBytes = Base64.decode(base64Image, Base64.DEFAULT);
                             Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-                            imageView.setImageBitmap(bitmap);
+                            live.setImageBitmap(bitmap);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

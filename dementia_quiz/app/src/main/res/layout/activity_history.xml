@@ -16,6 +16,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             >
             <ImageView
                 android:id="@+id/back"
@@ -27,6 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="履歴"
+
                 android:textSize="50sp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="40sp"/>
@@ -47,17 +49,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="認知度"
-
-                    android:textSize="50sp"/>
+                    android:background="@drawable/border_text_bold"
+                    android:textSize="30sp"/>
                 <TextView
                     android:id="@+id/ratio_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="〇%"
                     android:layout_gravity="center"
-                    android:textSize="50sp" />
+                    android:textSize="60sp" />
             </LinearLayout>
 
+<!--            遊んだ回数、歩いた距離-->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -82,6 +85,7 @@
                     android:text="〇〇m）"/>
 
             </LinearLayout>
+
         </LinearLayout>
 
 

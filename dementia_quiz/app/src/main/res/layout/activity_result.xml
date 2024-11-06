@@ -69,7 +69,7 @@
 
         </LinearLayout>
 
-
+<!--記憶クイズ結果表示-->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -78,20 +78,23 @@
             android:layout_marginRight="110sp"
             android:orientation="vertical">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="問1"
-                android:textSize="30sp" />
-        </LinearLayout>
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="問題"
+                    android:textSize="20sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="犬の数は？"
+                    android:textSize="10sp"/>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="200sp"
-            android:layout_marginRight="60sp"
-            android:layout_gravity="right">
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/act1_text"
@@ -103,41 +106,30 @@
         </LinearLayout>
 
 
+<!--Arucoクイズ結果表示-->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="150sp"
             android:orientation="vertical"
             android:layout_marginTop="200sp">
-
-            <TextView
+            <!--問１-->
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="問1"
-                android:layout_weight="1"
-                android:textSize="30sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="問2"
-                android:layout_weight="1"
-                android:textSize="30sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="問3"
-                android:layout_weight="1"
-                android:textSize="30sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="150sp"
-            android:orientation="vertical"
-            android:layout_marginTop="200sp"
-            android:layout_marginLeft="100sp">
-
+                android:orientation="horizontal"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="第1問"
+                    android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/quiz1_name_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="10sp"/>
+            </LinearLayout>
             <TextView
                 android:id="@+id/quiz1_text"
                 android:layout_width="wrap_content"
@@ -145,8 +137,27 @@
                 android:text=""
                 android:layout_weight="1"
                 android:textStyle="bold"
-                android:textSize="30sp" />
+                android:textSize="20sp"
+                android:background="@drawable/border_text"/>
 
+<!--            問２-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="第2問"
+                    android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/quiz2_name_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="10sp"/>
+            </LinearLayout>
             <TextView
                 android:id="@+id/quiz2_text"
                 android:layout_width="wrap_content"
@@ -154,8 +165,26 @@
                 android:text=""
                 android:layout_weight="1"
                 android:textStyle="bold"
-                android:textSize="30sp" />
+                android:textSize="20sp" />
 
+<!--            問3-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="第3問"
+                    android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/quiz3_name_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="10sp"/>
+            </LinearLayout>
             <TextView
                 android:id="@+id/quiz3_text"
                 android:layout_width="wrap_content"
@@ -163,7 +192,7 @@
                 android:text=""
                 android:layout_weight="1"
                 android:textStyle="bold"
-                android:textSize="30sp" />
+                android:textSize="20sp" />
         </LinearLayout>
 
 

@@ -34,6 +34,7 @@ public class WebSocketClient_result extends WebSocketListener {
 
     // ブーリアン型のリストを作成
     public static List<Boolean> corList = new ArrayList<>();
+    public static List<String> quiz_nameList = new ArrayList<>();
     public static String feedback;
     public static String distance;
     WebSocketClient_xyz webSocketClient_xyz=new WebSocketClient_xyz(customCircleView,context);
@@ -75,10 +76,14 @@ public class WebSocketClient_result extends WebSocketListener {
 //            SharedPreferences uuidPrefs = context.getSharedPreferences("uuidPrefs", Context.MODE_PRIVATE);
 //            String myuuid = uuidPrefs.getString("UUID", "デフォルト値");
 //            Log.d("UUID Check", "UUID: " + myuuid); // ログで確認
-
+            JSONArray quiz_name= json.getJSONArray("quiz_names");
             distance=json.getString("distance");
             feedback=json.getString("message");
             JSONArray cor=json.getJSONArray("cor");
+            for (int i = 0; i < quiz_name.length(); i++) {
+                quiz_nameList.add(quiz_name.getString(i));
+                Log.d("quiz_name",quiz_name.getString(i));
+            }
             // corからブーリアン型の値をリストに追加
             for (int i = 0; i < cor.length(); i++) {
                 corList.add(cor.getBoolean(i));

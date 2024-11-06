@@ -24,6 +24,8 @@ public class WebSocketClient_xyz extends WebSocketListener {
     private CustomCircleView customCircleView;
     OkHttpClient client = new OkHttpClient();
     private Context context; // Contextを保持
+    private int startPositionX=872;
+    private int startPositionZ=964;
 
 
 //    private static WebSocketClient_xyz instance;
@@ -69,30 +71,15 @@ public class WebSocketClient_xyz extends WebSocketListener {
         Log.d(TAG, "Received message: " + text);
         Log.d("xyz","受け取りok");
         // JSONをパースして内容を確認する
-        //TODO 座標位置を相対値にする
         try {
             JSONObject json = new JSONObject(text);
-
-//            //uuidが一致しているところのx,zを取得
-//            String uuid=json.getString("uuid");
-//            SharedPreferences uuidPrefs = context.getSharedPreferences("uuidPrefs", Context.MODE_PRIVATE);
-//            String myuuid = uuidPrefs.getString("UUID", "デフォルト値");
-//            Log.d("UUID Check", "UUID: " + myuuid); // ログで確認
-//            if(uuid.equals(myuuid)){
-//                float x = (float) (((float)json.getDouble("x")+872)*0.145+265);
-//                float z = (float) (((float)json.getDouble("z")+966)*(-0.165)+1210);
-//                Log.d(TAG,  "x = " + x + " z = " + z);
-//                mainHandler.post(() -> {
-//                    customCircleView.setCirclePosition(x, z);
-//                }); //y座標はいらんっしょ
-//            }
 
             // 画面の幅と高さを取得
             int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
             int screenHeight = context.getResources().getDisplayMetrics().heightPixels;
 
-            float x = (float) (((float)json.getDouble("x")+872)*0.145+450);
-            float z = (float) (((float)json.getDouble("z")+964)*(-0.165)+610);
+            float x = (float) (((float)json.getDouble("x")+startPositionX)*0.145+450);
+            float z = (float) (((float)json.getDouble("z")+startPositionZ)*(-0.165)+680);
 
             // 相対位置に変換
             float X = x / 1920 * screenWidth;  // 1920 は基準の幅（例）
