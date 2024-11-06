@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"strings"
 	"sync"
+	"time"
 )
 
 // WebSocket管理の構造体
@@ -193,6 +194,18 @@ func (h *ResultWebSocketHandler) HandleResultAndroidWebSocket(w http.ResponseWri
 
 	h.addAndroidConnection(uuid, conn)
 	defer h.cleanupConnection(uuid, conn, "Android")
+
+	// Start a goroutine to send a ping every 30 seconds to keep the connection alive
+	go func() {
+		for {
+			err := conn.WriteMessage(websocket.PingMessage, nil)
+			if err != nil {
+				log.Printf("Android側へのPing送信に失敗しました: %v", err)
+				break
+			}
+			time.Sleep(30 * time.Second)
+		}
+	}()
 
 	for {
 		var resultMsg models.ResultAndroidMessage
