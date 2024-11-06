@@ -1,9 +1,9 @@
 CREATE TABLE user_data (
-                           id SERIAL PRIMARY KEY,
-                           uuid_id INT REFERENCES uuids(id),
-                           ratio FLOAT,
-                           distance FLOAT,
+                           id BIGSERIAL PRIMARY KEY,
+                           uuid_id INT NOT NULL,
+                           ratio FLOAT NOT NULL,
+                           distance FLOAT NOT NULL,
                            change_count INT DEFAULT 0,
-                           created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-                           updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+                           created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+                           updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );

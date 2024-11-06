@@ -28,49 +28,56 @@ func main() {
 	uuidUseCase := usecase.NewUUIDUseCase(uuidRepo, uuidService)
 	uuidHandler := handlers.NewUUIDHandler(uuidUseCase)
 
-	// Quiz, Action系の初期化
+	// Quiz, Action, Difficulty系の初期化
 	quizRepo := persistence.NewQuizRepository(db)
 	actionRepo := persistence.NewActionRepository(db)
 	quizUsecase := usecase.NewQuizUseCase(quizRepo)
 	actionUsecase := usecase.NewActionUseCase(actionRepo)
 	quizHandler := handlers.NewQuizHandler(quizUsecase)
 	actionHandler := handlers.NewActionHandler(actionUsecase)
-
-	// Difficulty系の初期化
 	difficultyUsecase := usecase.NewDifficultyUsecase(quizRepo, actionRepo)
 	difficultyHandler := handlers.NewDifficultyWebSocketHandler(difficultyUsecase)
 
-	// XYZ系の初期化
-	xyzHandler := handlers.XYZNewWebSocketHandler()
-
 	// UserData系の初期化
-	userdataRepo := persistence.NewUserDataPersistence(db)
-	userdataUseCase := usecase.NewUserDataUsecase(userdataRepo)
-	userdataHandler := handlers.NewUserDataHandler(*userdataUseCase)
+	userDataRepo := persistence.NewUserDataPersistence(db)
+	userDataUseCase := usecase.NewUserDataUsecase(
+		quizRepo, userDataRepo,
+		persistence.NewUserQuizResultRepository(db),
+		persistence.NewUserActionResultRepository(db),
+	)
+	userDataHandler := handlers.NewUserDataHandler(userDataUseCase)
 
 	// Result系の初期化
-	resultHandler := handlers.ResultNewWebSocketHandler(quizRepo, actionRepo, userdataRepo, userdataUseCase)
+	resultHandler := handlers.NewResultWebSocketHandler(quizRepo, actionRepo, userDataRepo, userDataUseCase)
 
-	// Cast系の初期化
+	// ScreenShare（Cast）系の初期化
 	screenShareHandler := handlers.NewScreenShareHandler()
 
-	// ルーティング
 	r := mux.NewRouter()
+
+	// UUIDエンドポイント
 	r.HandleFunc("/createuuid", uuidHandler.CreateUUID).Methods("GET")
 	r.HandleFunc("/getuuid", uuidHandler.GetUUID).Methods("GET")
+
+	// WebSocketエンドポイント（Difficulty）
 	r.HandleFunc("/ws/difficulty/android/{uuid}", difficultyHandler.HandleAndroidWebSocket)
 	r.HandleFunc("/ws/difficulty/unity/{uuid}", difficultyHandler.HandleUnityWebSocket)
-	r.HandleFunc("/ws/xyz/android/{uuid}", xyzHandler.HandleXYZAndroidWebSocket)
-	r.HandleFunc("/ws/xyz/unity/{uuid}", xyzHandler.HandleXYZUnityWebSocket)
-	r.HandleFunc("/createuserdata", userdataHandler.CreateUserData).Methods("POST")
-	r.HandleFunc("/getuserdata", userdataHandler.GetUserData).Methods("GET")
+
+	// WebSocketエンドポイント（Result）
 	r.HandleFunc("/ws/result/android/{uuid}", resultHandler.HandleResultAndroidWebSocket)
 	r.HandleFunc("/ws/result/unity/{uuid}", resultHandler.HandleResultUnityWebSocket)
-	r.HandleFunc("/getquiz", quizHandler.GetQuiz).Methods("GET")
-	r.HandleFunc("/getaction", actionHandler.GetAction).Methods("GET")
+
+	// WebSocketエンドポイント（ScreenShare）
 	r.HandleFunc("/ws/cast/android/{uuid}", screenShareHandler.HandleAndroidWebSocket)
 	r.HandleFunc("/ws/cast/unity/{uuid}", screenShareHandler.HandleUnityWebSocket)
 
+	// UserDataエンドポイント
+	r.HandleFunc("/createuserdata", userDataHandler.CreateUserData).Methods("POST")
+	r.HandleFunc("/getuserdata", userDataHandler.GetUserData).Methods("GET")
+
+	// Quiz, Actionエンドポイント
+	r.HandleFunc("/getquiz", quizHandler.GetQuiz).Methods("GET")
+	r.HandleFunc("/getaction", actionHandler.GetAction).Methods("GET")
 	// ポート設定
 	port := os.Getenv("PORT")
 	if port == "" {
