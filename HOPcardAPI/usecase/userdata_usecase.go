@@ -74,7 +74,6 @@ func (uc *userDataUsecase) GetUserDataByUuid(uuid string) (*UserDataResponse, er
 			return nil, err
 		}
 		quizCorrectRates = append(quizCorrectRates, QuizCorrectRate{
-			QuizID:      result.QuizID,
 			Name:        quiz.Name,
 			CorrectRate: result.CorrectRate,
 			Detail:      quiz.Detail,
@@ -88,7 +87,6 @@ func (uc *userDataUsecase) GetUserDataByUuid(uuid string) (*UserDataResponse, er
 	actionCorrectRates := []ActionCorrectRate{}
 	for _, result := range userActionResults {
 		actionCorrectRates = append(actionCorrectRates, ActionCorrectRate{
-			ActionID:    result.ActionID,
 			CorrectRate: result.CorrectRate,
 		})
 	}
@@ -177,16 +175,14 @@ type UserDataResponse struct {
 	ActionCorrectRates []ActionCorrectRate `json:"action_correct_rates"`
 }
 
-// QuizCorrectRate はクイズIDとその正解率、名前、詳細を保持する構造体
+// QuizCorrectRate はその正解率、名前、詳細を保持する構造体
 type QuizCorrectRate struct {
-	QuizID      int     `json:"quiz_id"`
 	Name        string  `json:"name"`
 	CorrectRate float64 `json:"correct_rate"`
 	Detail      string  `json:"detail"`
 }
 
-// ActionCorrectRate はアクションIDとその正解率を保持する構造体
+// ActionCorrectRate はその正解率を保持する構造体
 type ActionCorrectRate struct {
-	ActionID    int     `json:"action_id"`
 	CorrectRate float64 `json:"correct_rate"`
 }
