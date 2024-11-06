@@ -60,5 +60,13 @@ namespace App.BaseSystem.DataStores.ScriptableObjects.Status
         }
         [SerializeField]
         private float positionZ;
+        public float rotY
+        {
+            get => rotationY;
+            set => rotationY = value;
+        }
+        [SerializeField]
+        private float rotationY;
+
     }
 }
