@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UIElements;
 
 namespace App.BaseSystem.DataStores.ScriptableObjects.Status
 {
@@ -30,14 +31,6 @@ namespace App.BaseSystem.DataStores.ScriptableObjects.Status
         [SerializeField]
         private int serialNum;
 
-        public string CurrentName
-        {
-            get => currentName;
-            set => currentName = value;
-        }
-        [SerializeField]
-        private string currentName;
-
         public string UUID
         {
             get => uuid;
@@ -53,5 +46,19 @@ namespace App.BaseSystem.DataStores.ScriptableObjects.Status
         }
         [SerializeField]
         private List<bool> lr = new List<bool>();
+        public float X
+        {
+            get => positionX;
+            set => positionX = value;
+        }
+        [SerializeField]
+        private float positionX;
+        public float Z
+        {
+            get => positionZ;
+            set => positionZ = value;
+        }
+        [SerializeField]
+        private float positionZ;
     }
 }

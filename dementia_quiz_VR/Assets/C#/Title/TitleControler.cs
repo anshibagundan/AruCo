@@ -18,6 +18,8 @@ public class TitleControler : MonoBehaviour
     private void Start()
     {
         StartCoroutine(InitializeAndConnect());
+        statusData.X = 0;
+        statusData.Z = 0;
     }
 
     private IEnumerator InitializeAndConnect()

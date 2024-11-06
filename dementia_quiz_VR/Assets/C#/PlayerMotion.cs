@@ -81,9 +81,7 @@ public class PlayerMotion : MonoBehaviour
         leftController.TryGetFeatureValue(CommonUsages.deviceAcceleration, out touchAccelerationL);
         rightController.TryGetFeatureValue(CommonUsages.deviceAcceleration, out touchAccelerationR);
 
-        // 地面に接地しているかどうかで移動スケールを調整
-        if (!IsGrounded()) MoveScale = 0.0f;
-        else MoveScale = 1.0f;
+        MoveScale = 1.0f;
 
         MoveScale *= SimulationRate * Time.deltaTime;
 
@@ -123,6 +121,7 @@ public class PlayerMotion : MonoBehaviour
 
         // 歩行状態かどうかを判定
         bool isWalk = DetectHandShakeWalk(Math.Abs(handShakeVel.y)) || motionInertia;
+        Debug.Log(isWalk);
         if (isWalk)
         {
             if (!motionInertia){}
@@ -411,14 +410,15 @@ public class PlayerMotion : MonoBehaviour
 
     private bool IsGrounded()
     {
-        // CharacterControllerが地面に接地している場合はtrueを返す
+        /*// CharacterControllerが地面に接地している場合はtrueを返す
         if (Controller.isGrounded) return true;
 
         // レイキャストを使用して地面との接地判定を行う
         var pos = transform.position;
         var ray = new Ray(pos + Vector3.up * 0.1f, Vector3.down);
         var tolerance = 0.3f;
-        return Physics.Raycast(ray, tolerance);
+        return Physics.Raycast(ray, tolerance);*/
+        return true;
     }
 
     private void UpdateController()
@@ -435,13 +435,13 @@ public class PlayerMotion : MonoBehaviour
         // 移動方向の計算
         moveDirection += MoveThrottle * SimulationRate * Time.deltaTime;
 
-        // 重力の計算
+        /*// 重力の計算
         if (Controller.isGrounded && FallSpeed <= 0)
             FallSpeed = Physics.gravity.y * (GravityModifier * 0.002f);
         else
             FallSpeed += Physics.gravity.y * (GravityModifier * 0.002f) * SimulationRate * Time.deltaTime;
 
-        moveDirection.y += FallSpeed * SimulationRate * Time.deltaTime;
+        moveDirection.y += FallSpeed * SimulationRate * Time.deltaTime;*/
 
         // 段差を乗り越える処理
         if (Controller.isGrounded && MoveThrottle.y <= transform.lossyScale.y * 0.001f)

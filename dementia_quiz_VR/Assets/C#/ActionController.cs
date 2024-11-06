@@ -252,6 +252,10 @@ public class ActionController : MonoBehaviour
 
             if (messageReceived)
             {
+                //ユーザDBリセット処理
+                statusData.X = 0;
+                statusData.Z = 0;
+                statusData.LR = null; 
                 Debug.Log("シーン遷移を実行します");
                 SceneManager.LoadScene("TitleScene");
             }
@@ -261,6 +265,7 @@ public class ActionController : MonoBehaviour
             }
             else
             {
+                SceneManager.LoadScene("TitleScene");
                 Debug.LogError("タイムアウトしました");
             }
 

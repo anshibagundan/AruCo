@@ -17,10 +17,7 @@ public class QuizController : MonoBehaviour
     public GameObject objectToRotate;
     public float rotationDuration = 1f; // 回転にかける時間
     private bool isRotating = false; // 回転中かどうかのフラグ
-    private const string difficultyGetUrl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/quiz-selects/";
-    private const string baseGetUrl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/quizzes/";
-    private const string posturl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/quiz-tfs/";
-    private const string QetQuizurl = "https://hopcardapi-4f6e9a3bf06d.herokuapp.com/getquiz";//合ってるかわからんけどいったんこう書いておく
+    private const string QetQuizurl = "https://hopcardapi-4f6e9a3bf06d.herokuapp.com/getquiz";
     private int difficulty = 1;
     private String geturl;
     private int randomIndex = 1;

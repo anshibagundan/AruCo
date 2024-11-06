@@ -2568,7 +2568,7 @@ Transform:
   m_GameObject: {fileID: 1026223633}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -13, y: -200, z: -0}
+  m_LocalPosition: {x: -13, y: -52, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2813,14 +2813,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c74fa255bbac497f9dd881bc0e96359, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rightController: {fileID: 0}
-  leftController: {fileID: 0}
-  rightHandActions: {fileID: 0}
-  leftHandActions: {fileID: 0}
   Actname: {fileID: 64688183}
   Actsel_1: {fileID: 1746468802}
   Actsel_2: {fileID: 219291747}
-  WaitingText: {fileID: 0}
   statusData: {fileID: 11400000, guid: d4824e765e202054196ddd5d10d31adf, type: 2}
 --- !u!4 &1614603111
 Transform:

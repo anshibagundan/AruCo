@@ -57,7 +57,6 @@ public class SimpleConsole : MonoBehaviour
     public void TestMessages()
     {
         Debug.Log("通常のログメッセージ");
-        Debug.LogWarning("警告メッセージ");
         Debug.LogError("エラーメッセージ");
     }
 }
