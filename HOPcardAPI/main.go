@@ -38,6 +38,9 @@ func main() {
 	difficultyUsecase := usecase.NewDifficultyUsecase(quizRepo, actionRepo)
 	difficultyHandler := handlers.NewDifficultyWebSocketHandler(difficultyUsecase)
 
+	//XYZ系の初期化
+	XYZHandler := handlers.XYZNewWebSocketHandler()
+
 	// UserData系の初期化
 	userDataRepo := persistence.NewUserDataPersistence(db)
 	userDataUseCase := usecase.NewUserDataUsecase(
@@ -62,6 +65,10 @@ func main() {
 	// WebSocketエンドポイント（Difficulty）
 	r.HandleFunc("/ws/difficulty/android/{uuid}", difficultyHandler.HandleAndroidWebSocket)
 	r.HandleFunc("/ws/difficulty/unity/{uuid}", difficultyHandler.HandleUnityWebSocket)
+
+	// WebSocketエンドポイント(XYZ)
+	r.HandleFunc("/ws/xyz/android/{uuid}", XYZHandler.HandleXYZAndroidWebSocket)
+	r.HandleFunc("/ws/xyz/unity/{uuid}", XYZHandler.HandleXYZUnityWebSocket)
 
 	// WebSocketエンドポイント（Result）
 	r.HandleFunc("/ws/result/android/{uuid}", resultHandler.HandleResultAndroidWebSocket)

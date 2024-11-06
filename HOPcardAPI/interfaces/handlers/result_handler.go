@@ -49,6 +49,16 @@ func (h *ResultWebSocketHandler) HandleResultUnityWebSocket(w http.ResponseWrite
 		return
 	}
 
+	// Check if the Android connection for the UUID exists
+	h.mutex.RLock()
+	_, androidExists := h.androidConns[uuid]
+	h.mutex.RUnlock()
+
+	if !androidExists {
+		http.Error(w, "Android側の接続が必要です", http.StatusBadRequest)
+		return
+	}
+
 	conn, err := h.upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Printf("接続のアップグレードに失敗しました: %v", err)
