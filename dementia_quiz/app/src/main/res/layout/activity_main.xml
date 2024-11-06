@@ -45,6 +45,18 @@
             android:text="開始"
             android:textSize="60sp"
             android:onClick="main_home"/>
+        <TextView
+            android:id="@+id/caution"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="※VRで操作を進めてください"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:layout_marginTop="250sp"
+            android:background="@drawable/underline"
+            android:textColor="#ff0000"
+            android:alpha="0.7"
+            android:visibility="gone"/>
 
 
 

@@ -1,29 +1,30 @@
 package jp.ac.ritsumei.ise.phy.exp2.is0674hk.dementia_quiz;
 
 import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.animation.ObjectAnimator;
+
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
+
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -33,6 +34,27 @@ import okio.ByteString;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.util.Base64;
+import android.widget.ImageView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.handshake.ServerHandshake;
+
+import org.json.JSONObject;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import android.util.Log;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import java.security.cert.X509Certificate;
 
 public class game extends AppCompatActivity {
     private Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -50,6 +72,9 @@ public class game extends AppCompatActivity {
     public static Button finish_button;
     public TextView diff_text;
     private ImageView diff_image;
+    private ImageView imageView;
+    private WebSocketClient webSocketClient;
+    private String serverUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +89,13 @@ public class game extends AppCompatActivity {
         customCircleView = findViewById(R.id.customCircleView);
         finish_button=findViewById(R.id.finish_button);
         diff_image=findViewById(R.id.diff_image);
+        imageView=findViewById(R.id.imageView);
 
 
-        SharedPreferences uuidPrefs = getSharedPreferences("uuidPrefs", Context.MODE_PRIVATE);
+        SharedPreferences uuidPrefs = getSharedPreferences("uuidPrefs", MODE_PRIVATE);
         String myuuid = uuidPrefs.getString("UUID", "デフォルト値");
         Log.d("UUID Check", "UUID: " + myuuid); // ログで確認
+        serverUrl = "wss://hopcardapi-4f6e9a3bf06d.herokuapp.com/ws/cast/android/"+myuuid;
 
         finish_button.setEnabled(false);
         setDiff(home.difficulty);
@@ -76,7 +103,82 @@ public class game extends AppCompatActivity {
         WebSocketClient_result webSocketClient_result=new WebSocketClient_result(this);
         webSocketClient_xyz.startWebsocket(myuuid);
         webSocketClient_result.startWebsocket(myuuid);
+
+        try {
+            URI uri = new URI(serverUrl);
+
+            // SSL証明書の検証を無視（テスト目的のみ）
+            TrustManager[] trustAllCerts = new TrustManager[]{
+                    new X509TrustManager() {
+                        public void checkClientTrusted(X509Certificate[] chain, String authType) {}
+                        public void checkServerTrusted(X509Certificate[] chain, String authType) {}
+                        public X509Certificate[] getAcceptedIssuers() { return new X509Certificate[0]; }
+                    }
+            };
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+            SSLSocketFactory factory = sslContext.getSocketFactory();
+
+            webSocketClient = new WebSocketClient(uri) {
+                @Override
+                public void onOpen(ServerHandshake handshakedata) {
+                    runOnUiThread(() -> {
+                        Log.d(TAG, "WebSocket接続成功");
+                    });
+                }
+
+                @Override
+                public void onMessage(String message) {
+                    runOnUiThread(() -> {
+                        Log.d(TAG, "メッセージ受信");
+                        try {
+                            JSONObject jsonObject = new JSONObject(message);
+                            String base64Image = jsonObject.getString("data");
+                            byte[] imageBytes = Base64.decode(base64Image, Base64.DEFAULT);
+                            Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                            imageView.setImageBitmap(bitmap);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    });
+                }
+
+                @Override
+                public void onClose(int code, String reason, boolean remote) {
+                    runOnUiThread(() -> {
+                        Log.d(TAG, "WebSocket切断: " + reason + ", Code: " + code);
+                    });
+                }
+
+                @Override
+                public void onError(Exception ex) {
+                    runOnUiThread(() -> {
+                        Log.e(TAG, "WebSocketエラー", ex);
+                    });
+                }
+            };
+
+            // ファクトリーを設定
+            webSocketClient.setSocketFactory(factory);
+            webSocketClient.connect();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (webSocketClient != null) {
+            webSocketClient.close();
+        }
+    }
+
+
+
+
+
+
 
 
     //難易度を表示

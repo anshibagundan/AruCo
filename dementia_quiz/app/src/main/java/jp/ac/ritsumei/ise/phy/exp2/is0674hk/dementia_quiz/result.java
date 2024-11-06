@@ -18,8 +18,10 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,7 +42,6 @@ public class result extends AppCompatActivity {
     private String date;
     private UserData UserData;
     private Context context; // Contextを保持
-    private float tem_distance=1;
     private TextView distanceText;
     private TextView feedbackText;
     WebSocketClient_result webSocketClient_result=new WebSocketClient_result(this);
@@ -60,6 +61,8 @@ public class result extends AppCompatActivity {
         distanceText=findViewById(R.id.distanceText);
         feedbackText=findViewById(R.id.feedbackText);
 
+
+//        clearDateAndScore();
         getTF();
         MakeQuizPercent(quiz1,quiz2,quiz3);
         MakeActPercent(act1);
@@ -117,7 +120,7 @@ public class result extends AppCompatActivity {
 
     //距離を表示
     public void setDistance(String distance){
-        distanceText.setText(distance);
+        distanceText.setText(distance+"km");
     }
     public void setFeedBack(String feedback){
         feedbackText.setText(feedback);
@@ -162,30 +165,75 @@ public class result extends AppCompatActivity {
 
 
     // UserData(UUID,per,distance)をPOST
-    public void post_UserData(View view){
-        SharedPreferences uuidPrefs = context.getSharedPreferences("uuidPrefs", Context.MODE_PRIVATE);
-        String myuuid = uuidPrefs.getString("UUID", "デフォルト値");
-        Log.d("UUID Check", "UUID: " + myuuid); // ログで確認
-        UserData=new UserData(myuuid,percent,tem_distance);
-        apiService.postUserData(UserData).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()){
-                    Log.d("POST", "Data sent successfully");
-                    webSocketClient_result.closeWebSocket();
-                    Intent intent = new Intent(result.this, MainActivity.class);
-                    startActivity(intent);
-                }else {
-                    Log.e("POST", "Failed to send data: " + response.message());
-                }
-            }
+    public void result_main(View view){
+//        saveDateAndScore();
+        webSocketClient_result.closeWebSocket();
+        Intent intent = new Intent(result.this, MainActivity.class);
+        startActivity(intent);
 
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Log.e("POST", "Request failed: " + t.getMessage());
-            }
-        });
+
+
+//        SharedPreferences uuidPrefs = getSharedPreferences("uuidPrefs", MODE_PRIVATE);
+//        String myuuid = uuidPrefs.getString("UUID", "デフォルト値");
+//        Log.d("UUID Check", "UUID: " + myuuid); // ログで確認
+//        UserData=new UserData(myuuid,percent,WebSocketClient_result.distance);
+//        Log.d("UserData",myuuid+percent+WebSocketClient_result.distance);
+//        apiService.postUserData(UserData).enqueue(new Callback<Void>() {
+//            @Override
+//            public void onResponse(Call<Void> call, Response<Void> response) {
+//                if (response.isSuccessful()){
+//                    Log.d("POST", "Data sent successfully");
+//                    webSocketClient_result.closeWebSocket();
+//                    Intent intent = new Intent(result.this, MainActivity.class);
+//                    startActivity(intent);
+//                }else {
+//                    Log.e("POST", "Failed to send data: " + response.message());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Void> call, Throwable t) {
+//                Log.e("POST", "Request failed: " + t.getMessage());
+//            }
+//        });
 
     }
+
+    public void saveDateAndScore(){
+        long currentTime = System.currentTimeMillis();
+        String timeStr = formatTime(currentTime);
+        Log.d("Time", timeStr);
+        SharedPreferences sharedPreferences = getSharedPreferences("DateAndScore", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        // 既存のデータをカンマ区切りの文字列として取得
+        String timeData = sharedPreferences.getString("PressTime", "");
+        String scoreData = sharedPreferences.getString("Scores", "");
+
+        // 新しい値を追加
+        timeData = timeData.isEmpty() ? timeStr : timeData + "," + timeStr;
+        scoreData = scoreData.isEmpty() ? percent + "%" : scoreData + "," + percent + "%";
+        Log.d("TimeData", timeData);
+        Log.d("ScoreData", scoreData);
+        editor.putString("PressTime", timeData);
+        editor.putString("Scores", scoreData);
+        editor.apply();
+    }
+
+
+    // 時刻をフォーマットする
+    private String formatTime(long time) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault());
+        return sdf.format(new Date(time));
+    }
+
+    //デバッグ用
+    private void clearDateAndScore() {
+        SharedPreferences sharedPreferences = getSharedPreferences("DateAndScore", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear(); // すべてのデータをクリア
+        editor.apply(); // 変更を適用
+
+    }
+
 
 }

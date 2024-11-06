@@ -84,9 +84,14 @@ public class WebSocketClient_result extends WebSocketListener {
                 corList.add(cor.getBoolean(i));
             }
             if(corList.size()==4){
-                //終了ボタン見えるようにする
-                game.finish_button.setAlpha(0.9f);
-                game.finish_button.setEnabled(true);
+                mainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        // UI操作はここで行う
+                        game.finish_button.setAlpha(0.9f);
+                        game.finish_button.setEnabled(true);
+                    }
+                });
                 // /xyzのwebsocketを閉じる
                 webSocketClient_xyz.closeWebSocket();
             }

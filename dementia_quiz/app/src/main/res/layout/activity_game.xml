@@ -12,6 +12,18 @@
         android:layout_height="match_parent"
         >
 
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter" />
+        </RelativeLayout>
+
+
         <ImageView
             android:id="@+id/imageView5"
             android:layout_width="200sp"
@@ -37,7 +49,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="280sp"
             android:backgroundTint="#990000"
-            android:alpha="0.4"
+            android:alpha="0.5"
             android:onClick="game_result"
             android:text="終了"
             android:textSize="40sp"

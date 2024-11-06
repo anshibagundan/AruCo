@@ -45,12 +45,11 @@ public class home extends AppCompatActivity {
         SharedPreferences uuidPrefs = getSharedPreferences("uuidPrefs", MODE_PRIVATE);
         myuuid = uuidPrefs.getString("UUID", "default-uuid");
         Log.d("UUID Check ホーム開いたとき", "UUID: " + myuuid); // ログで確認
-
-        // WebSocket接続を確立
         startWebSocket(myuuid);
 
-    }
 
+
+    }
     // WebSocket接続を確立
     private void startWebSocket(String uuid) {
         Request request = new Request.Builder().url("wss://hopcardapi-4f6e9a3bf06d.herokuapp.com/ws/difficulty/android/"+uuid).build();
@@ -69,6 +68,7 @@ public class home extends AppCompatActivity {
             }
         });
     }
+
 
     // データを送信してWebSocket接続を閉じる
     private void sendDataAndCloseWebSocket(int difficulty) {
@@ -99,8 +99,8 @@ public class home extends AppCompatActivity {
         super.onPause();
         if (webSocket != null) {
             webSocket.close(1000, "Activity Pausing");
+            client.dispatcher().executorService().shutdown(); // 接続を閉じた後にシャットダウン
             Log.d("WebSocket", "Closed in onPause()");
-            webSocket = null;
         }
     }
 

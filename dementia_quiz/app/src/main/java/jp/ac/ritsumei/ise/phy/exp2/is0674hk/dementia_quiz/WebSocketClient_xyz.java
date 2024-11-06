@@ -46,7 +46,7 @@ public class WebSocketClient_xyz extends WebSocketListener {
     }
 
 
-    public WebSocketClient_xyz(CustomCircleView customCircleView, Context context) {
+    public WebSocketClient_xyz(CustomCircleView customCircleView,Context context) {
         this.customCircleView = customCircleView;
         this.context=context;
     }
@@ -67,6 +67,7 @@ public class WebSocketClient_xyz extends WebSocketListener {
     @Override
     public void onMessage(WebSocket webSocket, String text) {
         Log.d(TAG, "Received message: " + text);
+        Log.d("xyz","受け取りok");
         // JSONをパースして内容を確認する
         //TODO 座標位置を相対値にする
         try {
@@ -90,8 +91,8 @@ public class WebSocketClient_xyz extends WebSocketListener {
             int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
             int screenHeight = context.getResources().getDisplayMetrics().heightPixels;
 
-            float x = (float) (((float)json.getDouble("x")+872)*0.145+265);
-            float z = (float) (((float)json.getDouble("z")+966)*(-0.165)+1210);
+            float x = (float) (((float)json.getDouble("x")+872)*0.145+450);
+            float z = (float) (((float)json.getDouble("z")+964)*(-0.165)+610);
 
             // 相対位置に変換
             float X = x / 1920 * screenWidth;  // 1920 は基準の幅（例）
@@ -99,6 +100,7 @@ public class WebSocketClient_xyz extends WebSocketListener {
 
             Log.d(TAG,  "x = " + x + " z = " + z);
             Log.d(TAG,  "X = " + X + " Z = " + Z);
+            Log.d(TAG,  "screenWidth = " + screenWidth + " screenHeight = " + screenHeight);
             mainHandler.post(() -> {
                 customCircleView.setCirclePosition(X, Z);
             }); //y座標はいらんっしょ
@@ -116,7 +118,7 @@ public class WebSocketClient_xyz extends WebSocketListener {
     @Override
     public void onClosing(WebSocket webSocket, int code, String reason) {
         webSocket.close(1000, null);
-        Log.d(TAG, "WebSocket Connection Closing: " + code + " / " + reason);
+        Log.d(TAG, "WebSocket_xyz Connection Closing: " + code + " / " + reason);
     }
 
     @Override
