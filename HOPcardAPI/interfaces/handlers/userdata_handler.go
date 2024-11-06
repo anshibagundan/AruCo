@@ -112,9 +112,7 @@ func (h *UserDataHandler) getChatGPTMessage(userData *usecase.UserDataResponse) 
 		prompt += fmt.Sprintf("- クイズ名: %s, 正答率: %.2f, 詳細: %s\n", quiz.Name, quiz.CorrectRate, quiz.Detail)
 	}
 
-	for _, action := range userData.ActionCorrectRates {
-		prompt += fmt.Sprintf("アクション正答率: %.2f\n", action.CorrectRate)
-	}
+	prompt += fmt.Sprintf("アクション正答率: %.2f\n", userData.ActionCorrectRate)
 
 	// ChatGPT APIに問い合わせ
 	response, err := gpt.AskChatGPT(prompt)
