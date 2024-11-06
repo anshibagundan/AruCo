@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 	"sync"
+	"time"
 )
 
 type ScreenShareHandler struct {
@@ -114,6 +115,17 @@ func (h *ScreenShareHandler) HandleAndroidWebSocket(w http.ResponseWriter, r *ht
 		delete(h.androidConns, uuid)
 		h.mutex.Unlock()
 		conn.Close()
+	}()
+
+	go func() {
+		for {
+			err := conn.WriteMessage(websocket.PingMessage, nil)
+			if err != nil {
+				log.Printf("Android側へのPing送信に失敗しました: %v", err)
+				break
+			}
+			time.Sleep(30 * time.Second)
+		}
 	}()
 
 	for {
