@@ -48,7 +48,7 @@ public class QuizController : MonoBehaviour
         {
             isAnswered = true;
             StartCoroutine(PostData());
-            StartCoroutine(RotateCoroutine());
+           // StartCoroutine(RotateCoroutine());
         }
 
         // 左コントローラーのボタン入力を検出
@@ -56,8 +56,9 @@ public class QuizController : MonoBehaviour
         {
             isAnswered = true;
             StartCoroutine(PostData());
-            StartCoroutine(RotateCoroutine());
+            //StartCoroutine(RotateCoroutine());
         }
+
     }
 
 
@@ -91,6 +92,11 @@ public class QuizController : MonoBehaviour
 
     private bool CheckLeftControllerButtons()
     {
+        // スペースキーの確認
+        if (Keyboard.current != null && Keyboard.current.spaceKey.isPressed)
+        {
+            return true;
+        }
         // 左コントローラーの全てのボタンを確認
         UnityEngine.XR.InputDevice leftController = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
         if (leftController.isValid)
@@ -213,80 +219,81 @@ public class QuizController : MonoBehaviour
             {
                 statusData.LR.Add(false);
             }
+
         }
         else
         {
             Debug.LogError("no quiz found");
         }
+        if (!isfinalQuiz)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("New_WalkScene");
+        }
+        else
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("New_WalkScene");
+        }
 
         yield return null;
     }
     //回転用
-    IEnumerator RotateCoroutine()
+    /*IEnumerator RotateCoroutine()
     {
-            isRotating = true;
-            Quaternion startRotation = objectToRotate.transform.rotation;
+           // isRotating = true;
+                  Quaternion startRotation = objectToRotate.transform.rotation;
 
 
-            if (statusData.LR.Count == 1)
-            {
-                if (statusData.LR[statusData.LR.Count - 1] == true)//元LorR == "R"
-                {
-                    endRotation = startRotation * Quaternion.Euler(0, 90, 0);
-                }
-                else if (statusData.LR[statusData.LR.Count - 1] == false)//元LorR == "L"
-                {
-                    endRotation = startRotation * Quaternion.Euler(0, -90, 0);
-                }
-                else
-                {
-                    endRotation = startRotation * Quaternion.Euler(0, 0, 0);
-                }
+                    if (statusData.LR.Count == 1)
+                    {
+                        if (statusData.LR[0] == true)//元LorR == "R"
+                        {
+                            endRotation = startRotation * Quaternion.Euler(0, 90, 0);
+                        }
+                        else if (statusData.LR[0] == false)//元LorR == "L"
+                        {
+                            endRotation = startRotation * Quaternion.Euler(0, -90, 0);
+                        }
+                        else
+                        {
+                            endRotation = startRotation * Quaternion.Euler(0, 0, 0);
+                        }
 
-            }
-            else if (statusData.LR.Count == 2)
-            {
-                if (statusData.LR[statusData.LR.Count - 1] == false)//R
-                {
-                    endRotation = startRotation * Quaternion.Euler(0, 1, 0);
-                }
-                else if (statusData.LR[statusData.LR.Count - 1] == true)//L
-                {
-                    endRotation = startRotation * Quaternion.Euler(0, -90, 0);
-                }
-                else
-                {
-                    endRotation = startRotation * Quaternion.Euler(0, 0, 0);
-                }
-            }
+                    }
+                    else if (statusData.LR.Count == 2)
+                    {
+                        if (statusData.LR[1] == false)//R
+                        {
+                            endRotation = startRotation * Quaternion.Euler(0, 90, 0);
+                        }
+                        else if (statusData.LR[1] == true)//L
+                        {
+                            endRotation = startRotation * Quaternion.Euler(0, -90, 0);
+                        }
+                        else
+                        {
+                            endRotation = startRotation * Quaternion.Euler(0, 0, 0);
+                        }
+                    }
 
 
 
-            float elapsedTime = 0;
+                    float elapsedTime = 0;
 
-            while (elapsedTime < rotationDuration)
-            {
-                objectToRotate.transform.rotation = Quaternion.Slerp(startRotation, endRotation, elapsedTime / rotationDuration);
-                elapsedTime += Time.deltaTime;
-                yield return null;
-            }
+                    while (elapsedTime < rotationDuration)
+                    {
+                        objectToRotate.transform.rotation = Quaternion.Slerp(startRotation, endRotation, elapsedTime / rotationDuration);
+                        elapsedTime += Time.deltaTime;
+                        yield return null;
+                    }objectToRotate.transform.rotation = endRotation;
+         yield return null;
+        isRotating = false;
+        isAnswered = false;
+        
+        // 回転後にシーンを読み込む
 
-            objectToRotate.transform.rotation = endRotation;
-            isRotating = false;
-            isAnswered = false;
-
-            // 回転後にシーンを読み込む
-            if (!isfinalQuiz)
-            {
-                UnityEngine.SceneManagement.SceneManager.LoadScene("New_WalkScene");
-            }
-            else
-            {
-                UnityEngine.SceneManagement.SceneManager.LoadScene("New_WalkScene");
-            }
-    　}
-        /// <returns>True:偶数値　False:奇数値</returns>
-        private bool IsEven(int num)
+    }*/
+    /// <returns>True:偶数値　False:奇数値</returns>
+    private bool IsEven(int num)
         {
             return (num % 2 == 0);
         }

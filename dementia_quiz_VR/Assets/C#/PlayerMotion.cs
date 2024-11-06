@@ -3,7 +3,8 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.XR;
-
+using App.BaseSystem.DataStores.ScriptableObjects.Status;
+using UnityEngine.SceneManagement;
 public class PlayerMotion : MonoBehaviour
 {
     // 左右の手のアンカーとなるトランスフォームを設定
@@ -11,7 +12,6 @@ public class PlayerMotion : MonoBehaviour
     [SerializeField] private Transform RightHandAnchorTransform = null;
     private CharacterController Controller;
     private String geturl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/quiz-tfs/";
-
     //回転
     public GameObject objectToRotate;
     public float rotationDuration = 1f;
@@ -20,7 +20,7 @@ public class PlayerMotion : MonoBehaviour
 
     // 移動に関するパラメータ
     private Vector3 MoveThrottle = Vector3.zero;
-    private float MoveScale = 1.0f;
+    public float MoveScale = 3.0f;
     private float MoveScaleMultiplier = 1.0f;
     private float SimulationRate = 60f;
     private float FallSpeed = 0.0f;
@@ -35,38 +35,45 @@ public class PlayerMotion : MonoBehaviour
     private Vector3 touchAccelerationR;
     private bool motionInertia = false;
     private float motionInertiaDuration = 1.0f;
+    private int count = 1;
 
     // 歩行と走行のしきい値
     const float WALK_THRESHOLD = 0.8f;
     const float RUN_THRESHOLD = 1.3f;
-    public float moveScale = 0.3f;
-    private bool QuizTFData1;
-    private bool QuizTFData2;
-    private bool QuizTFData3;
-    private int QuizIdData1;
-    private int QuizIdData2;
-    private int QuizIdData3;
-    private QuizTF[] QuizTFDataArray;
+    [SerializeField]
+    private StatusData statusData;
+
+    private Quaternion rot;
+    private Vector3 pos;
+    private Vector3 moveDirection = Vector3.zero;
+
+
 
     private void Start()
     {
         // CharacterControllerコンポーネントを取得
         Controller = GetComponent<CharacterController>();
+        rot = transform.rotation;
+        pos = transform.position;
+        Debug.Log("PMpos.x" + pos.x);
+        Debug.Log("PMpos.z" + pos.z);
+
     }
 
     private void Update()
     {
+
         // 手を振る動作による移動制御
         HandShakeController();
         // CharacterControllerの更新
         UpdateController();
 
         // デバッグ用のログ出力
-        Debug.Log("L-touch velocity: " + touchVelocityL);
+        /*Debug.Log("L-touch velocity: " + touchVelocityL);
         Debug.Log("R-touch velocity: " + touchVelocityR);
         Debug.Log("L-touch acceleration: " + touchAccelerationL);
         Debug.Log("R-touch acceleration: " + touchAccelerationR);
-        Debug.Log("MoveThrottle: " + MoveThrottle);
+        Debug.Log("MoveThrottle: " + MoveThrottle);*/
     }
 
     private void HandShakeController()
@@ -81,7 +88,7 @@ public class PlayerMotion : MonoBehaviour
         leftController.TryGetFeatureValue(CommonUsages.deviceAcceleration, out touchAccelerationL);
         rightController.TryGetFeatureValue(CommonUsages.deviceAcceleration, out touchAccelerationR);
 
-        MoveScale = 1.0f;
+        MoveScale = 3.0f;
 
         MoveScale *= SimulationRate * Time.deltaTime;
 
@@ -121,262 +128,55 @@ public class PlayerMotion : MonoBehaviour
 
         // 歩行状態かどうかを判定
         bool isWalk = DetectHandShakeWalk(Math.Abs(handShakeVel.y)) || motionInertia;
-        Debug.Log(isWalk);
+        //Debug.Log(isWalk);
         if (isWalk)
         {
-            if (!motionInertia){}
-                SetMotionInertia();
+            if (!motionInertia)
+            {
+                StartCoroutine(SetMotionInertia());
+            }
 
             // ワールド座標のx軸方向にのみ移動するように設定
             //rightはX正 leftがX負 forwardがZ軸正 backZ負方向でした．
             //idが奇数でtrueなら左に，偶数でtrueなら右にします
-            Getdirection();
 
-            //1問も解いていない時
-            if (QuizTFDataArray == null)
-            {
-                tmpMoveThrottle += Vector3.right * moveScale;
-            }
 
-            //1問目を解いたことありますか、左の時
-            else if ((QuizIdData1 % 2 == 0 && QuizTFData1) || (QuizIdData1 % 2 == 1 && !QuizTFData1))
+            switch (statusData.LR.Count)
             {
-                //1問目をといた直後ですか
-                if (QuizTFDataArray.Length == 1)
-                {
-                    //1回目に呼び出された後ですか
+                case 0: // 一問も解いていない
+
+                    tmpMoveThrottle += Vector3.right * MoveScale;
+                    break;
+
+                case 1: // 1問目解いた後
+                    if (true)
+                    {
+                        RotateCoroutine(statusData.LR[0] ? "R" : "L");
+                    }
+                    tmpMoveThrottle += Vector3.back * MoveScale;
+                    break;
+
+                case 2: // 2問目解いた後
                     if (Rotated)
                     {
-                        RotateCoroutine("L");
-
+                        RotateCoroutine(statusData.LR[1] ? "R" : "L");
                     }
+                    tmpMoveThrottle += Vector3.right * MoveScale;
+                    break;
 
-                    tmpMoveThrottle += Vector3.forward * moveScale;
-                }
-
-                //2問目を解いたことありますか、右の時
-                else if ((QuizIdData2 % 2 == 1 && QuizTFData2) || (QuizIdData2 % 2 == 0 && !QuizTFData2))
-                {
-                    //2問目をといた直後ですか
-                    if (QuizTFDataArray.Length == 2)
+                case 3: // 3問目解いた後
+                    if (Rotated)
                     {
-                        //1回目に呼び出された後ですか
-                        if (Rotated)
-                        {
-                            RotateCoroutine("R");
-
-                        }
-
-                        tmpMoveThrottle += Vector3.right * moveScale;
+                        RotateCoroutine(statusData.LR[2] ? "R" : "L");
                     }
-
-                    //3問目を解いたことありますか、左の時
-                    else if ((QuizIdData3 % 2 == 0 && QuizTFData3) || (QuizIdData3 % 2 == 1 && !QuizTFData3))
-                    {
-                        //3問目をといた直後ですか
-                        if (QuizTFDataArray.Length == 3)
-                        {
-                            //1回目に呼び出された後ですか
-                            if (Rotated)
-                            {
-                                RotateCoroutine("L");
-
-                            }
-
-                            tmpMoveThrottle += Vector3.left * moveScale;
-                        }
-                        //3問目を解いたことありますか、直進の時
-                        else if ((QuizIdData3 % 2 == 1 && QuizTFData3) || (QuizIdData3 % 2 == 0 && !QuizTFData3))
-                        {
-                            //3問目をといた直後ですか
-                            if (QuizTFDataArray.Length == 3)
-                            {
-                                //1回目に呼び出された後ですか
-                                if (Rotated)
-                                {
-                                    RotateCoroutine("F");
-
-                                }
-
-                                tmpMoveThrottle += Vector3.right * moveScale;
-                            }
-                        }
-                    }
-                    //2問目をといたことありますか、左の時
-                    else if ((QuizIdData2 % 2 == 0 && QuizTFData2) || (QuizIdData2 % 2 == 1 && !QuizTFData2))
-                    {
-                        //2問目をといた直後ですか
-                        if (QuizTFDataArray.Length == 2)
-                        {
-                            //1回目に呼び出された後ですか
-                            if (Rotated)
-                            {
-                                RotateCoroutine("L");
-
-                            }
-
-                            tmpMoveThrottle += Vector3.left * moveScale;
-                        }
-                        //3問目を解いたことありますか、直進の時
-                        else if ((QuizIdData3 % 2 == 1 && QuizTFData3) || (QuizIdData3 % 2 == 0 && !QuizTFData3))
-                        {
-                            //3問目をといた直後ですか
-                            if (QuizTFDataArray.Length == 3)
-                            {
-                                //1回目に呼び出された後ですか
-                                if (Rotated)
-                                {
-                                    RotateCoroutine("F");
-
-                                }
-
-                                tmpMoveThrottle += Vector3.right * moveScale;
-                            }
-                        }
-                        //3問目を解いたことありますか、左の時
-                        else if ((QuizIdData3 % 2 == 0 && QuizTFData3) || (QuizIdData3 % 2 == 1 && !QuizTFData3))
-                        {
-                            //3問目をといた直後ですか
-                            if (QuizTFDataArray.Length == 3)
-                            {
-                                //1回目に呼び出された後ですか
-                                if (Rotated)
-                                {
-                                    RotateCoroutine("L");
-
-                                }
-
-                                tmpMoveThrottle += Vector3.back * moveScale;
-                            }
-                        }
-                    }
-
-
-
-                }
-
-                //1問目を解いたことありますか、右の時
-                else if ((QuizIdData1 % 2 == 1 && QuizTFData1) || (QuizIdData1 % 2 == 0 && !QuizTFData1))
-                {
-
-                    //1問目をといた直後ですか
-                    if (QuizTFDataArray.Length == 1)
-                    {
-                        //1回目に呼び出された後ですか
-                        if (Rotated)
-                        {
-                            RotateCoroutine("R");
-
-                        }
-
-                        tmpMoveThrottle += Vector3.forward * moveScale;
-                    }
-                    //2問目を解いたことありますか、左の時
-                    else if ((QuizIdData2 % 2 == 0 && QuizTFData2) || (QuizIdData2 % 2 == 1 && !QuizTFData2))
-                    {
-                        //2問目をといた直後ですか
-                        if (QuizTFDataArray.Length == 2)
-                        {
-                            //1回目に呼び出された後ですか
-                            if (Rotated)
-                            {
-                                RotateCoroutine("L");
-
-                            }
-
-                            tmpMoveThrottle += Vector3.right * moveScale;
-                        }
-                        //3問目を解いたことありますか、直進の時
-                        else if ((QuizIdData3 % 2 == 1 && QuizTFData3) || (QuizIdData2 % 2 == 0 && !QuizTFData3))
-                        {
-                            //3問目をといた直後ですか
-                            if (QuizTFDataArray.Length == 3)
-                            {
-                                //1回目に呼び出された後ですか
-                                if (Rotated)
-                                {
-                                    RotateCoroutine("F");
-
-                                }
-
-                                tmpMoveThrottle += Vector3.right * moveScale;
-                            }
-                        }
-                        //3問目を解いたことありますか、左の時
-                        else if ((QuizIdData3 % 2 == 0 && QuizTFData3) || (QuizIdData3 % 2 == 1 && !QuizTFData3))
-                        {
-                            //3問目をといた直後ですか
-                            if (QuizTFDataArray.Length == 3)
-                            {
-                                //1回目に呼び出された後ですか
-                                if (Rotated)
-                                {
-                                    RotateCoroutine("L");
-
-                                }
-
-                                tmpMoveThrottle += Vector3.forward * moveScale;
-                            }
-                        }
-                    }
-                    //2問目を解いたことありますか、右の時
-                    else if ((QuizIdData2 % 2 == 1 && QuizTFData2) || (QuizIdData2 % 2 == 0 && !QuizTFData2))
-                    {
-                        //2問目をといた直後ですか
-                        if (QuizTFDataArray.Length == 2)
-                        {
-                            //1回目に呼び出された後ですか
-                            if (Rotated)
-                            {
-                                RotateCoroutine("R");
-
-                            }
-
-                            tmpMoveThrottle += Vector3.left * moveScale;
-                        }
-                        //3問目を解いたことありますか、直進の時
-                        else if ((QuizIdData3 % 2 == 1 && QuizTFData3) || (QuizIdData3 % 2 == 0 && !QuizTFData3))
-                        {
-                            //3問目をといた直後ですか
-                            if (QuizTFDataArray.Length == 3)
-                            {
-                                //1回目に呼び出された後ですか
-                                if (Rotated)
-                                {
-                                    RotateCoroutine("F");
-
-                                }
-
-                                tmpMoveThrottle += Vector3.left * moveScale;
-                            }
-                        }
-                        //3問目を解いたことありますか、左の時
-                        else if ((QuizIdData3 % 2 == 0 && QuizTFData3) || (QuizIdData3 % 2 == 1 && !QuizTFData3))
-                        {
-                            //3問目をといた直後ですか
-                            if (QuizTFDataArray.Length == 3)
-                            {
-                                //1回目に呼び出された後ですか
-                                if (Rotated)
-                                {
-                                    RotateCoroutine("L");
-
-                                }
-
-                                tmpMoveThrottle += Vector3.back * moveScale;
-                            }
-                        }
-                    }
-                }
+                    tmpMoveThrottle += Vector3.right * MoveScale;
+                    break;
             }
-
-
-
             // 走行状態かどうかを判定
             bool isRun = DetectHandShakeRun(Math.Abs(handShakeVel.y));
             if (isRun)
                 tmpMoveThrottle *= 2.0f;
-            Debug.Log("HandShake Move Effect: " + tmpMoveThrottle);
+            //Debug.Log("HandShake Move Effect: " + tmpMoveThrottle);
         }
 
         return tmpMoveThrottle;
@@ -402,7 +202,7 @@ public class PlayerMotion : MonoBehaviour
     private bool DetectHandShakeRun(float speed)
     {
         // 地面に接地していない場合は走行状態ではない
-        if (!IsGrounded()) return false;
+        //if (!IsGrounded()) return false;
         // 速度がしきい値を超えている場合は走行状態
         if (speed > RUN_THRESHOLD) return true;
         return false;
@@ -423,8 +223,6 @@ public class PlayerMotion : MonoBehaviour
 
     private void UpdateController()
     {
-        Vector3 moveDirection = Vector3.zero;
-
         // 移動量の減衰
         float motorDamp = 2.0f + (Damping * SimulationRate * Time.deltaTime);
 
@@ -441,17 +239,19 @@ public class PlayerMotion : MonoBehaviour
         else
             FallSpeed += Physics.gravity.y * (GravityModifier * 0.002f) * SimulationRate * Time.deltaTime;
 
-        moveDirection.y += FallSpeed * SimulationRate * Time.deltaTime;*/
+        moveDirection.y += FallSpeed * SimulationRate * Time.deltaTime;
 
-        // 段差を乗り越える処理
-        if (Controller.isGrounded && MoveThrottle.y <= transform.lossyScale.y * 0.001f)
+        // 段差を乗り越える処理/
+         if (Controller.isGrounded && MoveThrottle.y <= transform.lossyScale.y * 0.001f)
         {
             float bumpUpOffset = Mathf.Max(Controller.stepOffset, new Vector3(moveDirection.x, 0, moveDirection.z).magnitude);
             moveDirection -= bumpUpOffset * Vector3.up;
-        }
-
+        }*/
         // 移動予測の計算
         Vector3 predictedXZ = Vector3.Scale(Controller.transform.localPosition + moveDirection, new Vector3(1, 0, 1));
+
+        // シーン移動用の位置保存はChangeQuizScene.csで行う
+        //statusData.MoveThrottle = new Vector3(transform.position.x, 0, transform.position.z);
 
         // CharacterControllerの移動
         Controller.Move(moveDirection);
@@ -462,10 +262,14 @@ public class PlayerMotion : MonoBehaviour
         // 予測移動量と実際の移動量が異なる場合は、MoveThrottleを調整
         if (predictedXZ != actualXZ)
             MoveThrottle += (actualXZ - predictedXZ) / (SimulationRate * Time.deltaTime);
+
+        Debug.Log($"MoveThrottle: {MoveThrottle}, MoveDirection: {moveDirection}, Position: {transform.position}");
+        // moveDirectionをリセットして再度計算する
+        moveDirection = Vector3.zero;
     }
 
 
-    private IEnumerator Getdirection()
+    /*private IEnumerator Getdirection()
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Get(geturl))
         {
@@ -507,11 +311,13 @@ public class PlayerMotion : MonoBehaviour
                 }
             }
         }
-    }
+    }*/
     //回転用
     IEnumerator RotateCoroutine(String LorR)
     {
         Quaternion startRotation = objectToRotate.transform.rotation;
+        rot.y = statusData.rotY;
+        transform.rotation = rot;
 
         if (LorR == "R")
         {
@@ -525,9 +331,6 @@ public class PlayerMotion : MonoBehaviour
         {
             endRotation = startRotation * Quaternion.Euler(0, 0, 0);
         }
-
-
-
 
         float elapsedTime = 0;
 

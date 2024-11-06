@@ -29,6 +29,7 @@ public class ActionController : MonoBehaviour
     private bool isConnected = false;
     private int maxRetries = 5;
     private float retryDelay = 2f;
+    [SerializeField] private Transform playerTransform;
 
     private void OnEnable()
     {
@@ -253,9 +254,9 @@ public class ActionController : MonoBehaviour
             if (messageReceived)
             {
                 //ユーザDBリセット処理
-                statusData.X = 0;
-                statusData.Z = 0;
-                statusData.LR = null; 
+
+               // statusData.MoveThrottle = new Vector3(0, 0, 0);//初期化
+                statusData.LR = new List<bool>(); // Nullではなく新しいリストを作成
                 Debug.Log("シーン遷移を実行します");
                 SceneManager.LoadScene("TitleScene");
             }

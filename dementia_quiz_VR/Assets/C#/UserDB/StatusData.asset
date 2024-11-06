@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d523c1a7aea3334491c10504a1dd3c1, type: 3}
   m_Name: StatusData
   m_EditorClassIdentifier: 
-  name: 
+  name: aaaa
   id: 0
-  quizDiff: 000000000000000000000000
-  actDiff: 0
+  quizDiff: 010000000400000005000000
+  actDiff: 1
   serialNum: 863024
   uuid: d9e822c5-de8b-5131-bae9-17b2b7748edd
   lr: 
-  positionX: 0
-  positionZ: 0
+  moveThrottle: {x: 0, y: 0, z: 0}
+  rotationY: 0
