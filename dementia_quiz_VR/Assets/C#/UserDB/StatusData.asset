@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: aaaa
   id: 0
-  quizDiff: 010000000400000005000000
+  quizDiff: 040000000100000005000000
   actDiff: 1
   serialNum: 863024
   uuid: d9e822c5-de8b-5131-bae9-17b2b7748edd
   lr: 
-  moveThrottle: {x: 0, y: 0, z: 0}
+  position: {x: 0, y: 0, z: 0}
   rotationY: 0

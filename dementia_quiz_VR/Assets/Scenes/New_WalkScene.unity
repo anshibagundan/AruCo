@@ -28711,7 +28711,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -872, y: -8.5, z: -964}
-  m_LocalScale: {x: 0.10196, y: 0.10196, z: 0.10196}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1567831944}
@@ -28901,7 +28901,9 @@ MonoBehaviour:
   RightHandAnchorTransform: {fileID: 1262224695}
   objectToRotate: {fileID: 805662249}
   rotationDuration: 1
-  moveScale: 3
+  MoveScale: 3
+  statusData: {fileID: 11400000, guid: d4824e765e202054196ddd5d10d31adf, type: 2}
+  moveDirection: {x: 0, y: 0, z: 0}
 --- !u!114 &805662266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52212,6 +52214,7 @@ GameObject:
   - component: {fileID: 1567831946}
   - component: {fileID: 1567831945}
   - component: {fileID: 1567831949}
+  - component: {fileID: 1567831950}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -52228,7 +52231,7 @@ Transform:
   m_GameObject: {fileID: 1567831943}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 8.3, y: 1.46, z: 2.42}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.02, y: 0.02, z: 0.02}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -52451,6 +52454,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   websocketUrl: wss://teamhopcard-aa92d1598b3a.herokuapp.com/ws/hop/
+--- !u!114 &1567831950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1567831943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f32849d6e6aa4540942c99e22ca0b0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1568113983
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -55738,7 +55753,9 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: -8391222552659086748, guid: 11c67d4605ceb544881b2c4bf1df229d, type: 3}
+    - {fileID: -516098083770646512, guid: 11c67d4605ceb544881b2c4bf1df229d, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11c67d4605ceb544881b2c4bf1df229d, type: 3}

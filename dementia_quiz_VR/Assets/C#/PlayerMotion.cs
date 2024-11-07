@@ -34,6 +34,7 @@ public class PlayerMotion : MonoBehaviour
     private Vector3 touchAccelerationL;
     private Vector3 touchAccelerationR;
     private bool motionInertia = false;
+    private bool isInitialized = false;
     private float motionInertiaDuration = 1.0f;
     private int count = 1;
 
@@ -45,7 +46,7 @@ public class PlayerMotion : MonoBehaviour
 
     private Quaternion rot;
     private Vector3 pos;
-    private Vector3 moveDirection = Vector3.zero;
+    public Vector3 moveDirection = Vector3.zero;
 
 
 
@@ -53,11 +54,27 @@ public class PlayerMotion : MonoBehaviour
     {
         // CharacterControllerコンポーネントを取得
         Controller = GetComponent<CharacterController>();
-        rot = transform.rotation;
-        pos = transform.position;
+        if (statusData.LR.Count > 0)
+        {
+            InitializeFromStatusData();
+        }
         Debug.Log("PMpos.x" + pos.x);
         Debug.Log("PMpos.z" + pos.z);
 
+    }
+    private void InitializeFromStatusData()
+    {
+        if (statusData == null) return;
+
+        Controller.enabled = false;
+        transform.position = statusData.Position;
+
+        // 回転の適用
+        rot = Quaternion.Euler(0, statusData.rotY, 0);
+        transform.rotation = rot;
+
+        Controller.enabled = true;
+        isInitialized = true;
     }
 
     private void Update()
@@ -67,7 +84,9 @@ public class PlayerMotion : MonoBehaviour
         HandShakeController();
         // CharacterControllerの更新
         UpdateController();
-
+        Debug.Log(Controller.transform.position);
+        statusData.Position = Controller.transform.position;
+        
         // デバッグ用のログ出力
         /*Debug.Log("L-touch velocity: " + touchVelocityL);
         Debug.Log("R-touch velocity: " + touchVelocityR);
@@ -137,8 +156,8 @@ public class PlayerMotion : MonoBehaviour
             }
 
             // ワールド座標のx軸方向にのみ移動するように設定
-            //rightはX正 leftがX負 forwardがZ軸正 backZ負方向でした．
-            //idが奇数でtrueなら左に，偶数でtrueなら右にします
+            //rightはX正 leftがX負 forwardがZ軸正 backZ負方向
+            //idが奇数でtrueなら左に，偶数でtrueなら右に
 
 
             switch (statusData.LR.Count)
@@ -149,29 +168,100 @@ public class PlayerMotion : MonoBehaviour
                     break;
 
                 case 1: // 1問目解いた後
-                    if (true)
+                    //まずは直近のクイズ結果でtrueなら右、falseなら左にカメラを回転
+                    RotateCoroutine(statusData.LR[0] ? "R" : "L"); 
+                    if (statusData.LR[0])//右なら
                     {
-                        RotateCoroutine(statusData.LR[0] ? "R" : "L");
+                        tmpMoveThrottle += Vector3.back * MoveScale; //z軸-に進む
                     }
-                    tmpMoveThrottle += Vector3.back * MoveScale;
+                    else//左なら
+                    {
+                        tmpMoveThrottle += Vector3.forward * MoveScale; //z軸＋に進む
+                    }
+
                     break;
 
                 case 2: // 2問目解いた後
-                    if (Rotated)
+                    RotateCoroutine(statusData.LR[1] ? "R" : "L");
+                    if (statusData.LR[0])//右
                     {
-                        RotateCoroutine(statusData.LR[1] ? "R" : "L");
+                        if (statusData.LR[1])//右右
+                        {
+                            tmpMoveThrottle += Vector3.left * MoveScale;
+                        }
+                        else//右左
+                        {
+                            tmpMoveThrottle += Vector3.right * MoveScale;
+                        }
                     }
-                    tmpMoveThrottle += Vector3.right * MoveScale;
+                    else
+                    {
+                        if (statusData.LR[1])//左右
+                        {
+                            tmpMoveThrottle += Vector3.right * MoveScale;
+                        }
+                        else//左左
+                        {
+                            tmpMoveThrottle += Vector3.left * MoveScale;
+                        }
+                    }
+                    
                     break;
 
                 case 3: // 3問目解いた後
-                    if (Rotated)
+                    RotateCoroutine(statusData.LR[2] ? "R" : "L");
+                    if (statusData.LR[0])//右
                     {
-                        RotateCoroutine(statusData.LR[2] ? "R" : "L");
+                        if (statusData.LR[1])//右右
+                        {
+                            if (statusData.LR[2])//右右右
+                            {
+                                tmpMoveThrottle += Vector3.left * MoveScale;
+                            }
+                            else//右右左
+                            {
+                                tmpMoveThrottle += Vector3.back * MoveScale;
+                            }
+                        }
+                        else//右左
+                        {
+                            if (statusData.LR[2])//右左右
+                            {
+                                tmpMoveThrottle += Vector3.right * MoveScale;
+                            }
+                            else//右左左
+                            {
+                                tmpMoveThrottle += Vector3.forward * MoveScale;
+                            }
+                        }
                     }
-                    tmpMoveThrottle += Vector3.right * MoveScale;
+                    else//左
+                    {
+                        if (statusData.LR[1])//左右
+                        {
+                            if (statusData.LR[2])//左右右
+                            {
+                                tmpMoveThrottle += Vector3.right * MoveScale;
+                            }
+                            else
+                            {
+                                tmpMoveThrottle += Vector3.forward * MoveScale;
+                            }
+                        }
+                        else//左左
+                        {
+                            if (statusData.LR[2])//左左右
+                            {
+                                tmpMoveThrottle += Vector3.left * MoveScale;
+                            }
+                            else//左左左
+                            {
+                                tmpMoveThrottle += Vector3.back * MoveScale;
+                            }
+                        }
+                    }
                     break;
-            }
+               }                
             // 走行状態かどうかを判定
             bool isRun = DetectHandShakeRun(Math.Abs(handShakeVel.y));
             if (isRun)
@@ -210,14 +300,6 @@ public class PlayerMotion : MonoBehaviour
 
     private bool IsGrounded()
     {
-        /*// CharacterControllerが地面に接地している場合はtrueを返す
-        if (Controller.isGrounded) return true;
-
-        // レイキャストを使用して地面との接地判定を行う
-        var pos = transform.position;
-        var ray = new Ray(pos + Vector3.up * 0.1f, Vector3.down);
-        var tolerance = 0.3f;
-        return Physics.Raycast(ray, tolerance);*/
         return true;
     }
 
@@ -232,26 +314,8 @@ public class PlayerMotion : MonoBehaviour
 
         // 移動方向の計算
         moveDirection += MoveThrottle * SimulationRate * Time.deltaTime;
-
-        /*// 重力の計算
-        if (Controller.isGrounded && FallSpeed <= 0)
-            FallSpeed = Physics.gravity.y * (GravityModifier * 0.002f);
-        else
-            FallSpeed += Physics.gravity.y * (GravityModifier * 0.002f) * SimulationRate * Time.deltaTime;
-
-        moveDirection.y += FallSpeed * SimulationRate * Time.deltaTime;
-
-        // 段差を乗り越える処理/
-         if (Controller.isGrounded && MoveThrottle.y <= transform.lossyScale.y * 0.001f)
-        {
-            float bumpUpOffset = Mathf.Max(Controller.stepOffset, new Vector3(moveDirection.x, 0, moveDirection.z).magnitude);
-            moveDirection -= bumpUpOffset * Vector3.up;
-        }*/
         // 移動予測の計算
         Vector3 predictedXZ = Vector3.Scale(Controller.transform.localPosition + moveDirection, new Vector3(1, 0, 1));
-
-        // シーン移動用の位置保存はChangeQuizScene.csで行う
-        //statusData.MoveThrottle = new Vector3(transform.position.x, 0, transform.position.z);
 
         // CharacterControllerの移動
         Controller.Move(moveDirection);
@@ -263,56 +327,13 @@ public class PlayerMotion : MonoBehaviour
         if (predictedXZ != actualXZ)
             MoveThrottle += (actualXZ - predictedXZ) / (SimulationRate * Time.deltaTime);
 
-        Debug.Log($"MoveThrottle: {MoveThrottle}, MoveDirection: {moveDirection}, Position: {transform.position}");
+        /*Debug.Log($"MoveThrottle: {MoveThrottle}, MoveDirection: {moveDirection}, Position: {transform.position}");*/
+
         // moveDirectionをリセットして再度計算する
-        moveDirection = Vector3.zero;
+        moveDirection =  Vector3.zero;
+        
     }
 
-
-    /*private IEnumerator Getdirection()
-    {
-        using (UnityWebRequest webRequest = UnityWebRequest.Get(geturl))
-        {
-            webRequest.SetRequestHeader("X-Debug-Mode", "true");
-            yield return webRequest.SendWebRequest();
-
-            if (webRequest.result == UnityWebRequest.Result.ConnectionError || webRequest.result == UnityWebRequest.Result.ProtocolError)
-            {
-                Debug.LogError("Error: " + webRequest.error);
-            }
-            else
-            {
-                string json = webRequest.downloadHandler.text;
-
-                QuizTFDataArray = JsonHelper.FromJson<QuizTF>(json);
-
-                if (QuizTFDataArray != null && QuizTFDataArray.Length > 0)
-                {
-                    QuizTFData1 = QuizTFDataArray[0].getCor();
-                    QuizIdData1 = QuizTFDataArray[0].getId();
-
-                    if (QuizTFDataArray.Length > 1)
-                    {
-                        QuizTFData2 = QuizTFDataArray[1].getCor();
-                        QuizIdData2 = QuizTFDataArray[2].getId();
-                    }
-
-                    //3問目いらないならこれいらんくない？
-                    if (QuizTFDataArray.Length > 2)
-                    {
-                        QuizTFData3 = QuizTFDataArray[2].getCor();
-                        QuizIdData3 = QuizTFDataArray[3].getId();
-                    }
-
-                }
-                else
-                {
-                    Debug.LogWarning("No quizdiff found.");
-                }
-            }
-        }
-    }*/
-    //回転用
     IEnumerator RotateCoroutine(String LorR)
     {
         Quaternion startRotation = objectToRotate.transform.rotation;

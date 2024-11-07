@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.SceneManagement;
 using App.BaseSystem.DataStores.ScriptableObjects.Status;
 
@@ -9,7 +9,7 @@ public class ChangeQuizScene : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // ƒvƒŒƒCƒ„[‚ÌŒ»İ‚ÌˆÊ’u‚Æ‰ñ“]‚ğæ“¾
+        // ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ÌŒï¿½ï¿½İ‚ÌˆÊ’uï¿½Æ‰ï¿½]ï¿½ï¿½ï¿½æ“¾
         Vector3 currentPosition = other.transform.position;
         Quaternion currentRotation = other.transform.rotation;
 
@@ -40,11 +40,9 @@ public class ChangeQuizScene : MonoBehaviour
 
     void UpdatePositionAndLoadQuiz(Vector3 position, Quaternion rotation)
     {
-        // ƒvƒŒƒCƒ„[‚ÌˆÊ’u‚ğ•Û‘¶
-        statusData.MoveThrottle = new Vector3(position.x, position.y, position.z);
-        // Y²‚Ì‰ñ“]‚ğ•Û‘¶(‚±‚Á‚¿‚Ì•û‚ª‚¢‚¢‚ç‚µ‚¢)
+        // Yï¿½ï¿½ï¿½Ì‰ï¿½]ï¿½ï¿½Û‘ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ç‚µï¿½ï¿½)
         statusData.rotY = rotation.eulerAngles.y;
-        // ƒNƒCƒYƒV[ƒ“‚ğƒ[ƒh
+        // ï¿½Nï¿½Cï¿½Yï¿½Vï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½[ï¿½h
         SceneManager.LoadScene("QuizScene");
     }
 }

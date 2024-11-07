@@ -46,13 +46,13 @@ namespace App.BaseSystem.DataStores.ScriptableObjects.Status
         }
         [SerializeField]
         private List<bool> lr = new List<bool>();
-        public Vector3 MoveThrottle
+        public Vector3 Position
         {
-            get => moveThrottle;
-            set => moveThrottle = value;
+            get => position;
+            set => position = value;
         }
         [SerializeField]
-        private Vector3 moveThrottle;
+        private Vector3 position;
 
         public float rotY
         {
