@@ -26,7 +26,7 @@ public class PlayerMotion : MonoBehaviour
     private float FallSpeed = 0.0f;
     private float Acceleration = 0.1f;
     private float Damping = 0.3f;
-    private float GravityModifier = 0.379f;
+    private float GravityModifier = 0.0f;
 
     // コントローラーの速度と加速度を保存する変数
     private Vector3 touchVelocityL;
@@ -41,6 +41,7 @@ public class PlayerMotion : MonoBehaviour
     // 歩行と走行のしきい値
     const float WALK_THRESHOLD = 0.8f;
     const float RUN_THRESHOLD = 1.3f;
+
     [SerializeField]
     private StatusData statusData;
 
@@ -60,7 +61,6 @@ public class PlayerMotion : MonoBehaviour
         }
         Debug.Log("PMpos.x" + pos.x);
         Debug.Log("PMpos.z" + pos.z);
-
     }
     private void InitializeFromStatusData()
     {

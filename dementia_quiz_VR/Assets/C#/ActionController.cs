@@ -9,6 +9,7 @@ using App.BaseSystem.DataStores.ScriptableObjects.Status;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
 using WebSocketSharp;
+using UnityEngine.XR;
 
 public class ActionController : MonoBehaviour
 {
@@ -125,20 +126,55 @@ public class ActionController : MonoBehaviour
 
     private bool CheckRightControllerButtons()
     {
-        if (rightController != null && rightController.inputDevice.isValid)
+
+        // Enterキーの確認
+        if (Keyboard.current != null &&
+            (Keyboard.current.enterKey.isPressed || Keyboard.current.numpadEnterKey.isPressed))
         {
-            return rightHandActions?.action?.triggered ?? false;
+            return true;
         }
-        return Keyboard.current != null && Keyboard.current.enterKey.isPressed;
+        // 右コントローラーの全てのボタンを確認
+        UnityEngine.XR.InputDevice rightController = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
+
+        if (rightController.isValid)
+        {
+            bool buttonValue;
+            if (rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.primaryButton, out buttonValue) && buttonValue)
+                return true;
+            if (rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.secondaryButton, out buttonValue) && buttonValue)
+                return true;
+            if (rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.gripButton, out buttonValue) && buttonValue)
+                return true;
+            if (rightController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.triggerButton, out buttonValue) && buttonValue)
+                return true;
+            // 他のボタンも必要に応じて追加
+        }
+        return false;
     }
 
     private bool CheckLeftControllerButtons()
     {
-        if (leftController != null && leftController.inputDevice.isValid)
+        // スペースキーの確認
+        if (Keyboard.current != null && Keyboard.current.spaceKey.isPressed)
         {
-            return leftHandActions?.action?.triggered ?? false;
+            return true;
         }
-        return Keyboard.current != null && Keyboard.current.spaceKey.isPressed;
+        // 左コントローラーの全てのボタンを確認
+        UnityEngine.XR.InputDevice leftController = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
+        if (leftController.isValid)
+        {
+            bool buttonValue;
+            if (leftController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.primaryButton, out buttonValue) && buttonValue)
+                return true;
+            if (leftController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.secondaryButton, out buttonValue) && buttonValue)
+                return true;
+            if (leftController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.gripButton, out buttonValue) && buttonValue)
+                return true;
+            if (leftController.TryGetFeatureValue(UnityEngine.XR.CommonUsages.triggerButton, out buttonValue) && buttonValue)
+                return true;
+            // 他のボタンも必要に応じて追加
+        }
+        return false;
     }
 
     private IEnumerator GetData()
@@ -266,10 +302,8 @@ public class ActionController : MonoBehaviour
             }
             else
             {
-                SceneManager.LoadScene("TitleScene");
                 Debug.LogError("タイムアウトしました");
             }
-
             if (ws != null && ws.ReadyState == WebSocketState.Open)
             {
                 ws.Close();
