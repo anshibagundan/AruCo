@@ -68,6 +68,7 @@ public class ActionController : MonoBehaviour
 
         GetUrl = "https://hopcardapi-4f6e9a3bf06d.herokuapp.com/getaction";
         PostUrl = $"wss://hopcardapi-4f6e9a3bf06d.herokuapp.com/ws/result/unity/{statusData.uuid}";
+        Debug.Log(PostUrl);
 
         SetupInitialDisplay();
         StartCoroutine(TryEstablishConnection());
@@ -286,24 +287,15 @@ public class ActionController : MonoBehaviour
             {
                 yield return new WaitForSeconds(0.1f);
             }
+            //ユーザDBリセット処理
 
-            if (messageReceived)
-            {
-                //ユーザDBリセット処理
+            // statusData.MoveThrottle = new Vector3(0, 0, 0);//初期化
+            statusData.LR = new List<bool>(); // Nullではなく新しいリストを作成
+            statusData.Position = Vector3.zero;
+            statusData.rotY = 0;
+            Debug.Log("シーン遷移を実行します");
+            SceneManager.LoadScene("TitleScene");
 
-               // statusData.MoveThrottle = new Vector3(0, 0, 0);//初期化
-                statusData.LR = new List<bool>(); // Nullではなく新しいリストを作成
-                Debug.Log("シーン遷移を実行します");
-                SceneManager.LoadScene("TitleScene");
-            }
-            else if (connectionError)
-            {
-                Debug.LogError($"WebSocket通信でエラーが発生しました: {errorMessage}");
-            }
-            else
-            {
-                Debug.LogError("タイムアウトしました");
-            }
             if (ws != null && ws.ReadyState == WebSocketState.Open)
             {
                 ws.Close();

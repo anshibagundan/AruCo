@@ -11,7 +11,6 @@ public class PlayerMotion : MonoBehaviour
     [SerializeField] private Transform LeftHandAnchorTransform = null;
     [SerializeField] private Transform RightHandAnchorTransform = null;
     private CharacterController Controller;
-    private String geturl = "https://teamhopcard-aa92d1598b3a.herokuapp.com/quiz-tfs/";
     //回転
     public GameObject objectToRotate;
     public float rotationDuration = 1f;
@@ -23,10 +22,8 @@ public class PlayerMotion : MonoBehaviour
     public float MoveScale = 3.0f;
     private float MoveScaleMultiplier = 1.0f;
     private float SimulationRate = 60f;
-    private float FallSpeed = 0.0f;
     private float Acceleration = 0.1f;
     private float Damping = 0.3f;
-    private float GravityModifier = 0.0f;
 
     // コントローラーの速度と加速度を保存する変数
     private Vector3 touchVelocityL;
@@ -36,7 +33,6 @@ public class PlayerMotion : MonoBehaviour
     private bool motionInertia = false;
     private bool isInitialized = false;
     private float motionInertiaDuration = 1.0f;
-    private int count = 1;
 
     // 歩行と走行のしきい値
     const float WALK_THRESHOLD = 0.8f;

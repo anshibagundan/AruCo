@@ -9,7 +9,6 @@ Library: C:\AruCo\dementia_quiz_VR\Temp\BurstOutput\tempburstlibs\arm64-v8a\lib_
 --float-precision=Standard
 --float-mode=Fast
 --assembly-defines=Assembly-CSharp;
---assembly-defines=Meta.XR.Audio;
 --assembly-defines=Meta.XR.BuildingBlocks;
 --assembly-defines=meta.xr.mrutilitykit;
 --assembly-defines=Mono.Security;
@@ -66,7 +65,6 @@ Library: C:\AruCo\dementia_quiz_VR\Temp\BurstOutput\tempburstlibs\arm64-v8a\lib_
 --dump=Function
 --float-precision=Standard
 --assembly-defines=Assembly-CSharp;
---assembly-defines=Meta.XR.Audio;
 --assembly-defines=Meta.XR.BuildingBlocks;
 --assembly-defines=meta.xr.mrutilitykit;
 --assembly-defines=Mono.Security;
