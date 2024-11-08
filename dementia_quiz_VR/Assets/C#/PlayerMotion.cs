@@ -165,7 +165,7 @@ public class PlayerMotion : MonoBehaviour
 
                 case 1: // 1問目解いた後
                     //まずは直近のクイズ結果でtrueなら右、falseなら左にカメラを回転
-                    RotateCoroutine(statusData.LR[0] ? "L" : "R"); 
+                    RotateCoroutine(statusData.LR[0] ? "R" : "L"); 
                     if (statusData.LR[0])//右なら
                     {
                         tmpMoveThrottle += Vector3.forward * MoveScale; //z軸-に進む
