@@ -9,7 +9,7 @@ public class ChangeQuizScene : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // �v���C���[�̌��݂̈ʒu�Ɖ�]���擾
+        //  v   C   [ ̌  ݂̈ʒu Ɖ ]   擾
         Vector3 currentPosition = other.transform.position;
         Quaternion currentRotation = other.transform.rotation;
 
@@ -18,21 +18,25 @@ public class ChangeQuizScene : MonoBehaviour
 
         if (other.gameObject.CompareTag("1st_QuizCollider") && statusData.LR.Count == 0)
         {
+            CountDistance(statusData.PastPosition, transform.position);
             Debug.Log("1st_QuizCollider detected");
             UpdatePositionAndLoadQuiz(currentPosition, currentRotation);
         }
         if (other.gameObject.CompareTag("2nd_QuizCollider") && statusData.LR.Count == 1)
         {
+            CountDistance(statusData.PastPosition, transform.position);
             Debug.Log("2nd_QuizCollider detected");
             UpdatePositionAndLoadQuiz(currentPosition, currentRotation);
         }
         if (other.gameObject.CompareTag("3rd_QuizCollider") && statusData.LR.Count == 2)
         {
+            CountDistance(statusData.PastPosition, transform.position);
             UpdatePositionAndLoadQuiz(currentPosition, currentRotation);
             Debug.Log("3rd_QuizCollider detected");
         }
         else if (other.gameObject.CompareTag("Final_QuizCollider") && statusData.LR.Count == 3)
         {
+            CountDistance(statusData.PastPosition, transform.position);
             Debug.Log("Final_QuizCollider detected");
             SceneManager.LoadScene("FinalQuizScene");
         }
@@ -40,9 +44,15 @@ public class ChangeQuizScene : MonoBehaviour
 
     void UpdatePositionAndLoadQuiz(Vector3 position, Quaternion rotation)
     {
-        // Y���̉�]��ۑ�(�������̕��������炵��)
         statusData.rotY = rotation.eulerAngles.y;
-        // �N�C�Y�V�[�������[�h
         SceneManager.LoadScene("QuizScene");
+    }
+    void CountDistance(Vector3 pastPosition, Vector3 currentPosition)
+    {
+        float distance = Vector3.Distance(pastPosition, currentPosition);
+
+
+        statusData.Distance = (int)distance;
+
     }
 }

@@ -53,6 +53,14 @@ namespace App.BaseSystem.DataStores.ScriptableObjects.Status
         }
         [SerializeField]
         private Vector3 position;
+        public Vector3 PastPosition
+        {
+            get => pastpos;
+            set => pastpos = value;
+        }
+        [SerializeField]
+        private Vector3 pastpos;
+
 
         public float rotY
         {

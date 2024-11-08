@@ -60,8 +60,6 @@ public class PlayerMotion : MonoBehaviour
     }
     private void InitializeFromStatusData()
     {
-        if (statusData == null) return;
-
         Controller.enabled = false;
         transform.position = statusData.Position;
 
@@ -80,7 +78,7 @@ public class PlayerMotion : MonoBehaviour
         HandShakeController();
         // CharacterControllerの更新
         UpdateController();
-        Debug.Log(Controller.transform.position);
+        /*Debug.Log(Controller.transform.position);*/
         statusData.Position = Controller.transform.position;
         
         // デバッグ用のログ出力
