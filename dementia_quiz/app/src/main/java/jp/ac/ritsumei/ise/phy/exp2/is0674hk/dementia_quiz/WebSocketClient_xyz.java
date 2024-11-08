@@ -78,7 +78,7 @@ public class WebSocketClient_xyz extends WebSocketListener {
             int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
             int screenHeight = context.getResources().getDisplayMetrics().heightPixels;
 
-            float x = (float) (((float)json.getDouble("x")+startPositionX)*0.145+450);
+            float x = (float) (((float)json.getDouble("x")+startPositionX)*0.29+450);
             float z = (float) (((float)json.getDouble("z")+startPositionZ)*(-0.165)+680);
 
             // 相対位置に変換

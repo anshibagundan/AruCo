@@ -189,19 +189,19 @@ public class MainActivity extends AppCompatActivity {
                             } else {
                                 // UUIDが空の場合の処理
                                 Log.e("UUID Error", "Received UUID is empty");
-                                errorText.setText("UUIDが見つかりませんでした。");
+                                errorText.setText("※UUIDが見つかりませんでした。");
                                 errorText.setVisibility(View.VISIBLE);
                             }
                         } else {
                             // ボディがnullの場合の処理
                             Log.e("UUID Error", "Response body is null");
-                            errorText.setText("UUIDが見つかりませんでした。");
+                            errorText.setText("※UUIDが見つかりませんでした。");
                             errorText.setVisibility(View.VISIBLE);
                         }
                     } else {
                         // レスポンスが成功でない場合の処理
                         Log.e("Error", "Response not successful: " + response.code());
-                        errorText.setText("正しい番号を入力してください。");
+                        errorText.setText("※正しい番号を入力してください。");
                         errorText.setVisibility(View.VISIBLE);
                     }
                 }
@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
         }else if (inputText.isEmpty()) {
             // 入力が空の場合の処理
             errorText.setVisibility(View.VISIBLE);
-            errorText.setText("コードを入力してください。");
+            errorText.setText("※コードを入力してください。");
         }
         else {
             //6桁じゃないよーって表示するコードをかく
