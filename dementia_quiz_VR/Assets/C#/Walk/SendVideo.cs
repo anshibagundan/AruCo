@@ -7,8 +7,8 @@ using App.BaseSystem.DataStores.ScriptableObjects.Status;
 
 public class ScreenShareSender : MonoBehaviour
 {
+    [SerializeField]
     StatusData statusData;
-    public string serverUrl = "wss://hopcardapi-4f6e9a3bf06d.herokuapp.com/ws/cast/unity/";
     public int captureWidth = 256;
     public int captureHeight = 144;
     public int jpegQuality = 100;
@@ -26,7 +26,8 @@ public class ScreenShareSender : MonoBehaviour
 
     private void InitializeWebSocket()
     {
-        ws = new WebSocket(serverUrl+statusData.uuid);
+        string serverUrl = $"wss://hopcardapi-4f6e9a3bf06d.herokuapp.com/ws/cast/unity/{statusData.UUID}";
+        ws = new WebSocket(serverUrl);
         ws.OnOpen += (sender, e) => UnityEngine.Debug.Log("WebSocket connected");
         ws.OnError += (sender, e) => UnityEngine.Debug.LogError("WebSocket error: " + e.Message);
         ws.OnClose += (sender, e) => UnityEngine.Debug.Log($"WebSocket closed: {e.Reason}");

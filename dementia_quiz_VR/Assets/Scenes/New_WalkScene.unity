@@ -52229,6 +52229,7 @@ GameObject:
   - component: {fileID: 1567831945}
   - component: {fileID: 1567831949}
   - component: {fileID: 1567831950}
+  - component: {fileID: 1567831951}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -52467,7 +52468,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddce6d350469a4cf5b9c6f8ae65126b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  websocketUrl: wss://teamhopcard-aa92d1598b3a.herokuapp.com/ws/hop/
+  statusData: {fileID: 11400000, guid: d4824e765e202054196ddd5d10d31adf, type: 2}
 --- !u!114 &1567831950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52480,6 +52481,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f32849d6e6aa4540942c99e22ca0b0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1567831951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1567831943}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87b5e5d9f4b765340812375aab438f86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statusData: {fileID: 11400000, guid: d4824e765e202054196ddd5d10d31adf, type: 2}
+  captureWidth: 256
+  captureHeight: 144
+  jpegQuality: 25
+  mainCamera: {fileID: 1567831948}
 --- !u!1001 &1568113983
 PrefabInstance:
   m_ObjectHideFlags: 0
