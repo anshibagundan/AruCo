@@ -61,6 +61,13 @@ namespace App.BaseSystem.DataStores.ScriptableObjects.Status
         }
         [SerializeField]
         private float rotationY;
+        public int Distance
+        {
+            get => distance;
+            set => distance = value;
+        }
+        [SerializeField]
+        private int distance;
 
     }
 }

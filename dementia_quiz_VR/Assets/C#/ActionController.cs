@@ -234,7 +234,8 @@ public class ActionController : MonoBehaviour
             {
                 quiz_id = statusData.QuizDiff.ToArray(),
                 action_id = statusData.ActDiff,
-                cor = statusData.LR.ToArray()
+                cor = statusData.LR.ToArray(),
+                distance = statusData.Distance
             };
 
             string jsonPayload = JsonUtility.ToJson(payload);

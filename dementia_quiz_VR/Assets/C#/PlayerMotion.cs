@@ -165,14 +165,14 @@ public class PlayerMotion : MonoBehaviour
 
                 case 1: // 1問目解いた後
                     //まずは直近のクイズ結果でtrueなら右、falseなら左にカメラを回転
-                    RotateCoroutine(statusData.LR[0] ? "R" : "L"); 
+                    RotateCoroutine(statusData.LR[0] ? "L" : "R"); 
                     if (statusData.LR[0])//右なら
                     {
-                        tmpMoveThrottle += Vector3.back * MoveScale; //z軸-に進む
+                        tmpMoveThrottle += Vector3.forward * MoveScale; //z軸-に進む
                     }
                     else//左なら
                     {
-                        tmpMoveThrottle += Vector3.forward * MoveScale; //z軸＋に進む
+                        tmpMoveThrottle += Vector3.back * MoveScale; //z軸＋に進む
                     }
 
                     break;
@@ -324,7 +324,7 @@ public class PlayerMotion : MonoBehaviour
             MoveThrottle += (actualXZ - predictedXZ) / (SimulationRate * Time.deltaTime);
 
         /*Debug.Log($"MoveThrottle: {MoveThrottle}, MoveDirection: {moveDirection}, Position: {transform.position}");*/
-
+        statusData.Distance += 1;
         // moveDirectionをリセットして再度計算する
         moveDirection =  Vector3.zero;
         
