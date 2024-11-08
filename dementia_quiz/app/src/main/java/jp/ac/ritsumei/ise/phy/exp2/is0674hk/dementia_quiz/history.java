@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,6 +26,7 @@ import java.util.Set;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import java.math.BigDecimal;
 
 
 public class history extends AppCompatActivity {
@@ -35,12 +37,15 @@ public class history extends AppCompatActivity {
     private ApiService apiService;
     private String change_count,ratio,distance;
     private TextView change_count_text,ratio_text,distance_text;
+    private LinearLayout quizCorrectRatesContainer;
+    private TextView memoryQuizCorrectRates;
+    private String memoryRates;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
-        historyContainer=findViewById(R.id.historyContainer);
+//        historyContainer=findViewById(R.id.historyContainer);
         apiService = ApiClient.getApiService();
 //        loadHistory();
         getUserData();
@@ -51,6 +56,8 @@ public class history extends AppCompatActivity {
         change_count_text=findViewById(R.id.changed_count_text);
         ratio_text=findViewById(R.id.ratio_text);
         distance_text=findViewById(R.id.distance_text);
+        quizCorrectRatesContainer = findViewById(R.id.quizCorrectRatesContainer);
+        memoryQuizCorrectRates = findViewById(R.id.memoryQuizCorrectRates);
     }
 
     // 履歴のロードと表示
@@ -102,31 +109,50 @@ public class history extends AppCompatActivity {
         popup.setVisibility(View.GONE);
     }
 
-    public void getUserData(){
+    public void getUserData() {
         SharedPreferences uuidPrefs = getSharedPreferences("uuidPrefs", MODE_PRIVATE);
         String myuuid = uuidPrefs.getString("UUID", "デフォルト値");
         apiService.getUserData(myuuid).enqueue(new Callback<UserData>() {
             @Override
             public void onResponse(Call<UserData> call, Response<UserData> response) {
-                if (response.isSuccessful()&&response.body()!=null){
-                    UserData userData=response.body();
-                    change_count=userData.getChange_count();
-                    ratio=userData.getRatio();
-                    distance=userData.getDistance();
-                    int change_count_int=Integer.parseInt(change_count);
-                    String playCount=String.valueOf(change_count_int+1);
-                    change_count_text.setText(playCount+"回、");
-                    ratio_text.setText(ratio+"%");
-                    distance_text.setText(distance+"m)");
-                    Log.e("UserData",userData.getChange_count()+userData.getRatio()+userData.getDistance());
-                }else{
+                if (response.isSuccessful() && response.body() != null) {
+                    UserData userData = response.body();
+                    change_count = userData.getChange_count();
+                    // ratio の四捨五入処理
+                    ratio = userData.getRatio();
+                    double ratioValue = Double.parseDouble(ratio);
+                    BigDecimal roundedRatio = new BigDecimal(ratioValue * 100).setScale(1, RoundingMode.HALF_UP);
+                    memoryRates = userData.getMemoryQuizCorrectRates();
+                    distance = userData.getDistance();
+                    int change_count_int = Integer.parseInt(change_count);
+                    String playCount = String.valueOf(change_count_int + 1);
+                    change_count_text.setText(playCount + "回、");
+                    ratio_text.setText(roundedRatio + "%");
+                    distance_text.setText(distance + "m)");
+                    memoryQuizCorrectRates.setText(memoryRates);
+
+                    List<QuizCorrectRate> quizCorrectRates = userData.getQuiz_correct_rates();
+
+                    if (quizCorrectRates != null) {
+                        for (QuizCorrectRate quiz : quizCorrectRates) {
+                            TextView textView = new TextView(history.this);
+                            textView.setText("問題名: " + quiz.getName() + "\n" +
+                                    "正解率: " + (quiz.getCorrect_rate() * 100) + "%\n" +
+                                    "詳細: " + quiz.getDetail());
+                            textView.setTextSize(16);
+                            textView.setPadding(0, 10, 0, 10);
+
+                            quizCorrectRatesContainer.addView(textView);
+                        }
+                    }
+                } else {
                     Log.e("GET", "Failed to get data: " + response.message());
                 }
             }
 
             @Override
             public void onFailure(Call<UserData> call, Throwable t) {
-
+                Log.e("GET", "API call failed: " + t.getMessage());
             }
         });
     }

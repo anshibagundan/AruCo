@@ -128,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
                 super.onFailure(webSocket, t, response);
                 websocketConnected = false;
                 Log.e("WebSocket", "Connection failed: " + t.getMessage());
+                Log.e("WebSocket", "URL: " + "wss://hopcardapi-4f6e9a3bf06d.herokuapp.com/ws/difficulty/android/"+uuid);
             }
         });
     }
@@ -200,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         // レスポンスが成功でない場合の処理
                         Log.e("Error", "Response not successful: " + response.code());
-                        errorText.setText("エラーが発生しました。");
+                        errorText.setText("正しい番号を入力してください。");
                         errorText.setVisibility(View.VISIBLE);
                     }
                 }

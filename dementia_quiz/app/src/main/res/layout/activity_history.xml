@@ -57,7 +57,8 @@
                     android:layout_height="wrap_content"
                     android:text="〇%"
                     android:layout_gravity="center"
-                    android:textSize="60sp" />
+                    android:textSize="60sp"
+                    android:background="@drawable/underline_result"/>
             </LinearLayout>
 
 <!--            遊んだ回数、歩いた距離-->
@@ -88,63 +89,69 @@
 
         </LinearLayout>
 
-
+<!--        個別のクイズの正解率表示-->
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-<!--            タグ-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="時間"
-                    android:layout_weight="1"
-                    android:textSize="20sp"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="認知度"
-                    android:layout_weight="1"
-                    android:textSize="20sp"/>
-
-            </LinearLayout>
-
-
-            <ScrollView
-
-                android:layout_width="match_parent"
-                android:layout_height="200sp"
-                android:layout_marginBottom="30sp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:id="@+id/historyContainer">
-
-
-                </LinearLayout>
-            </ScrollView>
-
-
-
-        </LinearLayout>
-
-
-
-
-        <Button
-            android:id="@+id/delete_history"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="履歴削除"
-            android:textSize="20sp"
-            android:layout_gravity="center"
-            android:onClick="clearPerAndDate"/>
+            android:id="@+id/quizCorrectRatesContainer"
+            android:orientation="vertical">
+        </LinearLayout>
+<!--        記憶クイズの正解率-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/memoryQuizCorrectRates"
+            android:layout_gravity="right"
+            android:orientation="vertical"/>
+
+
+<!--個別の時間、認知度の表示-->
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical">-->
+<!--&lt;!&ndash;            タグ&ndash;&gt;-->
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal">-->
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="時間"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:textSize="20sp"/>-->
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="認知度"-->
+<!--                    android:layout_weight="1"-->
+<!--                    android:textSize="20sp"/>-->
+
+<!--            </LinearLayout>-->
+
+
+<!--            <ScrollView-->
+
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="200sp"-->
+<!--                android:layout_marginBottom="30sp">-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:id="@+id/historyContainer">-->
+
+
+<!--                </LinearLayout>-->
+<!--            </ScrollView>-->
+
+
+
+<!--        </LinearLayout>-->
+
+
 
 
 

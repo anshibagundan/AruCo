@@ -117,18 +117,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:background="@drawable/underline_result">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="第1問"
-                    android:textSize="20sp" />
+                    android:text="第1問  "
+                    android:textSize="15sp" />
                 <TextView
                     android:id="@+id/quiz1_name_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=""
-                    android:textSize="10sp"/>
+                    android:textSize="7sp"/>
             </LinearLayout>
             <TextView
                 android:id="@+id/quiz1_text"
@@ -137,26 +138,27 @@
                 android:text=""
                 android:layout_weight="1"
                 android:textStyle="bold"
-                android:textSize="20sp"
-                android:background="@drawable/border_text"/>
+                android:textSize="15sp"
+                android:background="@drawable/underline_result"/>
 
 <!--            問２-->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:background="@drawable/underline_result"
                 android:layout_weight="1">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="第2問"
-                    android:textSize="20sp" />
+                    android:text="第2問  "
+                    android:textSize="15sp" />
                 <TextView
                     android:id="@+id/quiz2_name_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=""
-                    android:textSize="10sp"/>
+                    android:textSize="7sp"/>
             </LinearLayout>
             <TextView
                 android:id="@+id/quiz2_text"
@@ -165,25 +167,27 @@
                 android:text=""
                 android:layout_weight="1"
                 android:textStyle="bold"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
 
 <!--            問3-->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:background="@drawable/underline_result"
                 android:layout_weight="1">
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="第3問"
-                    android:textSize="20sp" />
+                    android:text="第3問  "
+                    android:background="@drawable/underline_result"
+                    android:textSize="15sp" />
                 <TextView
                     android:id="@+id/quiz3_name_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=""
-                    android:textSize="10sp"/>
+                    android:textSize="7sp"/>
             </LinearLayout>
             <TextView
                 android:id="@+id/quiz3_text"
@@ -192,10 +196,10 @@
                 android:text=""
                 android:layout_weight="1"
                 android:textStyle="bold"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
         </LinearLayout>
 
-
+<!--距離-->
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="45sp"
