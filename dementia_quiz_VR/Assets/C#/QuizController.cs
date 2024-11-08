@@ -126,7 +126,7 @@ public class QuizController : MonoBehaviour
         }
         //StatusDataからQuizDIffを取得
         LRCount = statusData.LR.Count;
-        Quizdiff = 1 + statusData.QuizDiff[LRCount];//要素数をクエリパラメータとする
+        Quizdiff =statusData.QuizDiff[LRCount];//要素数をクエリパラメータとする
 
         //クイズの難易度に合わせてURLを指定
         //元はdifficultyに問い合わせてた
