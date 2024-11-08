@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: aaaa
   id: 0
-  quizDiff: 000000000000000000000000
+  quizDiff: 
   actDiff: 0
-  serialNum: 0
-  uuid: 
+  serialNum: 623467
+  uuid: 9c8c14bc-d00a-5335-850d-1c1c5a24ce76
   lr: 
   position: {x: 0, y: 0, z: 0}
   rotationY: 0
