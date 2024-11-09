@@ -138,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
         startWebSocket(myuuid);
         Log.d("WebSocket", "Connected: " + websocketConnected);
         Log.d("UUID Check", "UUID: " + myuuid); // ログで確認
+
         if (websocketConnected) {
             Intent intent = new Intent(MainActivity.this, home.class);
             startActivity(intent);

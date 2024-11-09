@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -32,14 +33,17 @@ import java.math.BigDecimal;
 public class history extends AppCompatActivity {
 
     public static ArrayAdapter<String> adapter;
-    public FrameLayout popup;
     private LinearLayout historyContainer;
     private ApiService apiService;
     private String change_count,ratio,distance;
     private TextView change_count_text,ratio_text,distance_text;
     private LinearLayout quizCorrectRatesContainer;
     private TextView memoryQuizCorrectRates;
-    private String memoryRates;
+    private String action_correct_rate;
+    private FrameLayout popup_quiz;
+    private TextView totalFeedbackText;
+    private String message;
+    private Button quizHistoryButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +54,9 @@ public class history extends AppCompatActivity {
 //        loadHistory();
         getUserData();
 
-
-
-        popup=findViewById(R.id.popup);
+        quizHistoryButton = findViewById(R.id.quizHistoryButton);
+        totalFeedbackText = findViewById(R.id.totalFeedbackText);
+        popup_quiz=findViewById(R.id.popup_quiz);
         change_count_text=findViewById(R.id.changed_count_text);
         ratio_text=findViewById(R.id.ratio_text);
         distance_text=findViewById(R.id.distance_text);
@@ -60,45 +64,15 @@ public class history extends AppCompatActivity {
         memoryQuizCorrectRates = findViewById(R.id.memoryQuizCorrectRates);
     }
 
-    // 履歴のロードと表示
-    private void loadHistory() {
-        SharedPreferences sharedPreferences = getSharedPreferences("DateAndScore", MODE_PRIVATE);
-        String timeData = sharedPreferences.getString("PressTime", "");
-        String scoreData = sharedPreferences.getString("Scores", "");
 
-        ArrayList<String> times = new ArrayList<>();
-        ArrayList<String> scores = new ArrayList<>();
-        // カンマ区切りで保存したデータを分割してリストに変換
-        if (!timeData.isEmpty()) {
-            String[] timeArray = timeData.split(",");
-            for (String time : timeArray) {
-                times.add(time);
-            }
-        }
-
-        if (!scoreData.isEmpty()) {
-            String[] scoreArray = scoreData.split(",");
-            for (String score : scoreArray) {
-                scores.add(score);
-            }
-        }
-        Log.d("times", String.valueOf(times));
-        Log.d("scores", String.valueOf(scores));
-        Log.d("times.size()", String.valueOf(times.size()));
-        Log.d("scores.size()", String.valueOf(scores.size()));
-        for (int i = 0; i < times.size(); i++) {
-            addHistoryItem(times.get(i), scores.get(i));
-        }
+    public void popup_gone(View view){
+        popup_quiz.setVisibility(View.GONE);
+        quizHistoryButton.setEnabled(true);
     }
-
-    // UIに履歴アイテムを追加
-    private void addHistoryItem(String time, String score) {
-        TextView textView = new TextView(this);
-        textView.setText(time + " - " + score);
-        textView.setTextSize(18);
-        historyContainer.addView(textView);
+    public void popup_visible(View view){
+        popup_quiz.setVisibility(View.VISIBLE);
+        quizHistoryButton.setEnabled(false);
     }
-
 
 
 
@@ -106,7 +80,6 @@ public class history extends AppCompatActivity {
     public void history_main(View view){
         Intent intent =new Intent(this,MainActivity.class);
         startActivity(intent);
-        popup.setVisibility(View.GONE);
     }
 
     public void getUserData() {
@@ -118,29 +91,36 @@ public class history extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     UserData userData = response.body();
                     change_count = userData.getChange_count();
+                    message = userData.getMessage();
                     // ratio の四捨五入処理
                     ratio = userData.getRatio();
                     double ratioValue = Double.parseDouble(ratio);
                     BigDecimal roundedRatio = new BigDecimal(ratioValue * 100).setScale(1, RoundingMode.HALF_UP);
-                    memoryRates = userData.getMemoryQuizCorrectRates();
+                    //action_correct_rateの四捨五入処理
+                    action_correct_rate = userData.getAction_correct_rate();
+                    double action_correct_rateValue = Double.parseDouble(action_correct_rate);
+                    BigDecimal roundedAction_correct_rate = new BigDecimal(action_correct_rateValue * 100).setScale(1, RoundingMode.HALF_UP);
                     distance = userData.getDistance();
                     int change_count_int = Integer.parseInt(change_count);
                     String playCount = String.valueOf(change_count_int + 1);
                     change_count_text.setText(playCount + "回、");
                     ratio_text.setText(roundedRatio + "%");
                     distance_text.setText(distance + "m)");
-                    memoryQuizCorrectRates.setText(memoryRates);
+                    memoryQuizCorrectRates.setText(roundedAction_correct_rate+"%");
+                    totalFeedbackText.setText(message);
+                    Log.d("memoryRates", action_correct_rate);
+                    Log.d("totalFeedback", message);
 
                     List<QuizCorrectRate> quizCorrectRates = userData.getQuiz_correct_rates();
+                    Log.d("quizCorrectRates", quizCorrectRates.toString());
 
                     if (quizCorrectRates != null) {
                         for (QuizCorrectRate quiz : quizCorrectRates) {
                             TextView textView = new TextView(history.this);
-                            textView.setText("問題名: " + quiz.getName() + "\n" +
-                                    "正解率: " + (quiz.getCorrect_rate() * 100) + "%\n" +
-                                    "詳細: " + quiz.getDetail());
+                            textView.setText("問題: " + quiz.getName() + "\n" +
+                                    "正解率: " + (quiz.getCorrect_rate() * 100) );
                             textView.setTextSize(16);
-                            textView.setPadding(0, 10, 0, 10);
+                            textView.setPadding(0, 10, 0, 15);
 
                             quizCorrectRatesContainer.addView(textView);
                         }

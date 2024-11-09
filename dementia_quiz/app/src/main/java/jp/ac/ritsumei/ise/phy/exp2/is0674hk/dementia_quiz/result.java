@@ -136,7 +136,7 @@ public class result extends AppCompatActivity {
 
     //距離を表示
     public void setDistance(String distance){
-        distanceText.setText(distance+"km");
+        distanceText.setText(distance+"m");
     }
     public void setFeedBack(String feedback){
         feedbackText.setText(feedback);
@@ -184,6 +184,7 @@ public class result extends AppCompatActivity {
     public void result_main(View view){
 //        saveDateAndScore();
         webSocketClient_result.closeWebSocket();
+        WebSocketClient_result.corList.clear();
         Intent intent = new Intent(result.this, MainActivity.class);
         startActivity(intent);
 

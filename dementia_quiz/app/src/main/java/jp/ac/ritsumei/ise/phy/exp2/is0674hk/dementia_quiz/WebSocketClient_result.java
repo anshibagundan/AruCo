@@ -78,6 +78,7 @@ public class WebSocketClient_result extends WebSocketListener {
 //            Log.d("UUID Check", "UUID: " + myuuid); // ログで確認
             JSONArray quiz_name= json.getJSONArray("quiz_names");
             distance=json.getString("distance");
+            Log.d("distance",distance);
             feedback=json.getString("message");
             JSONArray cor=json.getJSONArray("cor");
             for (int i = 0; i < quiz_name.length(); i++) {
@@ -95,6 +96,7 @@ public class WebSocketClient_result extends WebSocketListener {
                         // UI操作はここで行う
                         game.finish_button.setAlpha(0.9f);
                         game.finish_button.setEnabled(true);
+
                     }
                 });
                 // /xyzのwebsocketを閉じる

@@ -79,7 +79,7 @@ public class WebSocketClient_xyz extends WebSocketListener {
             int screenHeight = context.getResources().getDisplayMetrics().heightPixels;
 
             float x = (float) (((float)json.getDouble("x")+startPositionX)*0.29+450);
-            float z = (float) (((float)json.getDouble("z")+startPositionZ)*(-0.165)+680);
+            float z = (float) (((float)json.getDouble("z")+startPositionZ)*(-0.083)+680);
 
             // 相対位置に変換
             float X = x / 1920 * screenWidth;  // 1920 は基準の幅（例）

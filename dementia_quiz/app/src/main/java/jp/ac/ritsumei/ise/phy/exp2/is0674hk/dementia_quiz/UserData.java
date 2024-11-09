@@ -7,14 +7,16 @@ public class UserData {
     private String ratio;
     private String distance;
     private List<QuizCorrectRate> quiz_correct_rates;
-    private String memoryRates;
+    private String action_correct_rate;
+    private String message;
 
-    public UserData(String change_count,String ratio, String distance, List<QuizCorrectRate> quiz_correct_rates,String memoryRates){
+    public UserData(String change_count,String ratio, String distance, List<QuizCorrectRate> quiz_correct_rates,String action_correct_rate,String massage){
         this.change_count=change_count;
         this.ratio=ratio;
         this.distance=distance;
         this.quiz_correct_rates=quiz_correct_rates;
-        this.memoryRates=memoryRates;
+        this.action_correct_rate=action_correct_rate;
+        this.message=massage;
     }
     public String getChange_count(){
         return change_count;
@@ -28,8 +30,11 @@ public class UserData {
     public List<QuizCorrectRate> getQuiz_correct_rates() {
         return quiz_correct_rates;
     }
-    public String getMemoryQuizCorrectRates(){
-        return memoryRates;
+    public String getAction_correct_rate(){
+        return action_correct_rate;
+    }
+    public String getMessage(){
+        return message;
     }
 
 }

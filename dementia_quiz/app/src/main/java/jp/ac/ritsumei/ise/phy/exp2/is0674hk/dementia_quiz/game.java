@@ -55,6 +55,10 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import java.security.cert.X509Certificate;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import android.widget.ImageView;
 
 public class game extends AppCompatActivity {
     private Handler mainHandler = new Handler(Looper.getMainLooper());
@@ -76,7 +80,8 @@ public class game extends AppCompatActivity {
     private WebSocketClient webSocketClient;
     private String serverUrl;
     private String TAG = "WebSocket";
-
+    // スレッドプールの初期化
+    private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,8 +112,9 @@ public class game extends AppCompatActivity {
         webSocketClient_xyz.startWebsocket(myuuid);
         webSocketClient_result.startWebsocket(myuuid);
 
+
         try {
-            URI url = new URI(serverUrl);
+            URI uri = new URI(serverUrl);
 
             // SSL証明書の検証を無視（テスト目的のみ）
             TrustManager[] trustAllCerts = new TrustManager[]{
@@ -122,52 +128,55 @@ public class game extends AppCompatActivity {
             sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
             SSLSocketFactory factory = sslContext.getSocketFactory();
 
-            webSocketClient = new WebSocketClient(url) {
+            webSocketClient = new WebSocketClient(uri) {
                 @Override
                 public void onOpen(ServerHandshake handshakedata) {
-                    runOnUiThread(() -> {
-                        Log.d(TAG, "WebSocket_cast接続成功");
-                    });
+                    runOnUiThread(() -> Log.d(TAG, "WebSocket接続成功"));
                 }
 
                 @Override
-                public void onMessage( String message) {
-                    runOnUiThread(() -> {
-                        Log.d(TAG, "メッセージ受信");
-                        try {
-                            JSONObject jsonObject = new JSONObject(message);
-                            String base64Image = jsonObject.getString("data");
-                            byte[] imageBytes = Base64.decode(base64Image, Base64.DEFAULT);
-                            Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-                            live.setImageBitmap(bitmap);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    });
+                public void onMessage(String message) {
+                    // デコード処理をバックグラウンドで実行
+                    executorService.submit(() -> decodeAndDisplayImage(message));
                 }
 
                 @Override
                 public void onClose(int code, String reason, boolean remote) {
-                    runOnUiThread(() -> {
-                        Log.d(TAG, "WebSocket切断: " + reason + ", Code: " + code);
-                    });
+                    runOnUiThread(() -> Log.d(TAG, "WebSocket切断: " + reason + ", Code: " + code));
                 }
 
                 @Override
                 public void onError(Exception ex) {
-                    runOnUiThread(() -> {
-                        Log.e(TAG, "WebSocketエラー", ex);
-                    });
+                    runOnUiThread(() -> Log.e(TAG, "WebSocketエラー", ex));
                 }
             };
 
-            // ファクトリーを設定
             webSocketClient.setSocketFactory(factory);
             webSocketClient.connect();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    // 画像のデコードと表示処理
+    private void decodeAndDisplayImage(String message) {
+        try {
+            JSONObject jsonObject = new JSONObject(message);
+            String base64Image = jsonObject.getString("data");
+            byte[] imageBytes = Base64.decode(base64Image, Base64.DEFAULT);
+
+            // 画像を縮小してデコード
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 2; // 画像サイズを半分に縮小
+            Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length, options);
+            Log.d("bitmap", String.valueOf(bitmap));
+            // UIスレッドで画像を更新
+            runOnUiThread(() -> live.setImageBitmap(bitmap));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     protected void onDestroy() {
@@ -201,55 +210,5 @@ public class game extends AppCompatActivity {
         Intent intent =new Intent(game.this,result.class);
         startActivity(intent);
     }
-
-//    //gameからresultへの画面遷移
-//    public void game_result(View view) {
-//        apiService.getAct_tfs().enqueue(new Callback<List<Act_TF>>() {
-//            @Override
-//            public void onResponse(Call<List<Act_TF>> call, Response<List<Act_TF>> response) {
-//                if (response.isSuccessful()&&response.body()!=null){
-//                    actSize=response.body().size();
-//                    Log.e("actSize",String.valueOf(actSize));
-//                    Log.e("quizSize",String.valueOf(quizSize));
-//
-//                }else{
-//                    //エラー時ハンドリング
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Act_TF>> call, Throwable t) {
-//                //エラー時ハンドリング
-//            }
-//        });
-//        apiService.getQuiz_tfs().enqueue(new Callback<List<Quiz_TF>>() {
-//            @Override
-//            public void onResponse(Call<List<Quiz_TF>> call, Response<List<Quiz_TF>> response) {
-//                if (response.isSuccessful()&&response.body()!=null){
-//                    Log.e("responcebody",String.valueOf(response.body()));
-//                    quizSize=response.body().size();
-//                    Log.e("responcebody",String.valueOf(quizSize));
-//                    if (actSize==1&&quizSize==3){
-//                        Intent intent =new Intent(game.this,result.class);
-//                        startActivity(intent);
-//                    }else{
-//                        nowgame.setText("クイズが終了していません！");
-//                    }
-//                }else{
-//                    //エラー時ハンドリング
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Quiz_TF>> call, Throwable t) {
-//                //エラー時ハンドリング
-//            }
-//        });
-//
-//    }
-
-
-
-
 
 }
