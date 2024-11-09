@@ -178,20 +178,20 @@ public class QuizController : MonoBehaviour
                     if (statusData.LR.Count == 0)
                     {
                         Question.text = QuizData.Question;
-                        Quizlef.text = "1: " + QuizData.lef_sel;
-                        Quizrig.text = "2: " + QuizData.rig_sel;
+                        Quizlef.text = "1: " + Environment.NewLine + QuizData.lef_sel;
+                        Quizrig.text = "2: " + Environment.NewLine + QuizData.rig_sel;
                     }
                     else if (statusData.LR.Count == 1)
                     {
                         Question.text = QuizData.Question;
-                        Quizlef.text = "1: " + QuizData.lef_sel;
-                        Quizrig.text = "2: " + QuizData.rig_sel;
+                        Quizlef.text = "1: " + Environment.NewLine + QuizData.lef_sel;
+                        Quizrig.text = "2: " + Environment.NewLine + QuizData.rig_sel;
                     }
                     else if (statusData.LR.Count == 2)
                     {
                         Question.text = QuizData.Question;
-                        Quizlef.text = "1: " + QuizData.lef_sel;
-                        Quizrig.text = "2: " + QuizData.rig_sel;
+                        Quizlef.text = "1: " + Environment.NewLine + QuizData.lef_sel;
+                        Quizrig.text = "2: " + Environment.NewLine + QuizData.rig_sel;
                         isfinalQuiz = true;
 
                     }
