@@ -185,6 +185,7 @@ public class result extends AppCompatActivity {
 //        saveDateAndScore();
         webSocketClient_result.closeWebSocket();
         WebSocketClient_result.corList.clear();
+        WebSocketClient_result.quiz_nameList.clear();
         Intent intent = new Intent(result.this, MainActivity.class);
         startActivity(intent);
 

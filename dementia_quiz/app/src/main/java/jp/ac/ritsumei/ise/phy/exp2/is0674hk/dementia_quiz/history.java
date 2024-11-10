@@ -120,8 +120,9 @@ public class history extends AppCompatActivity {
                             textView.setText("問題: " + quiz.getName() + "\n" +
                                     "正解率: " + (quiz.getCorrect_rate() * 100) );
                             textView.setTextSize(16);
-                            textView.setPadding(0, 10, 0, 15);
 
+                            textView.setPadding(0, 40, 0, 15);
+                            textView.setBackgroundResource(R.drawable.underline_result);
                             quizCorrectRatesContainer.addView(textView);
                         }
                     }

@@ -110,9 +110,9 @@
 <!--Arucoクイズ結果表示-->
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="150sp"
+            android:layout_height="160sp"
             android:orientation="vertical"
-            android:layout_marginTop="200sp">
+            android:layout_marginTop="180sp">
             <!--問１-->
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -125,12 +125,19 @@
                     android:layout_height="wrap_content"
                     android:text="第1問  "
                     android:textSize="15sp" />
-                <TextView
-                    android:id="@+id/quiz1_name_text"
+                <ScrollView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textSize="8sp"/>
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/quiz1_name_text"
+                        android:layout_width="130sp"
+                        android:layout_height="wrap_content"
+
+                        android:text=""
+                        android:textSize="8sp"
+                        android:maxLines="4" />
+                </ScrollView>
+
             </LinearLayout>
             <TextView
                 android:id="@+id/quiz1_text"
@@ -153,12 +160,18 @@
                     android:layout_height="wrap_content"
                     android:text="第2問  "
                     android:textSize="15sp" />
-                <TextView
-                    android:id="@+id/quiz2_name_text"
+                <ScrollView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textSize="8sp"/>
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/quiz2_name_text"
+                        android:layout_width="130sp"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="8sp"
+                        android:maxLines="4"/>
+                </ScrollView>
+
             </LinearLayout>
             <TextView
                 android:id="@+id/quiz2_text"
@@ -181,12 +194,18 @@
                     android:layout_height="wrap_content"
                     android:text="第3問  "
                     android:textSize="15sp" />
-                <TextView
-                    android:id="@+id/quiz3_name_text"
+                <ScrollView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textSize="8sp"/>
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/quiz3_name_text"
+                        android:layout_width="130sp"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="8sp"
+                        android:maxLines="4"/>
+                </ScrollView>
+
             </LinearLayout>
             <TextView
                 android:id="@+id/quiz3_text"
