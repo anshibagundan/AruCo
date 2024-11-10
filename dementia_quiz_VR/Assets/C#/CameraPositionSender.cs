@@ -1,16 +1,18 @@
 using UnityEngine;
 using WebSocketSharp;
 using System.Collections;
-
+using App.BaseSystem.DataStores.ScriptableObjects.Status;
 public class CameraPositionSender : MonoBehaviour
 {
-    public string websocketUrl = "wss://teamhopcard-aa92d1598b3a.herokuapp.com/ws/hop/"; // WebSocketサーバーのURL
     private WebSocket ws;
+    [SerializeField]
+    StatusData statusData;
 
     private void Start()
     {
         // WebSocketの初期化と接続
-        ws = new WebSocket(websocketUrl);
+        string serverUrl = $"wss://hopcardapi-4f6e9a3bf06d.herokuapp.com/ws/xyz/unity/{statusData.UUID}";
+        ws = new WebSocket(serverUrl);
         ws.OnOpen += (sender, e) => Debug.Log("WebSocket Open");
         ws.OnMessage += (sender, e) => Debug.Log("WebSocket Message: " + e.Data);
         ws.OnError += (sender, e) => Debug.Log("WebSocket Error: " + e.Message);
@@ -33,7 +35,7 @@ public class CameraPositionSender : MonoBehaviour
                 Vector3 cameraPosition = transform.position;
 
                 // 座標をJSON形式に変換
-                string json = JsonUtility.ToJson(new HOPPosition(cameraPosition.x, cameraPosition.y, cameraPosition.z));
+                string json = JsonUtility.ToJson(new HOPPosition(cameraPosition.x,cameraPosition.z));
 
                 Debug.Log("Sending data: " + json);
 
@@ -42,7 +44,7 @@ public class CameraPositionSender : MonoBehaviour
             }
 
             // 0.1秒ごとに更新
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.5f);
         }
     }
 
@@ -61,13 +63,11 @@ public class CameraPositionSender : MonoBehaviour
     public class HOPPosition
     {
         public float x;
-        public float y;
         public float z;
 
-        public HOPPosition(float x, float y, float z)
+        public HOPPosition(float x,float z)
         {
             this.x = x;
-            this.y = y;
             this.z = z;
         }
     }
