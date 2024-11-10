@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.15406476, g: 0.17534745, b: 0.1864043, a: 1}
+  m_IndirectSpecularColor: {r: 0.15406635, g: 0.17532943, b: 0.1863012, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -836,7 +836,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: quiz loading...
+  m_text: "\u72AC\u306F\u5408\u8A08\u4F55\u5339\uFF1F"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 4f54daad40949d5418dbbab9f425d02a, type: 2}
   m_sharedMaterial: {fileID: 2113093274853300671, guid: 4f54daad40949d5418dbbab9f425d02a,
@@ -1045,10 +1045,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 50
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -1498,7 +1498,7 @@ Transform:
   m_GameObject: {fileID: 577442095}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 482, y: 282, z: -956}
+  m_LocalPosition: {x: 482, y: 100, z: -956}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2348,6 +2348,7 @@ GameObject:
   - component: {fileID: 1026223637}
   - component: {fileID: 1026223636}
   - component: {fileID: 1026223635}
+  - component: {fileID: 1026223639}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2568,12 +2569,29 @@ Transform:
   m_GameObject: {fileID: 1026223633}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -13, y: -200, z: -0}
+  m_LocalPosition: {x: -13, y: -52, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 577442097}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1026223639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1026223633}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87b5e5d9f4b765340812375aab438f86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statusData: {fileID: 11400000, guid: d4824e765e202054196ddd5d10d31adf, type: 2}
+  captureWidth: 256
+  captureHeight: 144
+  jpegQuality: 100
+  mainCamera: {fileID: 0}
 --- !u!1 &1135155918
 GameObject:
   m_ObjectHideFlags: 0
@@ -2816,6 +2834,8 @@ MonoBehaviour:
   Actname: {fileID: 64688183}
   Actsel_1: {fileID: 1746468802}
   Actsel_2: {fileID: 219291747}
+  statusData: {fileID: 11400000, guid: d4824e765e202054196ddd5d10d31adf, type: 2}
+  playerTransform: {fileID: 0}
 --- !u!4 &1614603111
 Transform:
   m_ObjectHideFlags: 0
@@ -3011,10 +3031,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 50
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
