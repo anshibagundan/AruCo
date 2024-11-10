@@ -1,16 +1,18 @@
 using UnityEngine;
 using WebSocketSharp;
 using System.Collections;
-
+using App.BaseSystem.DataStores.ScriptableObjects.Status;
 public class CameraPositionSender : MonoBehaviour
 {
-    public string websocketUrl = "wss://teamhopcard-aa92d1598b3a.herokuapp.com/ws/hop/"; // WebSocketサーバーのURL
     private WebSocket ws;
+    [SerializeField]
+    StatusData statusData;
 
     private void Start()
     {
         // WebSocketの初期化と接続
-        ws = new WebSocket(websocketUrl);
+        string serverUrl = $"wss://hopcardapi-4f6e9a3bf06d.herokuapp.com/ws/xyz/unity/{statusData.UUID}";
+        ws = new WebSocket(serverUrl);
         ws.OnOpen += (sender, e) => Debug.Log("WebSocket Open");
         ws.OnMessage += (sender, e) => Debug.Log("WebSocket Message: " + e.Data);
         ws.OnError += (sender, e) => Debug.Log("WebSocket Error: " + e.Message);

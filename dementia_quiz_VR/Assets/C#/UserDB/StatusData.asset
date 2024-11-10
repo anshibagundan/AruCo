@@ -12,9 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d523c1a7aea3334491c10504a1dd3c1, type: 3}
   m_Name: StatusData
   m_EditorClassIdentifier: 
-  name: 
+  name: aaaa
   id: 0
-  quizDiff: []
-  actDiff: 0
-  uuid: 
-  lr: []
+  quizDiff: 010000000400000005000000
+  actDiff: 1
+  serialNum: 623467
+  uuid: 9c8c14bc-d00a-5335-850d-1c1c5a24ce76
+  lr: 
+  position: {x: 0, y: 0, z: 0}
+  pastpos: {x: 0, y: 0, z: 0}
+  rotationY: 0
+  distance: 0
