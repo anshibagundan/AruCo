@@ -5,62 +5,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".game"
-    android:background="#E6F9FE">
+    android:background="#ffe6cc">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="-56dp">
+        >
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="100sp"
+            android:layout_height="50sp"
+            android:layout_marginTop="20sp"
+            android:layout_marginLeft="20sp"
+            android:background="@drawable/border_text"
+            app:srcCompat="@drawable/play" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/diff_image"
+            android:layout_width="200sp"
+            android:layout_height="100sp"
+            android:layout_gravity="right"
+            android:layout_marginRight="30sp"
+            app:srcCompat="@drawable/loading" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="arucoクイズ："
-                android:textSize="30sp" />
 
-            <TextView
-                android:id="@+id/act_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="loading"
-                android:textStyle="bold"
-                android:textSize="40sp" />
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="80sp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="記憶クイズ："
-                android:textSize="30sp" />
 
-            <TextView
-                android:id="@+id/quiz_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="loading"
-                android:textStyle="bold"
-                android:textSize="40sp" />
 
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/nowgame"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="200sp"
-            android:text="ゲーム中・・・"
-            android:textSize="30sp" />
 
 
         <Button
@@ -68,24 +40,46 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="250sp"
+            android:layout_marginTop="280sp"
             android:backgroundTint="#990000"
+            android:alpha="0.5"
             android:onClick="game_result"
             android:text="終了"
-            android:textSize="40sp" />
-
-        <ImageView
-            android:id="@+id/map"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/map_image" />
+            android:textSize="40sp"
+            android:visibility="visible"/>
 
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-            <jp.ac.ritsumei.ise.phy.exp2.is0674hk.dementia_quiz.CustomCircleView
+            <ImageView
+                android:id="@+id/live"
+                android:layout_width="match_parent"
+                android:layout_height="160sp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="120sp"
+                android:background="@drawable/background_live"
+                />
+
+            <ImageView
+                android:id="@+id/map"
+                android:layout_width="400sp"
+                android:layout_height="300sp"
+                android:layout_marginTop="10sp"
+                android:layout_below="@+id/live"
+                android:layout_centerHorizontal="true"
+                app:srcCompat="@drawable/map_image" />
+        </RelativeLayout>
+
+
+
+        <jp.ac.ritsumei.ise.phy.exp2.is0674hk.dementia_quiz.CustomCircleView
                 android:id="@+id/customCircleView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
+
+
 
 
     </FrameLayout>

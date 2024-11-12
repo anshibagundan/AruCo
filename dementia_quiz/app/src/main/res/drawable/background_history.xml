@@ -1,0 +1,12 @@
+<!-- res/drawable/gradient_background.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="#FF5733" />   <!-- グラデーションの開始色 -->
+                android:endColor="#000000"      <!-- グラデーションの終了色 -->
+                android:angle="45"              <!-- 角度（45度に設定） -->
+                android:type="linear" />        <!-- グラデーションの種類（linear:線形）-->
+        </shape>
+    </item>
+</layer-list>

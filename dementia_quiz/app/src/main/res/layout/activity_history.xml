@@ -9,6 +9,8 @@
 
 
     <LinearLayout
+
+        android:background="#fdf1f0"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -16,6 +18,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             >
             <ImageView
                 android:id="@+id/back"
@@ -23,48 +26,214 @@
                 android:layout_height="80sp"
                 app:srcCompat="@drawable/back_icon"
                 android:onClick="history_main"/>
+
+            <ImageView
+                android:id="@+id/imageView6"
+                android:layout_width="130sp"
+                android:layout_height="70sp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="50sp"
+                app:srcCompat="@drawable/history" />
+
+
+        </LinearLayout>
+
+
+<!--        認知度の表示-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_marginLeft="40sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="認知度"
+                    android:background="@drawable/border_text_bold"
+                    android:textSize="30sp"/>
+                <TextView
+                    android:paddingLeft="20sp"
+                    android:paddingTop="30sp"
+                    android:id="@+id/ratio_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="〇%"
+                    android:layout_gravity="center"
+                    android:textSize="60sp"
+                    android:background="@drawable/circle"/>
+            </LinearLayout>
+
+<!--            遊んだ回数、歩いた距離-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="（遊んだ回数"
+                    android:textSize="20sp"/>
+                <TextView
+                    android:id="@+id/changed_count_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="〇〇回、" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="歩いた距離"
+                    android:textSize="20sp"/>
+                <TextView
+                    android:id="@+id/distance_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:text="〇〇m）"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <!--        記憶クイズの正解率-->
+
+        <LinearLayout
+            android:layout_marginTop="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="得点履歴"
-                android:textSize="50sp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="40sp"/>
+                android:textSize="20sp"
+                android:text="記憶力クイズ"
+                android:background="@drawable/label"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:text="  (出てきた犬の数の合計は？)"
+                android:background="@drawable/underline_result"/>
         </LinearLayout>
-
-        <ListView
-            android:id="@+id/userListView"
-            android:layout_width="match_parent"
-            android:layout_height="600sp" />
-
-        <Button
-            android:id="@+id/delete_history"
+        <TextView
+            android:id="@+id/memoryQuizCorrectRates"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="履歴削除"
-            android:textSize="20sp"
-            android:layout_gravity="center"
-            android:onClick="clearPerAndDate"/>
+            android:textSize="30sp"
+            android:text="〇〇%"
+            android:textStyle="bold"
+            android:layout_gravity="center" />
+        <LinearLayout
+            android:layout_marginTop="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="クイズ"
+                android:textSize="20sp"
+                android:background="@drawable/label"/>
+        </LinearLayout>
+        <Button
+            android:id="@+id/quizHistoryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="詳細"
+            android:backgroundTint="#5C6B93"
+            android:onClick="popup_visible"/>
+
+        <LinearLayout
+            android:layout_marginTop="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="総評"
+                android:background="@drawable/border_text"
+                android:textSize="30sp"/>
+            <TextView
+                android:id="@+id/totalFeedbackText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Loading"
+                android:textSize="15sp"
+                android:background="@drawable/background_text"
+                android:layout_marginTop="3dp" />
+
+        </LinearLayout>
+
+
+
+
 
     </LinearLayout>
 
-<!--    削除完了ポップアップ-->
+<!--    クイズ履歴ポップアップ-->
     <FrameLayout
-        android:id="@+id/popup"
+        android:id="@+id/popup_quiz"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
-        android:background="#000000"
-        android:alpha="0.85"
-        android:onClick="history_main">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="削除完了！"
-            android:textSize="50sp"
+        android:background="#5C6B93"
+        android:alpha="1">
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
             android:layout_gravity="center"
-            android:textColor="@color/white"/>
+            android:background="@drawable/popup_design">
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="70sp"
+                android:layout_height="70sp"
+                app:srcCompat="@drawable/back_icon"
+                android:onClick="popup_gone"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="クイズ履歴"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="80sp"
+                android:textStyle="bold"
+                android:textSize="30sp"
+                android:layout_marginLeft="50sp"
+                android:textColor="@color/black"/>
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="70sp"
+                android:layout_height="70sp"
+                android:layout_marginTop="60sp"
+                android:layout_marginLeft="60sp"
+                app:srcCompat="@drawable/aruco" />
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="340sp"
+                android:layout_gravity="center"
+                android:layout_marginTop="70sp"
+                android:background="@drawable/border_text">
+                <!--        個別のクイズの正解率表示-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/quizCorrectRatesContainer"
+                    android:orientation="vertical">
+                </LinearLayout>
+
+            </ScrollView>
+        </FrameLayout>
+
     </FrameLayout>
+
+
 
 
 

@@ -2,7 +2,9 @@ package jp.ac.ritsumei.ise.phy.exp2.is0674hk.dementia_quiz;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,14 +26,10 @@ import retrofit2.Callback;
 public class home extends AppCompatActivity {
 
     private ApiService apiService;
-    private Button easy;
-    private Button normal;
-    private Button difficult;
-    private FrameLayout act_selectDiff;
-    private FrameLayout quiz_selectDiff;
     private WebSocket webSocket;
     private final OkHttpClient client = new OkHttpClient();
-    private int randEasy,randNormal,randDifficult;
+    private String myuuid;
+    public static int difficulty;
 
 
 
@@ -43,28 +41,19 @@ public class home extends AppCompatActivity {
         // ApiServiceインスタンスを取得
         apiService = ApiClient.getApiService();
 
-        easy = findViewById(R.id.easy);
-        normal = findViewById(R.id.normal);
-        difficult = findViewById(R.id.difficult);
-        act_selectDiff = findViewById(R.id.act_selectDiff);
-        quiz_selectDiff = findViewById(R.id.quiz_selectDiff);
+        // SharedPreferences から UUID を取得
+        SharedPreferences uuidPrefs = getSharedPreferences("uuidPrefs", MODE_PRIVATE);
+        myuuid = uuidPrefs.getString("UUID", "default-uuid");
+        Log.d("UUID Check ホーム開いたとき", "UUID: " + myuuid); // ログで確認
+        startWebSocket(myuuid);
 
-        // WebSocket接続を確立
-        startWebSocket();
 
-        // 1から6のランダムな数字を生成
-        randEasy = ThreadLocalRandom.current().nextInt(1, 7);
-        randNormal = ThreadLocalRandom.current().nextInt(7, 13);
-        randDifficult = ThreadLocalRandom.current().nextInt(13, 19);
 
-        easy.setOnClickListener(v -> sendDataAndCloseWebSocket(randEasy));
-        normal.setOnClickListener(v -> sendDataAndCloseWebSocket(randNormal));
-        difficult.setOnClickListener(v -> sendDataAndCloseWebSocket(randDifficult));
     }
-
     // WebSocket接続を確立
-    private void startWebSocket() {
-        Request request = new Request.Builder().url("wss://teamhopcard-aa92d1598b3a.herokuapp.com/ws/hop/start/").build();
+    private void startWebSocket(String uuid) {
+        Request request = new Request.Builder().url("wss://hopcardapi-4f6e9a3bf06d.herokuapp.com/ws/difficulty/android/"+uuid).build();
+
         webSocket = client.newWebSocket(request, new WebSocketListener() {
             @Override
             public void onOpen(WebSocket webSocket, okhttp3.Response response) {
@@ -80,69 +69,54 @@ public class home extends AppCompatActivity {
         });
     }
 
+
     // データを送信してWebSocket接続を閉じる
     private void sendDataAndCloseWebSocket(int difficulty) {
+        if (webSocket == null) {
+            Log.e("WebSocket", "WebSocket not connected");
+            return;
+        }
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put("start", "OK");
+            jsonObject.put("difficulty",difficulty);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         webSocket.send(jsonObject.toString());
-        webSocket.close(1000, null);
+        Log.d("WebSocket", "Sent: " + jsonObject);
+        this.difficulty=difficulty;
 
-        Act_select data = new Act_select(1, difficulty);
-        apiService.insertAct_selectData(data).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
-                if (response.isSuccessful()) {
-                    Log.d("actDifficulty", "success");
-                } else {
-                    Log.e("actDifficulty", "fail");
-                }
-            }
 
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Log.e("actDifficulty", "connection_fail");
-            }
-        });
 
         Intent intent = new Intent(this, game.class);
         startActivity(intent);
+        Log.d("WebSocket", "scene changed");
     }
 
-    // クイズの難易度をPOST＋画面遷移
-    public void set_quizDifficulty(View view, int difficulty) {
-        Quiz_select data = new Quiz_select(1, difficulty);
-        apiService.insertQuiz_selectData(data).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
-                if (response.isSuccessful()) {
-                    Log.d("set_quizDifficulty", "success");
-                } else {
-                    Log.e("set_quizDifficulty", "fail");
-                }
-            }
 
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Log.e("set_quizDifficulty", "connection_fail");
-            }
-        });
-        quiz_selectDiff.setVisibility(View.GONE);
-        act_selectDiff.setVisibility(View.VISIBLE);
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (webSocket != null) {
+            webSocket.close(1000, "Activity Pausing");
+            client.dispatcher().executorService().shutdown(); // 接続を閉じた後にシャットダウン
+            Log.d("WebSocket", "Closed in onPause()");
+        }
     }
 
-    public void set_quizEasy(View view) {
-        set_quizDifficulty(view, 1);
+
+
+    public void setEasy(View view) {
+        sendDataAndCloseWebSocket(1);
+        Log.d("難易度", "かんたん");
+    }
+    public void setNormal(View view) {
+        sendDataAndCloseWebSocket(2);
+        Log.d("難易度", "ふつう");
+    }
+    public void setDifficult(View view){
+        sendDataAndCloseWebSocket(3);
+        Log.d("難易度", "むずかしい");
     }
 
-    public void set_quizNormal(View view) {
-        set_quizDifficulty(view, 2);
-    }
-
-    public void set_quizDifficult(View view) {
-        set_quizDifficulty(view, 3);
-    }
 }

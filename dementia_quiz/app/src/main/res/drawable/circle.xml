@@ -1,0 +1,17 @@
+<!-- res/drawable/circle.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <!-- 塗りつぶしの色 -->
+    <solid android:color="#BDD5EA" />
+
+    <!-- 枠線の色と幅 -->
+    <stroke
+        android:width="4dp"
+        android:color="#C7C7E4" />
+
+    <!-- サイズの調整（オプション）-->
+    <size
+        android:width="200dp"
+        android:height="150dp" />
+</shape>
